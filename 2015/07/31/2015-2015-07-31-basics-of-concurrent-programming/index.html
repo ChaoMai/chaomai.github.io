@@ -1,0 +1,752 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="Chao Mai's Blog" />
+
+
+
+  <meta name="keywords" content="concurrency,reading," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Building Things" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="并发编程的一些基础知识，内容的主要来源是相关的博客、论文和书籍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Basics of Concurrent Programming">
+<meta property="og:url" content="http://chaomai.github.io/2015/07/31/2015-2015-07-31-basics-of-concurrent-programming/index.html">
+<meta property="og:site_name" content="Building Things">
+<meta property="og:description" content="并发编程的一些基础知识，内容的主要来源是相关的博客、论文和书籍。">
+<meta property="og:updated_time" content="2015-09-05T04:17:58.544Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Basics of Concurrent Programming">
+<meta name="twitter:description" content="并发编程的一些基础知识，内容的主要来源是相关的博客、论文和书籍。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> Basics of Concurrent Programming | Building Things </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Building Things</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              Basics of Concurrent Programming
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2015-07-31T02:37:51+08:00" content="2015-07-31">
+            2015-07-31
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; In
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/programming/" itemprop="url" rel="index">
+                  <span itemprop="name">programming</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/07/31/2015-2015-07-31-basics-of-concurrent-programming/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/31/2015-2015-07-31-basics-of-concurrent-programming/" itemprop="commentsCount"></span>
+            </a>
+          </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h1 id="The_Amdahl’s_Law">The Amdahl’s Law</h1><p>$$<br>S=\frac{1}{1-p+\frac{p}{n}}<br>$$</p>
+<p>S：The <em>speedup</em> S of a job is the ratio between 一个处理器完成job的时间除以n个并发处理器完成job的时间。<br>p：job中，可以并行执行部分的比例。</p>
+<p>假设一个处理器完成job的时间是1。有n个并发处理器，那么可并行执行的部分所用时间就是$p/n$，顺序执行部分所用时间是$1-p$，总的并行执行时间就是，</p>
+<p>$$<br>1-p+\frac{p}{n}<br>$$</p>
+<p>这个法则决定了，一个处理器完成一个job的时间，在增加n个处理器以后，时间并不是简单的变为原来的$1/n$。举个例子，10个房间，其中9个房间一样大，有个房间的大小是其他房间的2倍，有10个工人来刷漆。其中可并行的部分是$10/11$，带入公式以后，</p>
+<p>$$<br>S=\frac{1}{1-\frac{10}{11}+\frac{\frac{10}{11}}{10}}=5.5<br>$$</p>
+<p>可以增加到10个工人后，所用的时间其实只是1个工人的一半。</p>
+<p>这点说明了，在系统中可能90%的代码都实现了并行，但是就是因为10%的必须要顺序执行，最后提升的效果就远不如预期。</p>
+<h1 id="Concurrent_Objects">Concurrent Objects</h1><p>While all notions of correctness for concurrent objects are based on some notion of equivalence with sequential behavior, different notions are appropriate for different systems.</p>
+<p>correctness conditions:</p>
+<ul>
+<li>Quiescent consistency</li>
+<li>Sequential consistency</li>
+<li>Linearizability</li>
+</ul>
+<h2 id="Concurrency_and_Correctness">Concurrency and Correctness</h2><p>尽管并发的代码难以分析，但如果通过某种方法，把他们的并发执行map为顺序执行，那么分析并发对象就会容易些。</p>
+<h2 id="Sequential_Objects">Sequential Objects</h2><h3 id="sequential_specification">sequential specification</h3><ul>
+<li>precondition: the object’s state</li>
+<li>postcondition: the object’s state and return value</li>
+<li>side effect: a change to an object’s state</li>
+</ul>
+<p>for a queue,</p>
+<ul>
+<li>在操作前，队列的情况</li>
+<li>操作后，队列的情况以及所调用方法返回的值</li>
+<li>操作后，队列的情况</li>
+</ul>
+<p>使用precondition和postcondition来定义object，对于单线程操作objects的时候是使用了，但是对于多个线程共享object的时候，这种specification就失效了。不仅仅是调用方法的时候，顺序是个问题（并发意味着调用可能会overlap，哪个先？）；object的state也是问题（单线程中，在<em>方法调用之间</em>，object的state必须是meaningful的，但是overlap导致了object不会处于<em>方法调用之间</em>这个状态）。</p>
+<h2 id="Quiescent_Consistency">Quiescent Consistency</h2><blockquote>
+<p>A method call is pending if its call event has occurred, but not its response event.</p>
+</blockquote>
+<h3 id="quiescent_consistency">quiescent consistency</h3><ol>
+<li><p>Method calls should appear to happen in a one-at-a-time, sequential order.<br>方法调用似乎是以一次一个，顺序的形式发生。<br><em>但是</em>这个条件并没有指明究竟是以什么样的sequential order来执行。</p>
+</li>
+<li><p>Method calls separated by a period of quiescence should appear to take effect in their real-time order.<br>被一段时间的quiescence分隔开的方法调用，似乎是以他们实时的顺序生效。</p>
+</li>
+</ol>
+<p>quiescent consistency表明了，如果在任意时刻，一个object是quiescent的，那么到目前为止的执行，等价于这些已完成的调用的某种顺序执行。</p>
+<p>例如，假设A和B并发的把x和y enqueue（FIFO），接着queue变为quiescent，然后C再enqueue z。虽然不能够确定x和y在队列中的相对顺序，但是他们一定是在z前面的。</p>
+<blockquote>
+<p>A method is total if it is defined for every object state; otherwise it is partial.</p>
+</blockquote>
+<p>In any concurrent execution, for any pending invocation of a total method, there exists a quiescently consistent response.(in book’s 3.6)</p>
+<blockquote>
+<p>A correctness property P is compositional if, whenever each object in the system satisfies P, the system as a whole satisfies P.</p>
+</blockquote>
+<p>quiescent consistency is compositional, so quiescently consistent objects can be composed to construct more complex quiescently consistent objects.</p>
+<h2 id="Sequential_Consistency">Sequential Consistency</h2><blockquote>
+<p>The order in which a single thread issues method calls is called its program order.<br>单线程程序调用方法时候的order。</p>
+</blockquote>
+<h3 id="sequential_consistency">sequential consistency</h3><ol>
+<li><p>Method calls should appear to happen in a one-at-a-time, sequential order.<br>方法调用似乎是以一次一个，顺序的形式发生。</p>
+</li>
+<li><p>Method calls should appear to take effect in program order.<br>方法调用似乎是以程序规定的顺序的方式生效。</p>
+</li>
+</ol>
+<p>sequential consistency要求了方法调用，像they occurred in a sequential order consistent with program order一样的，起作用。</p>
+<p>It is worth noting that sequential consistency and quiescent consistency are incomparable: Quiescent consistency does not necessarily preserve program order, and sequential consistency is unaffected by quiescent periods.</p>
+<p>很多现代的CPU为了效率会进行reorder，默认并不会保证sequential consistency。如果需要sequential consistency，就必须显式的提出（使用memory barriers or fences）。</p>
+<p>sequential consistency is <strong>not</strong> compositional.</p>
+<h2 id="Linearizability">Linearizability</h2><p>Each method call should appear to take effect instantaneously at some moment between its invocation and response.<br>这陈述了方法调用时，必须保证实时行为。</p>
+<p>Every linearizable execution is sequentially consistent, but not vice versa.</p>
+<h3 id="Linearization_Points">Linearization Points</h3><ul>
+<li><p>for lock-based:<br>each method’s critical section can serve as its linearization point.<br>每个方法的临界区。</p>
+</li>
+<li><p>for implementations that do not use locking:<br>the linearization point is typically a single step where the effects of the method call become visible to other method calls.<br>一般是单独的一个步骤，这个步骤以后，effects对其他方法调用是可见的。</p>
+</li>
+</ul>
+<p>linearizability is compositional.</p>
+<p>Sequential consistency适合描述一个独立的系统，比如硬件内存，composition不会是问题。Linearizability，相反，适合大系统的components，这些components必须被独立的验证。</p>
+<h1 id="References">References</h1><ol>
+<li>The Art of Multiprocessor Programming, Maurice Herlihy, Nir Shavit</li>
+</ol>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
+          
+            <a href="/tags/reading/" rel="tag">#reading</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/05/2015-2015-09-05-running-summary/" rel="prev">慢跑总结</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/30/2015-2015-07-30-harris-non-blocking-linked-lists/" rel="next">Harris' Non-Blocking Linked-Lists</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Chao Mai" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Chao Mai</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">Chao Mai's Blog</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">categories</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-name">tags</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ChaoMai" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1898970107" target="_blank">Weibo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/chaomai" target="_blank">DouBan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/chao__mai" target="_blank">Twitter</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#The_Amdahl’s_Law"><span class="nav-number">1.</span> <span class="nav-text">The Amdahl’s Law</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Concurrent_Objects"><span class="nav-number">2.</span> <span class="nav-text">Concurrent Objects</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Concurrency_and_Correctness"><span class="nav-number">2.1.</span> <span class="nav-text">Concurrency and Correctness</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sequential_Objects"><span class="nav-number">2.2.</span> <span class="nav-text">Sequential Objects</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sequential_specification"><span class="nav-number">2.2.1.</span> <span class="nav-text">sequential specification</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Quiescent_Consistency"><span class="nav-number">2.3.</span> <span class="nav-text">Quiescent Consistency</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#quiescent_consistency"><span class="nav-number">2.3.1.</span> <span class="nav-text">quiescent consistency</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sequential_Consistency"><span class="nav-number">2.4.</span> <span class="nav-text">Sequential Consistency</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sequential_consistency"><span class="nav-number">2.4.1.</span> <span class="nav-text">sequential consistency</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linearizability"><span class="nav-number">2.5.</span> <span class="nav-text">Linearizability</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linearization_Points"><span class="nav-number">2.5.1.</span> <span class="nav-text">Linearization Points</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">3.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2014 - 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chao Mai</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'chaomaisblog';
+      var disqus_identifier = '2015/07/31/2015-2015-07-31-basics-of-concurrent-programming/';
+      var disqus_title = 'Basics of Concurrent Programming';
+      var disqus_url = 'http://chaomai.github.io/2015/07/31/2015-2015-07-31-basics-of-concurrent-programming/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>

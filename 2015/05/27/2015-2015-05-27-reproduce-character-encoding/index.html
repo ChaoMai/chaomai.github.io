@@ -1,0 +1,820 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="Chao Mai's Blog" />
+
+
+
+  <meta name="keywords" content="encoding," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Building Things" type="application/atom+xml" />
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="原文是十分钟搞清字符集和字符编码，这里我简化了一些说明，稍微修改了原文的例子。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="转 - 字符集和字符编码">
+<meta property="og:url" content="http://chaomai.github.io/2015/05/27/2015-2015-05-27-reproduce-character-encoding/index.html">
+<meta property="og:site_name" content="Building Things">
+<meta property="og:description" content="原文是十分钟搞清字符集和字符编码，这里我简化了一些说明，稍微修改了原文的例子。">
+<meta property="og:updated_time" content="2015-07-14T14:28:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="转 - 字符集和字符编码">
+<meta name="twitter:description" content="原文是十分钟搞清字符集和字符编码，这里我简化了一些说明，稍微修改了原文的例子。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> 转 - 字符集和字符编码 | Building Things </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Building Things</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            Archives
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              转 - 字符集和字符编码
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          Posted on
+          <time itemprop="dateCreated" datetime="2015-05-27T22:20:14+08:00" content="2015-05-27">
+            2015-05-27
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; In
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/programming/" itemprop="url" rel="index">
+                  <span itemprop="name">programming</span>
+                </a>
+              </span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+            <span class="post-comments-count">
+            &nbsp; | &nbsp;
+            <a href="/2015/05/27/2015-2015-05-27-reproduce-character-encoding/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/27/2015-2015-05-27-reproduce-character-encoding/" itemprop="commentsCount"></span>
+            </a>
+          </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><blockquote class="blockquote-center"><br><br>原文：<a href="http://cenalulu.github.io/linux/character-encoding/" target="_blank" rel="external">十分钟搞清字符集和字符编码</a><br><br></blockquote>
+
+<h2 id="字符集">字符集</h2><p>字符集就规定了某个文字对应的二进制数字存放方式（编码）和某串二进制数值代表了哪个文字（解码）的转换关系。</p>
+<h2 id="字符编码">字符编码</h2><p>字符集只是一个规则集合的名字，对应到真实生活中，字符集就是对某种语言的称呼。</p>
+<p>对于一个字符集来说要正确编码转码一个字符需要三个关键元素：字库表（character repertoire）、编码字符集（coded character set）、字符编码（character encoding form）</p>
+<h3 id="字库表">字库表</h3><p>一个相当于所有可读或者可显示字符的数据库，字库表决定了整个字符集能够展现表示的所有字符的范围。</p>
+<h3 id="编码字符集">编码字符集</h3><p>用一个编码值<strong>code point</strong>来表示一个字符在字库中的位置。</p>
+<h3 id="字符编码-1">字符编码</h3><p>将编码字符集和实际存储数值之间的转换关系。</p>
+<p>一般来说都会直接将code point的值作为编码后的值直接存储。例如在ASCII中<code>A</code>在表中排第65位，而编码后<code>A</code>的数值是<code>0100 0001</code>也即十进制的65的二进制转换结果。</p>
+<ul>
+<li>为什么还要多此一举通过字符编码把序号转换成另外一种存储格式？</li>
+</ul>
+<p>统一字库表的目的是为了能够涵盖世界上所有的字符，但实际使用过程中会发现真正用的上的字符相对整个字库表来说比例非常低。而如果把每个字符都用字库表中的序号来存储的话，每个字符就需要3个字节（这里以Unicode字库为例），这样对于原本用仅占一个字符的ASCII编码的英语地区国家显然是一个额外成本（存储体积是原来的三倍）。于是就出现了UTF-8这样的变长编码。在UTF-8编码中原本只需要一个字节的ASCII字符，仍然只占一个字节。而像中文及日语这样的复杂字符就需要2个到3个字节来存储。</p>
+<h2 id="UTF-8和Unicode的关系">UTF-8和Unicode的关系</h2><p>Unicode就是上文中提到的编码字符集，而UTF-8就是字符编码，即Unicode规则字库的一种实现形式。</p>
+<p>Unicode标准几乎涵盖了各个国家语言可能出现的符号和文字，并将为他们编号。详见：Unicode on Wikipedia。Unicode的编号从<code>0000</code>开始一直到<code>10FFFF</code>共分为16个Plane，每个Plane中有65536个字符。而UTF-8则只实现了第一个Plane，可见UTF-8虽然是一个当今接受度最广的字符集编码，但是它并没有涵盖整个Unicode的字库，这也造成了它在某些场景下对于特殊字符的处理困难。</p>
+<h2 id="UTF-8编码简介">UTF-8编码简介</h2><h3 id="UTF-8的物理存储和Unicode序号的转换关系">UTF-8的物理存储和Unicode序号的转换关系</h3><p>UTF-8编码为变长编码。最小编码单位（<code>code unit</code>）为一个字节。一个字节的前1-3个bit为描述性部分，后面为实际序号部分。</p>
+<ul>
+<li>如果一个字节的第一位为0，那么代表当前字符为单字节字符，占用一个字节的空间。0之后的所有部分（7个bit）代表在Unicode中的序号。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Byte 1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xxx xxxx</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>实际字符</th>
+<th>在Unicode字库序号的十六进制</th>
+<th>在Unicode字库序号的二进制</th>
+<th>UTF-8编码后的二进制</th>
+<th>UTF-8编码后的十六进制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$</td>
+<td>0024</td>
+<td>010 0100</td>
+<td>0<strong>010 0100</strong></td>
+<td>24</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>如果一个字节以110开头，那么代表当前字符为双字节字符，占用2个字节的空间。110之后的所有部分（5个bit）加上后一个字节的除10外的部分（6个bit）代表在Unicode中的序号。且第二个字节以10开头。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Byte 1</th>
+<th>Byte 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xxx xxxx</td>
+<td>10xx xxxx</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>实际字符</th>
+<th>在Unicode字库序号的十六进制</th>
+<th>在Unicode字库序号的二进制</th>
+<th>UTF-8编码后的二进制</th>
+<th>UTF-8编码后的十六进制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>¢</td>
+<td>00A2</td>
+<td>000 1010 0010</td>
+<td>110<strong>0 0010</strong> 10<strong>10 0010</strong></td>
+<td>C2 A2</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>如果一个字节以1110开头，那么代表当前字符为三字节字符，占用2个字节的空间。1110之后的所有部分（5个bit）加上后两个字节的除10外的部分（12个bit）代表在Unicode中的序号。且第二、第三个字节以10开头。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Byte 1</th>
+<th>Byte 2</th>
+<th>Byte 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0xxx xxxx</td>
+<td>10xx xxxx</td>
+<td>10xx xxxx</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>实际字符</th>
+<th>在Unicode字库序号的十六进制</th>
+<th>在Unicode字库序号的二进制</th>
+<th>UTF-8编码后的二进制</th>
+<th>UTF-8编码后的十六进制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>€</td>
+<td>20AC</td>
+<td>0010 0000 1010 1100</td>
+<td>1110 <strong>0010</strong> 10<strong>00 0010</strong> 10<strong>10 1100</strong></td>
+<td>E2 82 AC</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>如果一个字节以10开头，那么代表当前字节为多字节字符的第二个字节。10之后的所有部分（6个bit）和之前的部分一同组成在Unicode中的序号。</p>
+</li>
+<li><p>3个字节的UTF-8十六进制编码一定是以<code>E</code>开头的。</p>
+</li>
+<li>2个字节的UTF-8十六进制编码一定是以<code>C</code>或<code>D</code>开头的。</li>
+<li>1个字节的UTF-8十六进制编码一定是以比<code>8</code>小的数字开头的。</li>
+</ul>
+<h2 id="乱码">乱码</h2><p>编码和解码时用了不同或者不兼容的字符集。</p>
+<h1 id="Reference">Reference</h1><ol>
+<li><a href="http://cenalulu.github.io/linux/character-encoding/" target="_blank" rel="external">十分钟搞清字符集和字符编码</a></li>
+<li><a href="http://cenalulu.github.io/python/python-encoding/" target="_blank" rel="external">关于Python的默认字符集</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html" target="_blank" rel="external">字符编码笔记：ASCII，Unicode和UTF-8</a></li>
+<li><a href="http://www.joelonsoftware.com/articles/Unicode.html" target="_blank" rel="external">The Absolute Minimum Every Software Developer Absolutely, Positively Must Know About Unicode and Character Sets (No Excuses!)</a></li>
+<li><a href="http://www.chi2ko.com/tool/CJK.htm" target="_blank" rel="external">字体编辑用中日韩汉字Unicode编码表</a></li>
+</ol>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/encoding/" rel="tag">#encoding</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/05/30/2015-2015-05-30-cpp-concurrency-in-action-3/" rel="prev">C++ Concurrency in Action (3) - Sharing Data Between Threads</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/05/25/2015-2015-05-25-summary-of-pattern-matching/" rel="next">Pattern Matching相关算法小结</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div id="disqus_thread">
+                <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Chao Mai" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Chao Mai</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">Chao Mai's Blog</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">categories</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-name">tags</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ChaoMai" target="_blank">GitHub</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1898970107" target="_blank">Weibo</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/chaomai" target="_blank">DouBan</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/chao__mai" target="_blank">Twitter</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符集"><span class="nav-number">1.</span> <span class="nav-text">字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符编码"><span class="nav-number">2.</span> <span class="nav-text">字符编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字库表"><span class="nav-number">2.1.</span> <span class="nav-text">字库表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编码字符集"><span class="nav-number">2.2.</span> <span class="nav-text">编码字符集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符编码-1"><span class="nav-number">2.3.</span> <span class="nav-text">字符编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UTF-8和Unicode的关系"><span class="nav-number">3.</span> <span class="nav-text">UTF-8和Unicode的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UTF-8编码简介"><span class="nav-number">4.</span> <span class="nav-text">UTF-8编码简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UTF-8的物理存储和Unicode序号的转换关系"><span class="nav-number">4.1.</span> <span class="nav-text">UTF-8的物理存储和Unicode序号的转换关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乱码"><span class="nav-number">5.</span> <span class="nav-text">乱码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number"></span> <span class="nav-text">Reference</span></a></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2014 - 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chao Mai</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'chaomaisblog';
+      var disqus_identifier = '2015/05/27/2015-2015-05-27-reproduce-character-encoding/';
+      var disqus_title = '转 - 字符集和字符编码';
+      var disqus_url = 'http://chaomai.github.io/2015/05/27/2015-2015-05-27-reproduce-character-encoding/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
