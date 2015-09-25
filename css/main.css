@@ -579,7 +579,7 @@ td {
   overflow: auto;
   font-size: 13px;
   color: #4d4d4c;
-  line-height: 1.2;
+  line-height: 1.6;
 }
 .post .highlight .gutter pre,
 .post .gist .gist-file .gist-data .line-numbers {
@@ -1055,7 +1055,7 @@ body {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #6fff71;
+  background: #eeffba;
 }
 .sidebar-nav {
   margin: 0;
@@ -2191,4 +2191,30 @@ ul li {
   max-width: 100%;
   width: auto;
   margin: 0;
+}
+.post-body p img {
+  margin: 0 auto;
+  cursor: pointer;
+  cursor: zoom-out;
+  cursor: -webkit-zoom-in;
+  display: block !important;
+}
+.post-body p .pic-title {
+  margin: 0 auto;
+  text-align: center;
+}
+.post-body p .pic-title span {
+  min-width: 20%;
+  min-height: 22px;
+  display: inline-block;
+  padding: 10px;
+  margin: 0 auto;
+  border-bottom: 1px solid #d9d9d9;
+  font-size: 18px;
+  color: #999;
+  font-style: italic;
+  line-height: 1.7;
+}
+.posts-expand .post-body .fancybox img {
+  margin: 0 auto;
 }
