@@ -32,7 +32,7 @@
 
 
 
-  <meta name="keywords" content="c++," />
+  <meta name="keywords" content="concurrency,reading," />
 
 
 
@@ -43,19 +43,17 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="缓冲区（bufer）一个存储区域，用于保存数据。IO设施通常将输入（或输出）数据保存在一个缓冲区中，读写缓冲区的动作与程序中的动作是无关的。我们可以显式地刷新输出缓冲，以便强制将缓冲区中的数据写入输出设备。默认情况下，读cin会刷新cout；程序非正常终止时也会刷新cout。
-cerr一个ostream对象，关联到标准错误，通常写入到与标准输出相同的设备。默认情况下，写到cerr的数据是不缓冲的。">
+<meta name="description" content="今年SOSP的文章，提出了Read-Log-Update，使用了Clock-based logging mechanism和Object-level write-log per thread，解决了RCU不能有多个writer等缺陷。其中的RLU Deferring减少了synchronize调用的次数，提高了cache hit。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++Primer - 第1章 开始">
-<meta property="og:url" content="http://chaomai.github.io/2014/02/06/2014-2014-02-06-cpp-primer-ch1/index.html">
+<meta property="og:title" content="Notes of Read-Log-Update a Lightweight Synchronization Mechanism for Concurrent Programming">
+<meta property="og:url" content="http://chaomai.github.io/2015/09/26/2015-2015-09-26-notes-of-rlu/index.html">
 <meta property="og:site_name" content="Building Things">
-<meta property="og:description" content="缓冲区（bufer）一个存储区域，用于保存数据。IO设施通常将输入（或输出）数据保存在一个缓冲区中，读写缓冲区的动作与程序中的动作是无关的。我们可以显式地刷新输出缓冲，以便强制将缓冲区中的数据写入输出设备。默认情况下，读cin会刷新cout；程序非正常终止时也会刷新cout。
-cerr一个ostream对象，关联到标准错误，通常写入到与标准输出相同的设备。默认情况下，写到cerr的数据是不缓冲的。">
-<meta property="og:updated_time" content="2015-07-14T14:28:08.000Z">
+<meta property="og:description" content="今年SOSP的文章，提出了Read-Log-Update，使用了Clock-based logging mechanism和Object-level write-log per thread，解决了RCU不能有多个writer等缺陷。其中的RLU Deferring减少了synchronize调用的次数，提高了cache hit。">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/rlu_readers%20and%20writer.png">
+<meta property="og:updated_time" content="2015-09-26T05:52:44.522Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++Primer - 第1章 开始">
-<meta name="twitter:description" content="缓冲区（bufer）一个存储区域，用于保存数据。IO设施通常将输入（或输出）数据保存在一个缓冲区中，读写缓冲区的动作与程序中的动作是无关的。我们可以显式地刷新输出缓冲，以便强制将缓冲区中的数据写入输出设备。默认情况下，读cin会刷新cout；程序非正常终止时也会刷新cout。
-cerr一个ostream对象，关联到标准错误，通常写入到与标准输出相同的设备。默认情况下，写到cerr的数据是不缓冲的。">
+<meta name="twitter:title" content="Notes of Read-Log-Update a Lightweight Synchronization Mechanism for Concurrent Programming">
+<meta name="twitter:description" content="今年SOSP的文章，提出了Read-Log-Update，使用了Clock-based logging mechanism和Object-level write-log per thread，解决了RCU不能有多个writer等缺陷。其中的RLU Deferring减少了synchronize调用的次数，提高了cache hit。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -65,7 +63,7 @@ cerr一个ostream对象，关联到标准错误，通常写入到与标准输出
   };
 </script>
 
-  <title> C++Primer - 第1章 开始 | Building Things </title>
+  <title> Notes of Read-Log-Update a Lightweight Synchronization Mechanism for Concurrent Programming | Building Things </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -164,7 +162,7 @@ cerr一个ostream对象，关联到标准错误，通常写入到与标准输出
           
           
             
-              C++Primer - 第1章 开始
+              Notes of Read-Log-Update a Lightweight Synchronization Mechanism for Concurrent Programming
             
           
         </h1>
@@ -173,8 +171,8 @@ cerr一个ostream对象，关联到标准错误，通常写入到与标准输出
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2014-02-06T23:06:00+08:00" content="2014-02-06">
-            2014-02-06
+          <time itemprop="dateCreated" datetime="2015-09-26T13:34:55+08:00" content="2015-09-26">
+            2015-09-26
           </time>
         </span>
 
@@ -190,6 +188,18 @@ cerr一个ostream对象，关联到标准错误，通常写入到与标准输出
 
               
               
+                , 
+              
+
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/programming/data-structures/" itemprop="url" rel="index">
+                  <span itemprop="name">data structures</span>
+                </a>
+              </span>
+
+              
+              
 
             
           </span>
@@ -199,8 +209,8 @@ cerr一个ostream对象，关联到标准错误，通常写入到与标准输出
           
             <span class="post-comments-count">
             &nbsp; | &nbsp;
-            <a href="/2014/02/06/2014-2014-02-06-cpp-primer-ch1/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/02/06/2014-2014-02-06-cpp-primer-ch1/" itemprop="commentsCount"></span>
+            <a href="/2015/09/26/2015-2015-09-26-notes-of-rlu/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/26/2015-2015-09-26-notes-of-rlu/" itemprop="commentsCount"></span>
             </a>
           </span>
           
@@ -214,18 +224,69 @@ cerr一个ostream对象，关联到标准错误，通常写入到与标准输出
       
 
       
-        <span itemprop="articleBody"><h1 id="缓冲区（bufer）">缓冲区（bufer）</h1><p>一个存储区域，用于保存数据。IO设施通常将输入（或输出）数据保存在一个缓冲区中，读写缓冲区的动作与程序中的动作是无关的。我们可以显式地刷新输出缓冲，以便强制将缓冲区中的数据写入输出设备。默认情况下，读cin会刷新cout；程序非正常终止时也会刷新cout。</p>
-<h1 id="cerr">cerr</h1><p>一个ostream对象，关联到标准错误，通常写入到与标准输出相同的设备。默认情况下，写到cerr的数据是不缓冲的。cerr通常用于输出错误信息或其他不属于程序正常逻辑的输出内容。</p>
-<h1 id="类（class）">类（class）</h1><p>一种定义自己的数据结构及其相关操作的机制。</p>
-<h1 id="类类型（class_type）">类类型（class type）</h1><p>类定义的类型。类名即为类型名。</p>
-<h1 id="clog">clog</h1><p>一个ostream对象，关联到标准错误。默认情况下，写到clog的数据是被缓冲的。clog通常用于报告称程序的执行信息，存入一个日志文件中。</p>
-<p>未初始化的变量（uninitialized variable）</p>
-<p>未赋予初值的变量。类类型的变量如果未指定初值，则按类定义指定的方式进行初始化。定义在函数内部的内置类型变量默认是不初始化的，除非有显式的初始化语句。</p>
-<h1 id="变量（variable）">变量（variable）</h1><p>具名对象。</p>
-<h1 id="()运算符（()opeartor）">()运算符（()opeartor）</h1><p>调用运算符。跟随在函数名字之后的一对括号“()”，起到调用函数的效果，传递给函数的实参放置在括号内。</p>
-<h1 id="-运算符（-operator）">.运算符（.operator）</h1><p>点运算符。左侧运算符必须是一个类类型对象，右侧运算对象必须是此对象的一个成员的名字。运算结果即为该对象的这个成员。</p>
-<h1 id="::运算符（::operator）">::运算符（::operator）</h1><p>作用域运算符。其用处之一是访问命名空间中的名字。</p>
-<h1 id="&lt;&lt;和&gt;&gt;运算符（&lt;&gt;operator）">&lt;&lt;和&gt;&gt;运算符（&lt;<operator,>&gt;operator）</operator,></h1><p>输出和输入运算符。它们的计算结果均是其左侧的运算对象。</p>
+        <span itemprop="articleBody"><h1 id="Introduction">Introduction</h1><p>RCU, this barrier-based mechanism, allows for simple epoch-based reclamation of the old copies, and the mechanism as a whole eliminates many of the atomic read-modify-write instructions, memory barriers, and cache misses that are so expensive on modern multicore systems.</p>
+<h2 id="About_RLU">About RLU</h2><ul>
+<li>Novel extension of RCU framework that support read-only traverals concurrently with multiple updates.</li>
+<li>In a semi-automated way.</li>
+<li>Removes from the programmer the burder of handcrafting the concurrent copy management using only single pointer manipulations.</li>
+<li>Can be API-compatible with RCU.</li>
+</ul>
+<h2 id="About_Implementation_of_RLU">About Implementation of RLU</h2><ul>
+<li>Clock-based logging mechanism.</li>
+<li>Object-level write-log per thread.</li>
+</ul>
+<h1 id="Algorithms">Algorithms</h1><h2 id="Idea">Idea</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// For all operations:</span></span><br><span class="line"></span><br><span class="line">   +--------------+</span><br><span class="line">   |all operations|</span><br><span class="line">   +------+-------+</span><br><span class="line">          |</span><br><span class="line">          |</span><br><span class="line">+---------v-----------+</span><br><span class="line">|read the global clock|</span><br><span class="line">+---------+-----------+</span><br><span class="line">          |</span><br><span class="line">          |</span><br><span class="line">       +--v--+</span><br><span class="line">       |start|</span><br><span class="line">       +-----+</span><br><span class="line"></span><br><span class="line"><span class="comment">// For writer:</span></span><br><span class="line">                              +------+</span><br><span class="line">              +--+            |writer|</span><br><span class="line">              |               +---+--+</span><br><span class="line">              |                   |</span><br><span class="line">              |                   |</span><br><span class="line">              |     +-------------v-------------------------------+</span><br><span class="line">              |     | copy the object into a its own              |</span><br><span class="line">modification&lt;-+     |thread wirte-<span class="built_in">log</span> and lock the original object|</span><br><span class="line">              |     +-------------+-------------------------------+</span><br><span class="line">              |                   |</span><br><span class="line">              |                   |</span><br><span class="line">              |      +------------v-------------+</span><br><span class="line">              |      |manipulate the object copy|</span><br><span class="line">              +---+  +--------------+-----------+</span><br><span class="line">                                    |</span><br><span class="line">                                    |</span><br><span class="line">              +---+    +------------v------------------------------+</span><br><span class="line">              |        |increments the write clock and global clock|</span><br><span class="line">              |        +------------+------------------------------+</span><br><span class="line">              |                     |</span><br><span class="line">              |                     |</span><br><span class="line">              |      +--------------v----------------+</span><br><span class="line">              |      |splits operations into two sets|</span><br><span class="line">              |      +--------------+----------------+</span><br><span class="line">              |                     |</span><br><span class="line">      commit&lt;-+                     |</span><br><span class="line">              |     +---------------v-----------------+</span><br><span class="line">              |     |wait <span class="keyword">for</span> old operations to finish|</span><br><span class="line">              |     +---------------+-----------------+</span><br><span class="line">              |                     |</span><br><span class="line">              |                     |</span><br><span class="line">              |     +---------------v--------------------+</span><br><span class="line">              |     |   write back the <span class="keyword">new</span> objects       |</span><br><span class="line">              |     |from the writer-<span class="built_in">log</span> into the memory,|</span><br><span class="line">              |     |  overwriting the old objects,      |</span><br><span class="line">              |     |      release the locks             |</span><br><span class="line">              +---+ +------------------------------------+</span><br></pre></td></tr></table></figure>
+<p>The writer’s modifications are:</p>
+<ul>
+<li>hidden from concurrent reads,</li>
+<li>avoid conflicts with concurrent writes.</li>
+</ul>
+<p>In the following figure, <strong>the order of updating new value</strong>, 23, at write-clock and global-clock is important. Because all new object copies of the write-log become visible at once to all concurrent RLU protected section <strong>after the increment of global clock</strong>.</p>
+<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/rlu_readers%20and%20writer.png" alt=""></p>
+<p>Many of the lock mentioned is not really calling <code>pthread_mutex_lock()</code> but just performing a update at a specific filed in data.</p>
+<h2 id="Synchronizing_Write_Operations">Synchronizing Write Operations</h2><p>Two approaches:</p>
+<ul>
+<li>Execute writers serially.</li>
+<li>Fine-grained locks.</li>
+</ul>
+<h3 id="Execute_Writers_Serially">Execute Writers Serially</h3><p>Using a global lock for each writer is simplicity of the code and the concurrency that does exist between read-only and write operations.</p>
+<p>But the drawback is a lack of scalability.</p>
+<h3 id="Fine-grained_Locks">Fine-grained Locks</h3><p>Each object that a writer modifies is logged and locked (as shown in the former figure) by the RLU mechanism.</p>
+<h2 id="Fine-grained_Locking_Using_RLU">Fine-grained Locking Using RLU</h2><p>RLU locks can be used as a fine-grained locking mechanism.</p>
+<p>For standard lock, it is necessary to execute post-lock customized verifications to ensure that the state of the object is still the same as it was before locking. This action is unnecessary for RLU locks.</p>
+<h2 id="Data_Structures">Data Structures</h2><p>Global:</p>
+<ul>
+<li>a global clock</li>
+<li>a global array of threads</li>
+</ul>
+<p>Thread:</p>
+<ul>
+<li>two write-logs: new object copies<ul>
+<li>header:<ul>
+<li>a thread indentifier</li>
+<li>a pointer: point to the actual object</li>
+<li>the object size</li>
+<li>a special pointer value that indicates this is a copy (constant)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>a run counter: the thread is active or not</li>
+<li>a local clock: stealing mechanism</li>
+<li>write clock for each thread: stealing mechanism<ul>
+<li>write clock of a thread is initially $\infty$ and write clock is updated first (than global clock), so stealing from a thread is only possible when is updates the write clock during the commit</li>
+</ul>
+</li>
+</ul>
+<p>Object header:</p>
+<ul>
+<li>a pointer: points to the copy of this object in a write-log</li>
+</ul>
+<p><strong>Note:</strong> The actually code is the way of much more complex than previously mentioned. But these code are also nice course of programming in C.</p>
+<h1 id="RLU_Deferring">RLU Deferring</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">+----------------------------------+</span><br><span class="line">|writer saves the current write-<span class="built_in">log</span>|</span><br><span class="line">|and generates <span class="keyword">new</span> <span class="built_in">log</span> <span class="keyword">for</span> the next|</span><br><span class="line">|writer                            |</span><br><span class="line">+---------+------------------------+</span><br><span class="line">          |</span><br><span class="line">          | <span class="keyword">if</span> a writer tries to lock an object</span><br><span class="line">          | that is already locked</span><br><span class="line">          |</span><br><span class="line">+---------v---------------------------+</span><br><span class="line">|writer sends a <span class="string">"sync request"</span> to     |</span><br><span class="line">|the conflicting thread to force it to|</span><br><span class="line">|release it locks                     |</span><br><span class="line">|                                     |</span><br><span class="line">|(global-clock++ -&gt; rlu sync -&gt;       |</span><br><span class="line">| write back -&gt; unlock                |</span><br><span class="line">+-------------------------------------+</span><br></pre></td></tr></table></figure>
+<h1 id="References">References</h1><ol>
+<li>Read-Log-Update: A Lightweight Synchronization Mechanism for Concurrent Programming, Alexander Matveev, Nir Shavit, Pascal Felber, Patrick Marlier</li>
+</ol>
 </span>
       
     </div>
@@ -234,7 +295,9 @@ cerr一个ostream对象，关联到标准错误，通常写入到与标准输出
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag">#c++</a>
+            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
+          
+            <a href="/tags/reading/" rel="tag">#reading</a>
           
         </div>
       
@@ -243,11 +306,11 @@ cerr一个ostream对象，关联到标准错误，通常写入到与标准输出
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/" rel="prev">入手KBC Poker 2</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/25/2015-2015-09-25-rcu/" rel="next">RCU</a>
             
           </div>
         </div>
@@ -386,7 +449,7 @@ cerr一个ostream对象，关联到标准错误，通常写入到与标准输出
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#缓冲区（bufer）"><span class="nav-number">1.</span> <span class="nav-text">缓冲区（bufer）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cerr"><span class="nav-number">2.</span> <span class="nav-text">cerr</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类（class）"><span class="nav-number">3.</span> <span class="nav-text">类（class）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类类型（class_type）"><span class="nav-number">4.</span> <span class="nav-text">类类型（class type）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#clog"><span class="nav-number">5.</span> <span class="nav-text">clog</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量（variable）"><span class="nav-number">6.</span> <span class="nav-text">变量（variable）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#()运算符（()opeartor）"><span class="nav-number">7.</span> <span class="nav-text">()运算符（()opeartor）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-运算符（-operator）"><span class="nav-number">8.</span> <span class="nav-text">.运算符（.operator）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#::运算符（::operator）"><span class="nav-number">9.</span> <span class="nav-text">::运算符（::operator）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#<<和>>运算符（<>operator）"><span class="nav-number">10.</span> <span class="nav-text"><<和>>运算符（<>operator）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#About_RLU"><span class="nav-number">1.1.</span> <span class="nav-text">About RLU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#About_Implementation_of_RLU"><span class="nav-number">1.2.</span> <span class="nav-text">About Implementation of RLU</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Algorithms"><span class="nav-number">2.</span> <span class="nav-text">Algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Idea"><span class="nav-number">2.1.</span> <span class="nav-text">Idea</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Synchronizing_Write_Operations"><span class="nav-number">2.2.</span> <span class="nav-text">Synchronizing Write Operations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Execute_Writers_Serially"><span class="nav-number">2.2.1.</span> <span class="nav-text">Execute Writers Serially</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fine-grained_Locks"><span class="nav-number">2.2.2.</span> <span class="nav-text">Fine-grained Locks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fine-grained_Locking_Using_RLU"><span class="nav-number">2.3.</span> <span class="nav-text">Fine-grained Locking Using RLU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data_Structures"><span class="nav-number">2.4.</span> <span class="nav-text">Data Structures</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RLU_Deferring"><span class="nav-number">3.</span> <span class="nav-text">RLU Deferring</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">4.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
@@ -440,9 +503,9 @@ cerr一个ostream对象，关联到标准错误，通常写入到与标准输出
 
     <script type="text/javascript">
       var disqus_shortname = 'chaomaisblog';
-      var disqus_identifier = '2014/02/06/2014-2014-02-06-cpp-primer-ch1/';
-      var disqus_title = 'C++Primer - 第1章 开始';
-      var disqus_url = 'http://chaomai.github.io/2014/02/06/2014-2014-02-06-cpp-primer-ch1/';
+      var disqus_identifier = '2015/09/26/2015-2015-09-26-notes-of-rlu/';
+      var disqus_title = 'Notes of Read-Log-Update a Lightweight Synchronization Mechanism for Concurrent Programming';
+      var disqus_url = 'http://chaomai.github.io/2015/09/26/2015-2015-09-26-notes-of-rlu/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');

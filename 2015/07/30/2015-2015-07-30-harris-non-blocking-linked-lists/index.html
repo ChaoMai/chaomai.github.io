@@ -54,7 +54,7 @@
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/harris_insert_and_delete.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/harris_logically_delete.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/harris_physically_delete.png">
-<meta property="og:updated_time" content="2015-07-30T18:32:02.228Z">
+<meta property="og:updated_time" content="2015-09-26T05:47:48.107Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Harris' Non-Blocking Linked-Lists">
 <meta name="twitter:description" content="Harris的这篇论文提出了一种新的non-blocking linked-list，不同于Valois使用auxiliary node，Harris在操作的时候进行了mark，解决了插入丢失的问题。论文中有详细的伪代码，清晰的描述了实现的细节。但要注意的是，实际实现必然涉及到内存回收，没有自动内存回收机制的语言会有点麻烦。">
@@ -238,20 +238,20 @@
 <li>compare-and-swap based</li>
 </ul>
 <h1 id="仅使用一个cas的缺陷">仅使用一个cas的缺陷</h1><ul>
-<li><p>insert<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_single_insert.png" alt="Alt text"></p>
+<li><p>insert<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_single_insert.png" alt=""></p>
 </li>
-<li><p>delete<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_single_delete.png" alt="Alt text"></p>
+<li><p>delete<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_single_delete.png" alt=""></p>
 </li>
 </ul>
 <p>对于只有一个insert或者一个delete的情况，没有问题会出现。</p>
 <ul>
-<li>insert and delete<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_insert_and_delete.png" alt="Alt text"></li>
+<li>insert and delete<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_insert_and_delete.png" alt=""></li>
 </ul>
 <p>但是如果一个insert和一个delete同时进行，问题就会出现。删除30的时候，一个cas无法保证，也不能避免10和30之间的修改。</p>
 <h1 id="解决方法：用两个cas">解决方法：用两个cas</h1><h2 id="基本思想">基本思想</h2><ul>
-<li><p>stage 1<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_logically_delete.png" alt="Alt text"><br>  用一个cas mark将要被删除结点的next field（logically deleted）；</p>
+<li><p>stage 1<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_logically_delete.png" alt=""><br>  用一个cas mark将要被删除结点的next field（logically deleted）；</p>
 </li>
-<li><p>stage 2<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_physically_delete.png" alt="Alt text"><br>  另一个cas来进行删除结点（physically deleted）。</p>
+<li><p>stage 2<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_physically_delete.png" alt=""><br>  另一个cas来进行删除结点（physically deleted）。</p>
 </li>
 </ul>
 <p>stage 1结束以后，list的结构保持不变，mark以后的结点，避免了新节点insert到该结点的后面。</p>
@@ -394,7 +394,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

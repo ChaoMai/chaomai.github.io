@@ -46,12 +46,12 @@
 <meta name="description" content="主要研究了HTM and lock-free indexing的相互影响。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Notes of to Lock, Swap, or Elide: On the Interplay of Hardware Transactional Memory and Lock Free Indexing">
-<meta property="og:url" content="http://chaomai.github.io/2015/09/05/2015-2015-09-05-notes-of-to-lock-wwap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/index.html">
+<meta property="og:url" content="http://chaomai.github.io/2015/09/05/2015-2015-09-05-notes-of-to-lock-swap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/index.html">
 <meta property="og:site_name" content="Building Things">
 <meta property="og:description" content="主要研究了HTM and lock-free indexing的相互影响。">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/stm_lock%20coupling.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/stm_compare.png">
-<meta property="og:updated_time" content="2015-09-05T04:34:45.034Z">
+<meta property="og:updated_time" content="2015-09-26T05:50:45.203Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Notes of to Lock, Swap, or Elide: On the Interplay of Hardware Transactional Memory and Lock Free Indexing">
 <meta name="twitter:description" content="主要研究了HTM and lock-free indexing的相互影响。">
@@ -210,8 +210,8 @@
           
             <span class="post-comments-count">
             &nbsp; | &nbsp;
-            <a href="/2015/09/05/2015-2015-09-05-notes-of-to-lock-wwap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/05/2015-2015-09-05-notes-of-to-lock-wwap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/" itemprop="commentsCount"></span>
+            <a href="/2015/09/05/2015-2015-09-05-notes-of-to-lock-swap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/05/2015-2015-09-05-notes-of-to-lock-swap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/" itemprop="commentsCount"></span>
             </a>
           </span>
           
@@ -314,9 +314,9 @@
 <p>The optimal number of transactional attempts depends on workloads and varies highly. chooses the number of transactional attempts dynamically depending on the workload.</p>
 <h2 id="Lock-coupling">Lock-coupling</h2><p>lock-coupling is one of the most widely used approaches to achieve efficient fine-grained locking on B-Trees.</p>
 <p>In lock-coupling a pair of locks are held as a worker traverses pages: one on a “source” page and another on a “target” page.</p>
-<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/stm_lock%20coupling.png" alt="Alt text"></p>
+<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/stm_lock%20coupling.png" alt=""></p>
 <p>Because of restrictive support of lock-coupling in Haswell’s HTM interface, it is not possible on Haswell’s CPU.</p>
-<h1 id="A_study_of_fundamental_differences_between_HTM-based_and_lock-free_index_designs-1">A study of fundamental differences between HTM-based and lock-free index designs</h1><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/stm_compare.png" alt="Alt text"></p>
+<h1 id="A_study_of_fundamental_differences_between_HTM-based_and_lock-free_index_designs-1">A study of fundamental differences between HTM-based and lock-free index designs</h1><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/stm_compare.png" alt=""></p>
 <h2 id="Experiment_1_-_Impact_of_concurrent_writers_on_readers">Experiment 1 - Impact of concurrent writers on readers</h2><h3 id="Results-3">Results</h3><p>for high contention workloads the reader throughput that the cpp-btree can sustain begins to drop.</p>
 <h2 id="The_Overheads_of_LockFreedom">The Overheads of LockFreedom</h2><ul>
 <li><p>a garbage-collection mechanism for memory safety</p>
@@ -444,7 +444,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -571,9 +571,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'chaomaisblog';
-      var disqus_identifier = '2015/09/05/2015-2015-09-05-notes-of-to-lock-wwap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/';
+      var disqus_identifier = '2015/09/05/2015-2015-09-05-notes-of-to-lock-swap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/';
       var disqus_title = 'Notes of to Lock, Swap, or Elide: On the Interplay of Hardware Transactional Memory and Lock Free Indexing';
-      var disqus_url = 'http://chaomai.github.io/2015/09/05/2015-2015-09-05-notes-of-to-lock-wwap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/';
+      var disqus_url = 'http://chaomai.github.io/2015/09/05/2015-2015-09-05-notes-of-to-lock-swap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');

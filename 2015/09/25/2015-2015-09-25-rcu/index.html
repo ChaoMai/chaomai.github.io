@@ -51,7 +51,7 @@
 <meta property="og:description" content="RCU is a synchronization mechanism, which is widely used in the Linux kernel.">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/rcu_waiting.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/rcu_insert.png">
-<meta property="og:updated_time" content="2015-09-25T11:26:22.006Z">
+<meta property="og:updated_time" content="2015-09-26T05:47:18.916Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RCU">
 <meta name="twitter:description" content="RCU is a synchronization mechanism, which is widely used in the Linux kernel.">
@@ -293,7 +293,7 @@
 </table>
 <p>The <code>list_replace_rcu()</code>, <code>list_del_rcu()</code>, <code>hlist_replace_rcu()</code>, and <code>hlist_del_rcu()</code> introduce a new problem. When is it safe to free up the data element that was replaced or removed?</p>
 <h2 id="Wait_For_Pre-Existing_RCU_Readers_to_Complete_(deletion)">Wait For Pre-Existing RCU Readers to Complete (deletion)</h2><p>RCU is a way of waiting for lots of (for example, 20,000) different things to finish without having to explicitly track each and every one of them.</p>
-<h3 id="About_Waiting">About Waiting</h3><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/rcu_waiting.png" alt="Alt text"></p>
+<h3 id="About_Waiting">About Waiting</h3><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/rcu_waiting.png" alt=""></p>
 <p>The things waited on RCU read-side critical sections, which can be <strong>nested, and may contain pretty much any code, as long as that code does not explicitly block or sleep </strong>(<strong>SRCU</strong> is a special case).</p>
 <p>When readers are not inside a read-side critical section, they are in a <strong>quiescent state</strong>.</p>
 <p>A time period during which all such pre-existing readers complete is called a <strong>grace period</strong>. (or a period of time during which every<br>thread goes through at least one quiescent state is called a<br>grace period.)</p>
@@ -309,7 +309,7 @@
 <h2 id="Maintain_Multiple_Versions_of_Recently_Updated_Objects">Maintain Multiple Versions of Recently Updated Objects</h2><p>The multiple versions of recently updated objects allow synchronization-free readers.</p>
 <p>While the reader remains in its RCU read-side critical section, the data referenced must remain intact. (The readers are not permitted to maintain references to element after exiting from their RCU read-side critical sections.)</p>
 <p>The multiple versions mentioned here doesn’t mean the RCU uses a version number. <strong>Versions exist logically</strong>. Because readers do not synchronize directly with updaters, readers might run concurrently with this entire update (insert, delete, or replacement) process. For example, some readers <em>might reference to a old element and see the old version of the list</em>, while other readers reference to a up-to-date element at same location.</p>
-<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/rcu_insert.png" alt="Alt text"><br>(The red border means that readers might be holding references to them.)</p>
+<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/rcu_insert.png" alt=""><br>(The red border means that readers might be holding references to them.)</p>
 <p>After the <code>synchronize_rcu()</code> returns, <em>a grace period will have elapsed</em>, and so all reads that started before the <code>list_replace_rcu()</code> will have completed. No readers will hold the reference to the old element. From the readers’ point of view, there is a single version of list.</p>
 <h1 id="Limitation">Limitation</h1><h2 id="Single_Updater">Single Updater</h2><p>RCU permit concurrency between a single updater and multiple readers. <em>(I think its should caused by <code>synchronize_rcu()</code>. I am not pretty sure for now because of being unaware of detailed design and implementation of RCU.)</em></p>
 <p>So RCU only allow the existence of two versions of the list. If we want to permit more than two version of the list, one way is using lock.</p>
@@ -371,6 +371,8 @@
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/26/2015-2015-09-26-notes-of-rlu/" rel="prev">Notes of Read-Log-Update a Lightweight Synchronization Mechanism for Concurrent Programming</a>
             
           </div>
 
@@ -442,7 +444,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
