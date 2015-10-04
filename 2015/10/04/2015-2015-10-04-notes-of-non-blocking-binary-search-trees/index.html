@@ -32,7 +32,7 @@
 
 
 
-  <meta name="keywords" content="reading," />
+  <meta name="keywords" content="concurrency,reading," />
 
 
 
@@ -43,16 +43,20 @@
   <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="读了加谬的《局外人》，这个算是，不是读后感的读后感吧。">
+<meta name="description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="读加缪《局外人》">
-<meta property="og:url" content="http://chaomai.github.io/2015/03/21/2015-2015-03-21-the-stranger/index.html">
+<meta property="og:title" content="Notes of Non-Blocking Binary Search Trees">
+<meta property="og:url" content="http://chaomai.github.io/2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/index.html">
 <meta property="og:site_name" content="Building Things">
-<meta property="og:description" content="读了加谬的《局外人》，这个算是，不是读后感的读后感吧。">
-<meta property="og:updated_time" content="2015-07-14T14:28:08.000Z">
+<meta property="og:description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目。">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_insert.png">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_delete.png">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_delete2.png">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_state.PNG">
+<meta property="og:updated_time" content="2015-10-04T10:48:26.739Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="读加缪《局外人》">
-<meta name="twitter:description" content="读了加谬的《局外人》，这个算是，不是读后感的读后感吧。">
+<meta name="twitter:title" content="Notes of Non-Blocking Binary Search Trees">
+<meta name="twitter:description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -62,7 +66,7 @@
   };
 </script>
 
-  <title> 读加缪《局外人》 | Building Things </title>
+  <title> Notes of Non-Blocking Binary Search Trees | Building Things </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -161,7 +165,7 @@
           
           
             
-              读加缪《局外人》
+              Notes of Non-Blocking Binary Search Trees
             
           
         </h1>
@@ -170,8 +174,8 @@
       <div class="post-meta">
         <span class="post-time">
           Posted on
-          <time itemprop="dateCreated" datetime="2015-03-21T23:08:50+08:00" content="2015-03-21">
-            2015-03-21
+          <time itemprop="dateCreated" datetime="2015-10-04T17:21:49+08:00" content="2015-10-04">
+            2015-10-04
           </time>
         </span>
 
@@ -180,8 +184,20 @@
             &nbsp; | &nbsp; In
             
               <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/thought/" itemprop="url" rel="index">
-                  <span itemprop="name">thought</span>
+                <a href="/categories/programming/" itemprop="url" rel="index">
+                  <span itemprop="name">programming</span>
+                </a>
+              </span>
+
+              
+              
+                , 
+              
+
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <a href="/categories/programming/data-structures/" itemprop="url" rel="index">
+                  <span itemprop="name">data structures</span>
                 </a>
               </span>
 
@@ -196,8 +212,8 @@
           
             <span class="post-comments-count">
             &nbsp; | &nbsp;
-            <a href="/2015/03/21/2015-2015-03-21-the-stranger/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/21/2015-2015-03-21-the-stranger/" itemprop="commentsCount"></span>
+            <a href="/2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/#comments" itemprop="discussionUrl">
+              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/" itemprop="commentsCount"></span>
             </a>
           </span>
           
@@ -211,20 +227,65 @@
       
 
       
-        <span itemprop="articleBody"><p>存在主义，这是在读这本书前，我从书评里扫到的第一个，也是印象最深的词。隐约觉得《局外人》会表达某种深奥的、晦涩的东西。接着我便怀着竭尽自己所能去理解的心态开始了阅读。</p>
-<p>“今天，妈妈死了。也许是在昨天，我搞不清。”简短的四句话便铺垫了书中默尔索冷漠的态度。默尔索是一个冷淡孤僻、不懂得人情世故、交友不慎、无追求不上进的人。在他看来，身边发生的一切，他都表现得和他没什么关系、很随意的样子，无论是亲情、爱情、友情，亦或是事业。我好几次都被他不正常的冷静逗笑。结尾默尔索因为杀了人，被判处死刑。审判的时候，大家议论的更多的是他母亲去世的那天，他的表现，而不是杀人这个事情本身。最后默尔索拒绝上述、忏悔，静静的等待死亡。</p>
+        <span itemprop="articleBody"><h1 id="specification">specification</h1><ul>
+<li><p>no duplicated key</p>
+<blockquote>
+<p>if duplicated key is inserted, then false is returned.</p>
+</blockquote>
+</li>
+<li>deleting non-existent key leads to return false.</li>
+<li><p>leaf-oriented BST</p>
+<blockquote>
 <ul>
-<li>从小说叙述的事情来看，默尔索的死，其实是因为拒绝了循规蹈矩、大家都过着的、正常人的生活，他挑战了整个社会。作为一个异类，社会不允许这样的人继续存在。</li>
+<li>all keys currently in the dictionary are <strong>stored in the leaves of the tree.</strong></li>
+<li>Internal nodes of the tree are used to direct a Find operation along the path to the correct leaf.</li>
+<li>The keys stored in internal nodes may or may<br>not be in the dictionary.</li>
 </ul>
-<blockquote><p>“莫尔索的死，不是因为杀了人，而是挑战了整个社会的伪善矫情，挑战了谎言堆砌的现代文明，戳穿了皇帝的新衣。这个什么都不爱什么都不在乎的人，在这一点上是激情澎湃的。总是这样，小说中的人物代替我们说出真相，代替我们勇敢。”</p>
-<footer><strong>不吭声</strong><cite><a href="http://book.douban.com/review/1396585/" target="_blank" rel="external">读加缪杂记</a></cite></footer></blockquote>
+</blockquote>
+</li>
+</ul>
+<h1 id="features">features</h1><ul>
+<li>non-blocking</li>
+<li><p>linearizable</p>
+<blockquote>
+<p>for everyexecution, one can assign a linearization point to each completed operation and some of the uncompleted operations so that the linearization point of each operation occurs after the operation starts and before it ends, and the results of these ooperations are the same <strong>as if they had been performed sequentially, in the order of their linearization points.</strong></p>
+</blockquote>
+</li>
+</ul>
+<h1 id="基本思想">基本思想</h1><p>类似Harris’ Linked List里面的做法，这里是mark the parent of the leaf before splicing that parent out of the tree。一旦被标记，那么其指向子结点的指针将不能被改变。</p>
+<h2 id="问题">问题</h2><p>要mark的指针是存在两个不同的word里面的，不能够用一个cas来同时mark。</p>
+<p>文中Figure 3处的例子，两个concurrent operation同时看到了BST以后，接下来的操作是，<em>基于各自看到的这个相同的BST来进行的</em>，它们彼此并不知道对方进行了什么操作。</p>
+<h2 id="解决方法">解决方法</h2><p>using a separate state ﬁeld of the node to mark or flag.</p>
 <ul>
-<li>在看了wiki上关于存在主义的词条以后，对存在主义的定义了解了，但是很难说出小说中含有的存在主义的东西。</li>
+<li>mark: node marked is unchangeable。</li>
+<li>flag: indicate that an update is trying to change a child pointer of the node.</li>
 </ul>
-<blockquote><p>“存在主义，是一个哲学的非理性主义思潮，它认为人存在的意义是无法经由理性思考而得到答案的，以强调个人、独立自主和主观经验。”</p>
-<p>““存在先于本质”（法语：l’existence précède l’essence）。他的意思是说，除了人的生存之外没有天经地义的道德或灵魂。道德和灵魂都是人在生存中创造出来的。人没有义务遵守某个道德标准或宗教信仰，却有选择的自由。要评价一个人，要评价他的所作所为，而不是评价他是个什么人物，因为一个人是由他的行动来定义的。”</p>
-<footer><strong>存在主义</strong><cite><a href="http://zh.wikipedia.org/zh-cn/%E5%AD%98%E5%9C%A8%E4%B8%BB%E4%B9%89" target="_blank" rel="external">Wiki</a></cite></footer></blockquote>
-<p>在小说的末尾，默尔索觉得神甫连自己是否活着都没法把握，但是他对自己很有把握，对他所有的一切都有把握。接着，默尔索又说了，注定只有一种命运选择了他，那么其他人的生活和命运对他又有什么重要？</p>
+<p>mark和flag类似于加锁。</p>
+<h1 id="insert和delete">insert和delete</h1><h2 id="insert">insert</h2><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_insert.png" alt=""></p>
+<p>Insert (C):</p>
+<ol>
+<li>flag node D’s parent, node B,</li>
+<li>change the appropriate child pointer of node B,</li>
+<li>unflag node B.</li>
+</ol>
+<h2 id="delete">delete</h2><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_delete.png" alt=""></p>
+<p>Delete (C):</p>
+<ol>
+<li>flag C’s grandparent, node B,</li>
+<li>mark C’s parent, node D,</li>
+<li>change the appropriate child pointer of B,</li>
+<li>unflag node B.</li>
+</ol>
+<p>insert在完成第一步以后，在insert进行后续操作时，其他线程将不能够block insert。delete类似的，在完成第一二步以后也是。</p>
+<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_delete2.png" alt=""></p>
+<p>但是delete在完成第一步以后，第二步mark有可能失败，比如insert把将要删除的node换为新的三个node。in which case the ﬂag is no longer on the node whose child pointer must be changed to accomplish the deletion.</p>
+<p>如果mark失败，delete会remove flag，重新开始。</p>
+<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_state.PNG" alt=""></p>
+<h2 id="helping_mechanism">helping mechanism</h2><p>类似Barnes的方法，将线程拥有锁换成操作拥有锁。一个操作在处理tree的同时，还保存了它在holding锁的时候要进行的操作，其他线程遇到lock，就帮助它完成，使得lock最终release。</p>
+<p>为了避免helping mechanism带来的性能下降（多个线程会尝试进行同一个操作），这里用了保守的策略： a process P helps another process’s operation only if the other operation is preventing P’s own progress.</p>
+<h1 id="References">References</h1><ol>
+<li>Non-blocking Binary Search Trees, Faith Ellen, Panagiota Fatourou, Eric Ruppert, Franck van Breugel</li>
+</ol>
 </span>
       
     </div>
@@ -232,6 +293,8 @@
     <footer class="post-footer">
       
         <div class="post-tags">
+          
+            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
           
             <a href="/tags/reading/" rel="tag">#reading</a>
           
@@ -242,13 +305,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/" rel="prev">编译时，-Pthread and -Lpthread的区别</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/03/10/2015-2015-03-10-analysis-reference-in-cpp-from-the-perspective-of-assembly/" rel="next">从汇编的角度分析C++引用</a>
+              <a href="/2015/09/26/2015-2015-09-26-notes-of-rlu/" rel="next">Notes of Read-Log-Update a Lightweight Synchronization Mechanism for Concurrent Programming</a>
             
           </div>
         </div>
@@ -387,7 +448,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">This post does not have a Table Of Contents</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#specification"><span class="nav-number">1.</span> <span class="nav-text">specification</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#features"><span class="nav-number">2.</span> <span class="nav-text">features</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本思想"><span class="nav-number">3.</span> <span class="nav-text">基本思想</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">3.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法"><span class="nav-number">3.2.</span> <span class="nav-text">解决方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#insert和delete"><span class="nav-number">4.</span> <span class="nav-text">insert和delete</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#insert"><span class="nav-number">4.1.</span> <span class="nav-text">insert</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delete"><span class="nav-number">4.2.</span> <span class="nav-text">delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#helping_mechanism"><span class="nav-number">4.3.</span> <span class="nav-text">helping mechanism</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">5.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
@@ -441,9 +502,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'chaomaisblog';
-      var disqus_identifier = '2015/03/21/2015-2015-03-21-the-stranger/';
-      var disqus_title = '读加缪《局外人》';
-      var disqus_url = 'http://chaomai.github.io/2015/03/21/2015-2015-03-21-the-stranger/';
+      var disqus_identifier = '2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/';
+      var disqus_title = 'Notes of Non-Blocking Binary Search Trees';
+      var disqus_url = 'http://chaomai.github.io/2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
