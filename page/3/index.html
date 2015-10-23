@@ -22,10 +22,14 @@
 
 
 
-  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  
 
 
-<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+<link rel="stylesheet" type="text/css" href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" />
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.2"/>
 
 
     <meta name="description" content="Chao Mai's Blog" />
@@ -40,7 +44,7 @@
 
 
 
-  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
 <meta name="description" content="Chao Mai&apos;s Blog">
@@ -61,6 +65,8 @@
   };
 </script>
 
+
+
   <title> Building Things </title>
 </head>
 
@@ -79,22 +85,27 @@
 
 
 
+
+
+
   <div class="container one-column 
    page-home 
 ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><h1 class="site-meta">
-  <span class="logo-line-before"><i></i></span>
-  <a href="/" class="brand" rel="start">
-      <span class="logo">
-        <i class="icon-next-logo"></i>
-      </span>
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
       <span class="site-title">Building Things</span>
-  </a>
-  <span class="logo-line-after"><i></i></span>
-</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Just want to know how it works!</p>
+</div>
 
 <div class="site-nav-toggle">
   <button>
@@ -113,7 +124,9 @@
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            <i class="menu-item-icon icon-next-home"></i> <br />
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
             Home
           </a>
         </li>
@@ -121,7 +134,9 @@
         
         <li class="menu-item menu-item-about">
           <a href="/about" rel="section">
-            <i class="menu-item-icon icon-next-about"></i> <br />
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
             About
           </a>
         </li>
@@ -129,7 +144,9 @@
         
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
-            <i class="menu-item-icon icon-next-archives"></i> <br />
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
             Archives
           </a>
         </li>
@@ -153,60 +170,266 @@
     
       
 
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/" itemprop="url">
-                C++ Concurrency in Action (1) - Hello, World of Concurrency in C++!
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2015-05-17T19:35:23+08:00" content="2015-05-17">
-            2015-05-17
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; In
+        
+          <h1 class="post-title" itemprop="name headline">
             
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/programming/" itemprop="url" rel="index">
-                  <span itemprop="name">programming</span>
+            
+              
+                <a class="post-title-link" href="/2015/05/23/2015-2015-05-23-translation-locks-mutexes-and-semaphores-types-of-synchronization-objects/" itemprop="url">
+                  译 - Locks, Mutexes, and Semaphores: Types of Synchronization Objects
                 </a>
-              </span>
-
               
-              
-
             
-          </span>
+          </h1>
         
 
-        
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/" itemprop="commentsCount"></span>
-            </a>
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2015-05-23T22:12:13+08:00" content="2015-05-23">
+              2015-05-23
+            </time>
           </span>
+
           
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/05/23/2015-2015-05-23-translation-locks-mutexes-and-semaphores-types-of-synchronization-objects/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/23/2015-2015-05-23-translation-locks-mutexes-and-semaphores-types-of-synchronization-objects/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
         
-      </div>
-    </header>
+          <span itemprop="description">C++ Concurrency in Action作者的文章，介绍了一些关于并发的基础概念：锁、互斥量和信号量。</span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/05/23/2015-2015-05-23-translation-locks-mutexes-and-semaphores-types-of-synchronization-objects/">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                <a class="post-title-link" href="/2015/05/18/2015-2015-05-18-cpp-concurrency-in-action-2/" itemprop="url">
+                  C++ Concurrency in Action (2) - Managing Threads
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2015-05-18T19:35:23+08:00" content="2015-05-18">
+              2015-05-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/05/18/2015-2015-05-18-cpp-concurrency-in-action-2/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/18/2015-2015-05-18-cpp-concurrency-in-action-2/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="description">Managing threads的笔记。</span>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/05/18/2015-2015-05-18-cpp-concurrency-in-action-2/">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                <a class="post-title-link" href="/2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/" itemprop="url">
+                  C++ Concurrency in Action (1) - Hello, World of Concurrency in C++!
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2015-05-17T19:35:23+08:00" content="2015-05-17">
+              2015-05-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
 
     <div class="post-body">
 
@@ -241,60 +464,70 @@
     
       
 
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/05/15/2015-2015-05-15-compile-c-11-thread-with-clang/" itemprop="url">
-                Clang++中C++11 Thread的支持
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2015-05-15T19:35:23+08:00" content="2015-05-15">
-            2015-05-15
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; In
+        
+          <h1 class="post-title" itemprop="name headline">
             
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/programming/" itemprop="url" rel="index">
-                  <span itemprop="name">programming</span>
+            
+              
+                <a class="post-title-link" href="/2015/05/15/2015-2015-05-15-compile-c-11-thread-with-clang/" itemprop="url">
+                  Clang++中C++11 Thread的支持
                 </a>
-              </span>
-
               
-              
-
             
-          </span>
+          </h1>
         
 
-        
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/05/15/2015-2015-05-15-compile-c-11-thread-with-clang/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/15/2015-2015-05-15-compile-c-11-thread-with-clang/" itemprop="commentsCount"></span>
-            </a>
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2015-05-15T19:35:23+08:00" content="2015-05-15">
+              2015-05-15
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/05/15/2015-2015-05-15-compile-c-11-thread-with-clang/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/15/2015-2015-05-15-compile-c-11-thread-with-clang/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
 
     <div class="post-body">
 
@@ -329,60 +562,70 @@
     
       
 
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/" itemprop="url">
-                编译时，-Pthread and -Lpthread的区别
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2015-05-14T19:31:30+08:00" content="2015-05-14">
-            2015-05-14
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; In
+        
+          <h1 class="post-title" itemprop="name headline">
             
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/programming/" itemprop="url" rel="index">
-                  <span itemprop="name">programming</span>
+            
+              
+                <a class="post-title-link" href="/2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/" itemprop="url">
+                  编译时，-Pthread and -Lpthread的区别
                 </a>
-              </span>
-
               
-              
-
             
-          </span>
+          </h1>
         
 
-        
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/" itemprop="commentsCount"></span>
-            </a>
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2015-05-14T19:31:30+08:00" content="2015-05-14">
+              2015-05-14
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
 
     <div class="post-body">
 
@@ -417,60 +660,70 @@
     
       
 
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/03/21/2015-2015-03-21-the-stranger/" itemprop="url">
-                读加缪《局外人》
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2015-03-21T23:08:50+08:00" content="2015-03-21">
-            2015-03-21
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; In
+        
+          <h1 class="post-title" itemprop="name headline">
             
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/thought/" itemprop="url" rel="index">
-                  <span itemprop="name">thought</span>
+            
+              
+                <a class="post-title-link" href="/2015/03/21/2015-2015-03-21-the-stranger/" itemprop="url">
+                  读加缪《局外人》
                 </a>
-              </span>
-
               
-              
-
             
-          </span>
+          </h1>
         
 
-        
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/03/21/2015-2015-03-21-the-stranger/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/21/2015-2015-03-21-the-stranger/" itemprop="commentsCount"></span>
-            </a>
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2015-03-21T23:08:50+08:00" content="2015-03-21">
+              2015-03-21
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/thought/" itemprop="url" rel="index">
+                    <span itemprop="name">thought</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/03/21/2015-2015-03-21-the-stranger/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/21/2015-2015-03-21-the-stranger/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
 
     <div class="post-body">
 
@@ -505,60 +758,70 @@
     
       
 
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/03/10/2015-2015-03-10-analysis-reference-in-cpp-from-the-perspective-of-assembly/" itemprop="url">
-                从汇编的角度分析C++引用
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2015-03-10T17:35:29+08:00" content="2015-03-10">
-            2015-03-10
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; In
+        
+          <h1 class="post-title" itemprop="name headline">
             
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/programming/" itemprop="url" rel="index">
-                  <span itemprop="name">programming</span>
+            
+              
+                <a class="post-title-link" href="/2015/03/10/2015-2015-03-10-analysis-reference-in-cpp-from-the-perspective-of-assembly/" itemprop="url">
+                  从汇编的角度分析C++引用
                 </a>
-              </span>
-
               
-              
-
             
-          </span>
+          </h1>
         
 
-        
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/03/10/2015-2015-03-10-analysis-reference-in-cpp-from-the-perspective-of-assembly/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/10/2015-2015-03-10-analysis-reference-in-cpp-from-the-perspective-of-assembly/" itemprop="commentsCount"></span>
-            </a>
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2015-03-10T17:35:29+08:00" content="2015-03-10">
+              2015-03-10
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/03/10/2015-2015-03-10-analysis-reference-in-cpp-from-the-perspective-of-assembly/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/10/2015-2015-03-10-analysis-reference-in-cpp-from-the-perspective-of-assembly/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
 
     <div class="post-body">
 
@@ -593,60 +856,70 @@
     
       
 
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/02/06/2015-2015-02-06-type-safe-typedef-in-cpp/" itemprop="url">
-                C++中typedef的使用意图，以及类型安全
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2015-02-06T23:06:00+08:00" content="2015-02-06">
-            2015-02-06
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; In
+        
+          <h1 class="post-title" itemprop="name headline">
             
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/programming/" itemprop="url" rel="index">
-                  <span itemprop="name">programming</span>
+            
+              
+                <a class="post-title-link" href="/2015/02/06/2015-2015-02-06-type-safe-typedef-in-cpp/" itemprop="url">
+                  C++中typedef的使用意图，以及类型安全
                 </a>
-              </span>
-
               
-              
-
             
-          </span>
+          </h1>
         
 
-        
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2015/02/06/2015-2015-02-06-type-safe-typedef-in-cpp/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/02/06/2015-2015-02-06-type-safe-typedef-in-cpp/" itemprop="commentsCount"></span>
-            </a>
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2015-02-06T23:06:00+08:00" content="2015-02-06">
+              2015-02-06
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/02/06/2015-2015-02-06-type-safe-typedef-in-cpp/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/02/06/2015-2015-02-06-type-safe-typedef-in-cpp/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
 
     <div class="post-body">
 
@@ -681,60 +954,70 @@
     
       
 
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/" itemprop="url">
-                入手KBC Poker 2
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2014-12-11T23:20:42+08:00" content="2014-12-11">
-            2014-12-11
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; In
+        
+          <h1 class="post-title" itemprop="name headline">
             
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/hardware/" itemprop="url" rel="index">
-                  <span itemprop="name">hardware</span>
+            
+              
+                <a class="post-title-link" href="/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/" itemprop="url">
+                  入手KBC Poker 2
                 </a>
-              </span>
-
               
-              
-
             
-          </span>
+          </h1>
         
 
-        
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/" itemprop="commentsCount"></span>
-            </a>
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2014-12-11T23:20:42+08:00" content="2014-12-11">
+              2014-12-11
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/hardware/" itemprop="url" rel="index">
+                    <span itemprop="name">hardware</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
 
     <div class="post-body">
 
@@ -743,7 +1026,9 @@
 
       
         
-          <span itemprop="articleBody"><h1 id="KBC_Poker_2">KBC Poker 2</h1><p>用倦Thindpad T420自带的键盘，也想尝试一下机械键盘的手感如何，就入手了一个机械键盘，KBC Poker 2。</p>
+          <span itemprop="articleBody">
+            
+              <h1 id="KBC_Poker_2">KBC Poker 2</h1><p>用倦Thindpad T420自带的键盘，也想尝试一下机械键盘的手感如何，就入手了一个机械键盘，KBC Poker 2。</p>
 <p>入手Poker 2的原因不仅仅是Filco Minila Air和HHKB的价格有点高，还有一点吸引我的原因就是Poker 2支持全键位硬件可编程。</p>
 <p>Poker 2已经是第二代了，相比起第一代，带来了许多的改进，网上的总结有这么几点：</p>
 <blockquote><ul>
@@ -791,7 +1076,9 @@
 </ul>
 <p>将开关1和3都拨到ON的位置，效果：Caps变成了Fn，左Win变成了Caps。</p>
 <p>到这里键位修改就完成了。</p>
-</span>
+
+            
+          </span>
         
       
     </div>
@@ -812,60 +1099,70 @@
     
       
 
+  
+  
+
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2014/02/06/2014-2014-02-06-cpp-primer-ch1/" itemprop="url">
-                C++Primer - 第1章 开始
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          Posted on
-          <time itemprop="dateCreated" datetime="2014-02-06T23:06:00+08:00" content="2014-02-06">
-            2014-02-06
-          </time>
-        </span>
+    
+      <header class="post-header">
 
         
-          <span class="post-category" >
-            &nbsp; | &nbsp; In
+        
+          <h1 class="post-title" itemprop="name headline">
             
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                <a href="/categories/programming/" itemprop="url" rel="index">
-                  <span itemprop="name">programming</span>
+            
+              
+                <a class="post-title-link" href="/2014/02/06/2014-2014-02-06-cpp-primer-ch1/" itemprop="url">
+                  C++Primer - 第1章 开始
                 </a>
-              </span>
-
               
-              
-
             
-          </span>
+          </h1>
         
 
-        
-          
-            <span class="post-comments-count">
-            &nbsp; | &nbsp;
-            <a href="/2014/02/06/2014-2014-02-06-cpp-primer-ch1/#comments" itemprop="discussionUrl">
-              <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/02/06/2014-2014-02-06-cpp-primer-ch1/" itemprop="commentsCount"></span>
-            </a>
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2014-02-06T23:06:00+08:00" content="2014-02-06">
+              2014-02-06
+            </time>
           </span>
+
           
-        
-      </div>
-    </header>
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2014/02/06/2014-2014-02-06-cpp-primer-ch1/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/02/06/2014-2014-02-06-cpp-primer-ch1/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
 
     <div class="post-body">
 
@@ -874,7 +1171,9 @@
 
       
         
-          <span itemprop="articleBody"><h1 id="缓冲区（bufer）">缓冲区（bufer）</h1><p>一个存储区域，用于保存数据。IO设施通常将输入（或输出）数据保存在一个缓冲区中，读写缓冲区的动作与程序中的动作是无关的。我们可以显式地刷新输出缓冲，以便强制将缓冲区中的数据写入输出设备。默认情况下，读cin会刷新cout；程序非正常终止时也会刷新cout。</p>
+          <span itemprop="articleBody">
+            
+              <h1 id="缓冲区（bufer）">缓冲区（bufer）</h1><p>一个存储区域，用于保存数据。IO设施通常将输入（或输出）数据保存在一个缓冲区中，读写缓冲区的动作与程序中的动作是无关的。我们可以显式地刷新输出缓冲，以便强制将缓冲区中的数据写入输出设备。默认情况下，读cin会刷新cout；程序非正常终止时也会刷新cout。</p>
 <h1 id="cerr">cerr</h1><p>一个ostream对象，关联到标准错误，通常写入到与标准输出相同的设备。默认情况下，写到cerr的数据是不缓冲的。cerr通常用于输出错误信息或其他不属于程序正常逻辑的输出内容。</p>
 <h1 id="类（class）">类（class）</h1><p>一种定义自己的数据结构及其相关操作的机制。</p>
 <h1 id="类类型（class_type）">类类型（class type）</h1><p>类定义的类型。类名即为类型名。</p>
@@ -886,7 +1185,9 @@
 <h1 id="-运算符（-operator）">.运算符（.operator）</h1><p>点运算符。左侧运算符必须是一个类类型对象，右侧运算对象必须是此对象的一个成员的名字。运算结果即为该对象的这个成员。</p>
 <h1 id="::运算符（::operator）">::运算符（::operator）</h1><p>作用域运算符。其用处之一是访问命名空间中的名字。</p>
 <h1 id="&lt;&lt;和&gt;&gt;运算符（&lt;&gt;operator）">&lt;&lt;和&gt;&gt;运算符（&lt;<operator,>&gt;operator）</operator,></h1><p>输出和输入运算符。它们的计算结果均是其左侧的运算对象。</p>
-</span>
+
+            
+          </span>
         
       
     </div>
@@ -909,8 +1210,9 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo;</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
   </nav>
+
 
  </div>
 
@@ -920,6 +1222,7 @@
       </div>
 
       
+        
   
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
@@ -934,7 +1237,9 @@
 
       
 
-      <section class="site-overview">
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" src="/images/default_avatar.jpg" alt="Chao Mai" itemprop="image"/>
           <p class="site-author-name" itemprop="name">Chao Mai</p>
@@ -943,7 +1248,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -977,19 +1282,27 @@
           
             
               <span class="links-of-author-item">
-                <a href="https://github.com/ChaoMai" target="_blank">GitHub</a>
+                <a href="https://github.com/ChaoMai" target="_blank">
+                  <i class="fa fa-github fa-fw"></i> GitHub
+                </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://weibo.com/1898970107" target="_blank">Weibo</a>
+                <a href="http://weibo.com/1898970107" target="_blank">
+                  <i class="fa fa-weibo fa-fw"></i> Weibo
+                </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://www.douban.com/people/chaomai" target="_blank">DouBan</a>
+                <a href="http://www.douban.com/people/chaomai" target="_blank">
+                  <i class="fa fa-douban fa-fw"></i> DouBan
+                </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="https://twitter.com/chao__mai" target="_blank">Twitter</a>
+                <a href="https://twitter.com/chao__mai" target="_blank">
+                  <i class="fa fa-twitter fa-fw"></i> Twitter
+                </a>
               </span>
             
           
@@ -1016,15 +1329,16 @@
   </aside>
 
 
+      
     </main>
 
     <footer id="footer" class="footer">
       <div class="footer-inner"> <div class="copyright" >
   
-  &copy; &nbsp;  2014 - 
+  &copy;  2014 - 
   <span itemprop="copyrightYear">2015</span>
   <span class="with-love">
-    <i class="icon-next-heart"></i>
+    <i class="icon-next-heart fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Chao Mai</span>
 </div>
@@ -1080,57 +1394,67 @@
   
   
   <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
 
 
-  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
   
 
   <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
   <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
 
-  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.2" id="motion.global"></script>
 
 
 
 
-  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.2"></script>
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
 
   <script type="text/javascript">
     $(document).ready(function () {
-      if (CONFIG.sidebar === 'always') {
-        displaySidebar();
+
+      isMobile() && FastClick.attach(document.body);
+
+      // Define Motion Sequence.
+      motionIntegrator
+        .add(motionMiddleWares.logo)
+        .add(motionMiddleWares.menu)
+        .add(motionMiddleWares.backToTop)
+        .add(motionMiddleWares.postList)
+        .add(motionMiddleWares.sidebar);
+
+      // Bootstrap Motion.
+      motionIntegrator.bootstrap();
+    });
+  </script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
       }
-      if (isMobile()) {
-        FastClick.attach(document.body);
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
       }
     });
   </script>
 
   
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for (i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
 
 
   

@@ -22,10 +22,14 @@
 
 
 
-  <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  
 
 
-<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+<link rel="stylesheet" type="text/css" href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" />
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.2"/>
 
 
     <meta name="description" content="Chao Mai's Blog" />
@@ -40,7 +44,7 @@
 
 
 
-  <link rel="shorticon icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.1" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
 <meta name="description" content="Chao Mai&apos;s Blog">
@@ -61,6 +65,8 @@
   };
 </script>
 
+
+
   <title> Tag: c++11 | Building Things </title>
 </head>
 
@@ -79,20 +85,25 @@
 
 
 
+
+
+
   <div class="container one-column ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><h1 class="site-meta">
-  <span class="logo-line-before"><i></i></span>
-  <a href="/" class="brand" rel="start">
-      <span class="logo">
-        <i class="icon-next-logo"></i>
-      </span>
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
       <span class="site-title">Building Things</span>
-  </a>
-  <span class="logo-line-after"><i></i></span>
-</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Just want to know how it works!</p>
+</div>
 
 <div class="site-nav-toggle">
   <button>
@@ -111,7 +122,9 @@
         
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
-            <i class="menu-item-icon icon-next-home"></i> <br />
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
             Home
           </a>
         </li>
@@ -119,7 +132,9 @@
         
         <li class="menu-item menu-item-about">
           <a href="/about" rel="section">
-            <i class="menu-item-icon icon-next-about"></i> <br />
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
             About
           </a>
         </li>
@@ -127,7 +142,9 @@
         
         <li class="menu-item menu-item-archives">
           <a href="/archives" rel="section">
-            <i class="menu-item-icon icon-next-archives"></i> <br />
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
             Archives
           </a>
         </li>
@@ -159,19 +176,25 @@
     
       
 
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
       <h1 class="post-title">
         
             <a class="post-title-link" href="/2015/07/18/2015-2015-07-18-cpp-concurrency-in-action-5/" itemprop="url">
-              <span itemprop="name">C++ Concurrency in Action (5) - the C++ Memory Model and Operations on Atomic Types</span>
+              
+                <span itemprop="name">C++ Concurrency in Action (5) - the C++ Memory Model and Operations on Atomic Types</span>
+              
             </a>
         
       </h1>
 
       <div class="post-meta">
-        <time class="post-time" datetime="2015-07-18T10:41:54.000Z" itemprop="dateCreated" content="2015-07-18"> 07-18 </time>
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2015-07-18T18:41:54+08:00"
+              content="2015-07-18" >
+          07-18
+        </time>
       </div>
 
     </header>
@@ -181,19 +204,25 @@
     
       
 
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
       <h1 class="post-title">
         
             <a class="post-title-link" href="/2015/06/09/2015-2015-06-09-translation-understand-std-atomic-compare-exchange-weak-in-cpp11/" itemprop="url">
-              <span itemprop="name">译 - Understand `Std::atomic::compare_exchange_weak()` in C++11</span>
+              
+                <span itemprop="name">译 - Understand `Std::atomic::compare_exchange_weak()` in C++11</span>
+              
             </a>
         
       </h1>
 
       <div class="post-meta">
-        <time class="post-time" datetime="2015-06-08T16:00:49.000Z" itemprop="dateCreated" content="2015-06-08"> 06-09 </time>
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2015-06-09T00:00:49+08:00"
+              content="2015-06-09" >
+          06-09
+        </time>
       </div>
 
     </header>
@@ -203,19 +232,25 @@
     
       
 
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
       <h1 class="post-title">
         
             <a class="post-title-link" href="/2015/05/31/2015-2015-05-31-cpp-concurrency-in-action-4/" itemprop="url">
-              <span itemprop="name">C++ Concurrency in Action (4) - Synchronizing Concurrent Operations</span>
+              
+                <span itemprop="name">C++ Concurrency in Action (4) - Synchronizing Concurrent Operations</span>
+              
             </a>
         
       </h1>
 
       <div class="post-meta">
-        <time class="post-time" datetime="2015-05-31T05:26:54.000Z" itemprop="dateCreated" content="2015-05-31"> 05-31 </time>
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2015-05-31T13:26:54+08:00"
+              content="2015-05-31" >
+          05-31
+        </time>
       </div>
 
     </header>
@@ -225,19 +260,25 @@
     
       
 
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
       <h1 class="post-title">
         
             <a class="post-title-link" href="/2015/05/30/2015-2015-05-30-cpp-concurrency-in-action-3/" itemprop="url">
-              <span itemprop="name">C++ Concurrency in Action (3) - Sharing Data Between Threads</span>
+              
+                <span itemprop="name">C++ Concurrency in Action (3) - Sharing Data Between Threads</span>
+              
             </a>
         
       </h1>
 
       <div class="post-meta">
-        <time class="post-time" datetime="2015-05-30T14:37:23.000Z" itemprop="dateCreated" content="2015-05-30"> 05-30 </time>
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2015-05-30T22:37:23+08:00"
+              content="2015-05-30" >
+          05-30
+        </time>
       </div>
 
     </header>
@@ -247,19 +288,25 @@
     
       
 
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
       <h1 class="post-title">
         
             <a class="post-title-link" href="/2015/05/23/2015-2015-05-23-translation-locks-mutexes-and-semaphores-types-of-synchronization-objects/" itemprop="url">
-              <span itemprop="name">译 - Locks, Mutexes, and Semaphores: Types of Synchronization Objects</span>
+              
+                <span itemprop="name">译 - Locks, Mutexes, and Semaphores: Types of Synchronization Objects</span>
+              
             </a>
         
       </h1>
 
       <div class="post-meta">
-        <time class="post-time" datetime="2015-05-23T14:12:13.000Z" itemprop="dateCreated" content="2015-05-23"> 05-23 </time>
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2015-05-23T22:12:13+08:00"
+              content="2015-05-23" >
+          05-23
+        </time>
       </div>
 
     </header>
@@ -269,19 +316,25 @@
     
       
 
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
       <h1 class="post-title">
         
             <a class="post-title-link" href="/2015/05/18/2015-2015-05-18-cpp-concurrency-in-action-2/" itemprop="url">
-              <span itemprop="name">C++ Concurrency in Action (2) - Managing Threads</span>
+              
+                <span itemprop="name">C++ Concurrency in Action (2) - Managing Threads</span>
+              
             </a>
         
       </h1>
 
       <div class="post-meta">
-        <time class="post-time" datetime="2015-05-18T11:35:23.000Z" itemprop="dateCreated" content="2015-05-18"> 05-18 </time>
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2015-05-18T19:35:23+08:00"
+              content="2015-05-18" >
+          05-18
+        </time>
       </div>
 
     </header>
@@ -291,19 +344,25 @@
     
       
 
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
       <h1 class="post-title">
         
             <a class="post-title-link" href="/2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/" itemprop="url">
-              <span itemprop="name">C++ Concurrency in Action (1) - Hello, World of Concurrency in C++!</span>
+              
+                <span itemprop="name">C++ Concurrency in Action (1) - Hello, World of Concurrency in C++!</span>
+              
             </a>
         
       </h1>
 
       <div class="post-meta">
-        <time class="post-time" datetime="2015-05-17T11:35:23.000Z" itemprop="dateCreated" content="2015-05-17"> 05-17 </time>
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2015-05-17T19:35:23+08:00"
+              content="2015-05-17" >
+          05-17
+        </time>
       </div>
 
     </header>
@@ -313,19 +372,25 @@
     
       
 
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
       <h1 class="post-title">
         
             <a class="post-title-link" href="/2015/05/15/2015-2015-05-15-compile-c-11-thread-with-clang/" itemprop="url">
-              <span itemprop="name">Clang++中C++11 Thread的支持</span>
+              
+                <span itemprop="name">Clang++中C++11 Thread的支持</span>
+              
             </a>
         
       </h1>
 
       <div class="post-meta">
-        <time class="post-time" datetime="2015-05-15T11:35:23.000Z" itemprop="dateCreated" content="2015-05-15"> 05-15 </time>
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2015-05-15T19:35:23+08:00"
+              content="2015-05-15" >
+          05-15
+        </time>
       </div>
 
     </header>
@@ -336,6 +401,7 @@
   </div>
 
   
+
  </div>
 
         
@@ -344,6 +410,7 @@
       </div>
 
       
+        
   
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
@@ -358,7 +425,9 @@
 
       
 
-      <section class="site-overview">
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" src="/images/default_avatar.jpg" alt="Chao Mai" itemprop="image"/>
           <p class="site-author-name" itemprop="name">Chao Mai</p>
@@ -367,7 +436,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -401,19 +470,27 @@
           
             
               <span class="links-of-author-item">
-                <a href="https://github.com/ChaoMai" target="_blank">GitHub</a>
+                <a href="https://github.com/ChaoMai" target="_blank">
+                  <i class="fa fa-github fa-fw"></i> GitHub
+                </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://weibo.com/1898970107" target="_blank">Weibo</a>
+                <a href="http://weibo.com/1898970107" target="_blank">
+                  <i class="fa fa-weibo fa-fw"></i> Weibo
+                </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="http://www.douban.com/people/chaomai" target="_blank">DouBan</a>
+                <a href="http://www.douban.com/people/chaomai" target="_blank">
+                  <i class="fa fa-douban fa-fw"></i> DouBan
+                </a>
               </span>
             
               <span class="links-of-author-item">
-                <a href="https://twitter.com/chao__mai" target="_blank">Twitter</a>
+                <a href="https://twitter.com/chao__mai" target="_blank">
+                  <i class="fa fa-twitter fa-fw"></i> Twitter
+                </a>
               </span>
             
           
@@ -440,15 +517,16 @@
   </aside>
 
 
+      
     </main>
 
     <footer id="footer" class="footer">
       <div class="footer-inner"> <div class="copyright" >
   
-  &copy; &nbsp;  2014 - 
+  &copy;  2014 - 
   <span itemprop="copyrightYear">2015</span>
   <span class="with-love">
-    <i class="icon-next-heart"></i>
+    <i class="icon-next-heart fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Chao Mai</span>
 </div>
@@ -510,57 +588,67 @@
   
   
   <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
 
 
-  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
   
 
   <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
   <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
 
-  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.2" id="motion.global"></script>
 
 
 
 
-  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.2"></script>
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
 
   <script type="text/javascript">
     $(document).ready(function () {
-      if (CONFIG.sidebar === 'always') {
-        displaySidebar();
+
+      isMobile() && FastClick.attach(document.body);
+
+      // Define Motion Sequence.
+      motionIntegrator
+        .add(motionMiddleWares.logo)
+        .add(motionMiddleWares.menu)
+        .add(motionMiddleWares.backToTop)
+        .add(motionMiddleWares.postList)
+        .add(motionMiddleWares.sidebar);
+
+      // Bootstrap Motion.
+      motionIntegrator.bootstrap();
+    });
+  </script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
       }
-      if (isMobile()) {
-        FastClick.attach(document.body);
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
       }
     });
   </script>
 
   
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for (i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
 
 
   
