@@ -1,11 +1,10 @@
 <!doctype html>
-<html class="theme-next use-motion theme-next-mist">
+<html class="theme-next   use-motion ">
 <head>
-  
-
-<meta charset="UTF-8"/>
+  <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
 
 
 <meta http-equiv="Cache-Control" content="no-transform" />
@@ -18,7 +17,12 @@
 
 
 
-  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
 
 
 
@@ -27,12 +31,15 @@
   
 
 
-<link rel="stylesheet" type="text/css" href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" />
 
-<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.2"/>
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-    <meta name="description" content="Chao Mai's Blog" />
+
+  <meta name="description" content="Chao Mai's Blog" />
+
 
 
 
@@ -40,37 +47,46 @@
 
 
 
+
+
   <link rel="alternate" href="/atom.xml" title="Building Things" type="application/atom+xml" />
+
 
 
 
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
-<meta name="description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目。">
+
+
+
+
+<meta name="description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目，还有就是Excellent tutorial about helping mechanism!">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Notes of Non-Blocking Binary Search Trees">
 <meta property="og:url" content="http://chaomai.github.io/2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/index.html">
 <meta property="og:site_name" content="Building Things">
-<meta property="og:description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目。">
+<meta property="og:description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目，还有就是Excellent tutorial about helping mechanism!">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_problems.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_insert.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_delete.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_delete2.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_state.PNG">
-<meta property="og:updated_time" content="2015-10-04T14:56:42.429Z">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_dummy_keys.png">
+<meta property="og:updated_time" content="2015-10-26T02:01:06.753Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Notes of Non-Blocking Binary Search Trees">
-<meta name="twitter:description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目。">
+<meta name="twitter:description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目，还有就是Excellent tutorial about helping mechanism!">
+
 
 
 <script type="text/javascript" id="hexo.configuration">
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: 'post'
+    sidebar: 'post',
+    motion: true
   };
 </script>
-
-
 
   <title> Notes of Non-Blocking Binary Search Trees | Building Things </title>
 </head>
@@ -168,7 +184,8 @@
 
     <main id="main" class="main">
       <div class="main-inner">
-        <div id="content" class="content"> 
+        <div id="content" class="content">
+          
 
   <div id="posts" class="posts-expand">
     
@@ -255,11 +272,7 @@
 
       
         <span itemprop="articleBody"><h1 id="specification">specification</h1><ul>
-<li><p>no duplicated key</p>
-<blockquote>
-<p>if duplicated key is inserted, then false is returned.</p>
-</blockquote>
-</li>
+<li>no duplicated key</li>
 <li>deleting non-existent key leads to return false.</li>
 <li><p>leaf-oriented BST</p>
 <blockquote>
@@ -275,42 +288,51 @@
 <li>non-blocking</li>
 <li><p>linearizable</p>
 <blockquote>
-<p>for every execution, one can assign a linearization point to each completed operation and some of the uncompleted operations so that the linearization point of each operation occurs after the operation starts and before it ends, and the results of these ooperations are the same <strong>as if they had been performed sequentially, in the order of their linearization points.</strong></p>
+<p>for every execution, one can assign a linearization point to each completed operation and some of the uncompleted operations <strong>so that the linearization point of each operation occurs after the operation starts and before it ends</strong>, and the results of these operations are the same <em>as if they had been performed sequentially, in the order of their linearization points.</em></p>
 </blockquote>
 </li>
 </ul>
-<h1 id="基本思想">基本思想</h1><p>类似Harris’ Linked List里面的做法，这里是mark the parent of the leaf before splicing that parent out of the tree。一旦被标记，那么其指向子结点的指针将不能被改变。</p>
-<h2 id="问题">问题</h2><p>要mark的指针是存在两个不同的word里面的，不能够用一个cas来同时mark。</p>
-<p>文中Figure 3处的例子，两个concurrent operation同时看到了BST以后，接下来的操作是，<em>基于各自看到的这个相同的BST来进行的</em>，它们彼此并不知道对方进行了什么操作。</p>
-<h2 id="解决方法">解决方法</h2><p>using a separate state ﬁeld of the node to mark or flag.</p>
+<h1 id="basic_idea">basic idea</h1><p>类似Harris’ Linked List里面的做法，这里是mark the parent of the leaf before<br>splicing that parent out of the tree。一旦被标记，那么其指向子结点的指针将不能被改变。</p>
+<h1 id="problems">problems</h1><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_problems.png" alt=""></p>
+<p>上图中，两个线程分别delete C和E，两个concurrent operation同时看到了BST以后，接下来的操作是，<em>基于各自看到的的BST来进行的</em>，它们彼此并不知道对方进行了什么操作，最后导致E并没有被deleted，其中一个操作丢失了。</p>
+<p>解决这个需要对parent的child pointer进行mark，但是要mark的pointer是存在两个不同的word（left and right child pointer）里面的，不能够用一个cas来同时mark。</p>
+<h1 id="solutions">solutions</h1><p>using a separate state <strong>ﬁeld of the node</strong> to mark or flag，而不是mark那个pointer。</p>
 <ul>
 <li>mark: node marked is unchangeable。</li>
 <li>flag: indicate that an update is trying to change a child pointer of the node.</li>
 </ul>
 <p>mark和flag类似于加锁。</p>
-<h1 id="insert和delete">insert和delete</h1><h2 id="insert">insert</h2><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_insert.png" alt=""></p>
+<h2 id="insert和delete">insert和delete</h2><h3 id="insert">insert</h3><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_insert.png" alt=""></p>
 <p>Insert (C):</p>
 <ol>
-<li>flag node D’s parent, node B,</li>
+<li>ﬂag node D’s parent, node B,</li>
 <li>change the appropriate child pointer of node B,</li>
-<li>unflag node B.</li>
+<li>unﬂag node B.</li>
 </ol>
-<h2 id="delete">delete</h2><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_delete.png" alt=""></p>
+<h3 id="delete">delete</h3><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_delete.png" alt=""></p>
 <p>Delete (C):</p>
 <ol>
-<li>flag C’s grandparent, node B,</li>
+<li>ﬂag C’s grandparent, node B,</li>
 <li>mark C’s parent, node D,</li>
 <li>change the appropriate child pointer of B,</li>
-<li>unflag node B.</li>
+<li>unﬂag node B.</li>
 </ol>
 <p>insert在完成第一步以后，在insert进行后续操作时，其他线程将不能够block insert。delete类似的，在完成第一二步以后也是。</p>
 <p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_delete2.png" alt=""></p>
 <p>但是delete在完成第一步以后，第二步mark有可能失败，比如insert把将要删除的node换为新的三个node。in which case the ﬂag is no longer on the node whose child pointer must be changed to accomplish the deletion.</p>
 <p>如果mark失败，delete会remove flag，重新开始。</p>
 <p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_state.PNG" alt=""></p>
-<h2 id="helping_mechanism">helping mechanism</h2><p>类似Barnes的方法，将线程拥有锁换成操作拥有锁。一个操作在处理tree的同时，还保存了它在holding锁的时候要进行的操作，其他线程遇到lock，就帮助它完成，使得lock最终release。</p>
-<p>为了避免helping mechanism带来的性能下降（多个线程会尝试进行同一个操作），这里用了保守的策略： a process P helps another process’s operation only if the other operation is preventing P’s own progress.</p>
-<h1 id="References">References</h1><ol>
+<h1 id="some_details_in_implementation">some details in implementation</h1><h2 id="helping_mechanism">helping mechanism</h2><h3 id="method">method</h3><p>类似Barnes的方法，将线程拥有lock换成操作拥有lock（marked or flagged）。一个操作在处理tree的同时，还保存了它在holding lock的时候要进行的操作，其他线程遇到lock，就帮助它完成，使得lock最终release。</p>
+<p>为了避免helping mechanism带来的性能下降（多个线程会尝试进行同一个操作），这里用了保守的策略： a process P helps another process’s operation <strong>only if the other operation is preventing P’s own progress</strong>.</p>
+<h3 id="implementation">implementation</h3><p>线程之间是无法自动感知对方的存在的，也就是说实现helping mechanism，需要a data structure that is shared between threads holds the operating information。</p>
+<h2 id="dummy_keys">dummy keys</h2><p>在delete时，需要flag grandparent和mark parent，如果BST的key少于4个，必然就会有一个leaf没有grandparent，那么在delete就需要考虑很多例外的情况（insert类似）。</p>
+<p>为了避免这些特殊情况，下面引入两个特殊值$\infty_1$和$\infty_2$，使得BST在没有key的时候，也存在3个node。这两个dummy keys是不允许删除的。</p>
+<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_dummy_keys.png" alt=""></p>
+<h1 id="summary">summary</h1><ol>
+<li><strong>Excellent tutorial</strong> about helping mechanism!!!</li>
+<li>在树上面进行并发操作的时候，这篇论文中描述的问题其实大都是存在的，因此论文中的方法可以考虑用到其他树型结构上面。</li>
+</ol>
+<h1 id="references">references</h1><ol>
 <li>Non-blocking Binary Search Trees, Faith Ellen, Panagiota Fatourou, Eric Ruppert, Franck van Breugel</li>
 </ol>
 </span>
@@ -360,19 +382,22 @@
     </div>
   </div>
 
- </div>
+
+        </div>
 
         
 
+
         
-          <div class="comments" id="comments">
-            
-              <div id="disqus_thread">
-                <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-              </div>
-            
-          </div>
-        
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </div>
+    
+  </div>
+
+
       </div>
 
       
@@ -492,7 +517,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#specification"><span class="nav-number">1.</span> <span class="nav-text">specification</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#features"><span class="nav-number">2.</span> <span class="nav-text">features</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本思想"><span class="nav-number">3.</span> <span class="nav-text">基本思想</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">3.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方法"><span class="nav-number">3.2.</span> <span class="nav-text">解决方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#insert和delete"><span class="nav-number">4.</span> <span class="nav-text">insert和delete</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#insert"><span class="nav-number">4.1.</span> <span class="nav-text">insert</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delete"><span class="nav-number">4.2.</span> <span class="nav-text">delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#helping_mechanism"><span class="nav-number">4.3.</span> <span class="nav-text">helping mechanism</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">5.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#specification"><span class="nav-number">1.</span> <span class="nav-text">specification</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#features"><span class="nav-number">2.</span> <span class="nav-text">features</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#basic_idea"><span class="nav-number">3.</span> <span class="nav-text">basic idea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#problems"><span class="nav-number">4.</span> <span class="nav-text">problems</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#solutions"><span class="nav-number">5.</span> <span class="nav-text">solutions</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#insert和delete"><span class="nav-number">5.1.</span> <span class="nav-text">insert和delete</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#insert"><span class="nav-number">5.1.1.</span> <span class="nav-text">insert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete"><span class="nav-number">5.1.2.</span> <span class="nav-text">delete</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#some_details_in_implementation"><span class="nav-number">6.</span> <span class="nav-text">some details in implementation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#helping_mechanism"><span class="nav-number">6.1.</span> <span class="nav-text">helping mechanism</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#method"><span class="nav-number">6.1.1.</span> <span class="nav-text">method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#implementation"><span class="nav-number">6.1.2.</span> <span class="nav-text">implementation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dummy_keys"><span class="nav-number">6.2.</span> <span class="nav-text">dummy keys</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#summary"><span class="nav-number">7.</span> <span class="nav-text">summary</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#references"><span class="nav-number">8.</span> <span class="nav-text">references</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
@@ -507,7 +532,8 @@
     </main>
 
     <footer id="footer" class="footer">
-      <div class="footer-inner"> <div class="copyright" >
+      <div class="footer-inner">
+        <div class="copyright" >
   
   &copy;  2014 - 
   <span itemprop="copyrightYear">2015</span>
@@ -529,7 +555,8 @@
 </div>
 
 
- </div>
+
+      </div>
     </footer>
 
     <div class="back-to-top"></div>
@@ -539,6 +566,7 @@
 
   
   
+
   
     
     
@@ -568,24 +596,21 @@
 
 
   
+
   
   <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
   <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
 
 
   <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
-  
-
   <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
 
-  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.2" id="motion.global"></script>
-
-
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
 
 
-  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.2"></script>
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
   
   
@@ -750,23 +775,7 @@
 
 
 
-  <script type="text/javascript">
-    $(document).ready(function () {
-
-      isMobile() && FastClick.attach(document.body);
-
-      // Define Motion Sequence.
-      motionIntegrator
-        .add(motionMiddleWares.logo)
-        .add(motionMiddleWares.menu)
-        .add(motionMiddleWares.backToTop)
-        .add(motionMiddleWares.postList)
-        .add(motionMiddleWares.sidebar);
-
-      // Bootstrap Motion.
-      motionIntegrator.bootstrap();
-    });
-  </script>
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
 
   
   
@@ -797,15 +806,5 @@
   
   
 
-  
-  <script type="text/javascript" src="/js/lazyload.js"></script>
-  <script type="text/javascript">
-    $(function () {
-      $("#posts").find('img').lazyload({
-        placeholder: "/images/loading.gif",
-        effect: "fadeIn"
-      });
-    });
-  </script>
 </body>
 </html>
