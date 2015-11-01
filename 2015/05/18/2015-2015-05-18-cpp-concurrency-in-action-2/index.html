@@ -37,12 +37,6 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-
-  <meta name="description" content="Chao Mai's Blog" />
-
-
-
-
   <meta name="keywords" content="c++,c++11,concurrency,reading," />
 
 
@@ -184,6 +178,10 @@
   <div id="posts" class="posts-expand">
     
 
+  
+  
+
+  
   
   
 
@@ -463,7 +461,7 @@
         
           <div class="feed-link motion-element">
             <a href="/atom.xml" rel="alternate">
-              <i class="menu-item-icon icon-next-feed"></i>
+              <i class="fa fa-rss"></i>
               RSS
             </a>
           </div>
@@ -474,25 +472,33 @@
             
               <span class="links-of-author-item">
                 <a href="https://github.com/ChaoMai" target="_blank">
-                  <i class="fa fa-github fa-fw"></i> GitHub
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
                 </a>
               </span>
             
               <span class="links-of-author-item">
                 <a href="http://weibo.com/1898970107" target="_blank">
-                  <i class="fa fa-weibo fa-fw"></i> Weibo
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
                 </a>
               </span>
             
               <span class="links-of-author-item">
                 <a href="http://www.douban.com/people/chaomai" target="_blank">
-                  <i class="fa fa-douban fa-fw"></i> DouBan
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
                 </a>
               </span>
             
               <span class="links-of-author-item">
                 <a href="https://twitter.com/chao__mai" target="_blank">
-                  <i class="fa fa-twitter fa-fw"></i> Twitter
+                  
+                    <i class="fa fa-twitter"></i> Twitter
+                  
                 </a>
               </span>
             
@@ -516,14 +522,20 @@
 
       
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
           <div class="post-toc">
+            
+              
             
             
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Managing_threads"><span class="nav-number">1.</span> <span class="nav-text">Managing threads</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic_thread_management"><span class="nav-number">1.1.</span> <span class="nav-text">Basic thread management</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Launching_a_thread"><span class="nav-number">1.1.1.</span> <span class="nav-text">Launching a thread</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lambda表达式"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">lambda表达式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Waiting_for_a_thread_to_complete"><span class="nav-number">1.1.2.</span> <span class="nav-text">Waiting for a thread to complete</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Waiting_in_exceptinal_circumstances"><span class="nav-number">1.1.3.</span> <span class="nav-text">Waiting in exceptinal circumstances</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RAII"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">RAII</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Runing_threads_in_the_background"><span class="nav-number">1.1.4.</span> <span class="nav-text">Runing threads in the background</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Passing_arguments_to_a_thread_function"><span class="nav-number">1.2.</span> <span class="nav-text">Passing arguments to a thread function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Just_want_reference"><span class="nav-number">1.2.1.</span> <span class="nav-text">Just want reference</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#std::thread_and_std::bind"><span class="nav-number">1.2.2.</span> <span class="nav-text">std::thread and std::bind</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#objects_cannot_be_copied"><span class="nav-number">1.2.3.</span> <span class="nav-text">objects cannot be copied</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Transferring_ownership_of_a_thread"><span class="nav-number">1.3.</span> <span class="nav-text">Transferring ownership of a thread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Choosing_the_number_of_threads_at_runtime"><span class="nav-number">1.4.</span> <span class="nav-text">Choosing the number of threads at runtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Identifying_threads"><span class="nav-number">1.5.</span> <span class="nav-text">Identifying threads</span></a></li></ol></li></ol></div>
             
           </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
         </section>
       
 
@@ -698,7 +710,7 @@
 
     function tocOverflowIndicator (indicator, action) {
       var $indicator = $(indicator);
-      var opacity = action === 'show' ? 0.4 : 0;
+      var opacity = action === 'show' ? 1 : 0;
       $indicator.velocity ?
         $indicator.velocity('stop').velocity({
           opacity: opacity

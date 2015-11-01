@@ -37,12 +37,6 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-
-  <meta name="description" content="Chao Mai's Blog" />
-
-
-
-
   <meta name="keywords" content="c++,c++11,cas,concurrency,reading," />
 
 
@@ -184,6 +178,10 @@
   <div id="posts" class="posts-expand">
     
 
+  
+  
+
+  
   
   
 
@@ -433,7 +431,7 @@
         
           <div class="feed-link motion-element">
             <a href="/atom.xml" rel="alternate">
-              <i class="menu-item-icon icon-next-feed"></i>
+              <i class="fa fa-rss"></i>
               RSS
             </a>
           </div>
@@ -444,25 +442,33 @@
             
               <span class="links-of-author-item">
                 <a href="https://github.com/ChaoMai" target="_blank">
-                  <i class="fa fa-github fa-fw"></i> GitHub
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
                 </a>
               </span>
             
               <span class="links-of-author-item">
                 <a href="http://weibo.com/1898970107" target="_blank">
-                  <i class="fa fa-weibo fa-fw"></i> Weibo
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
                 </a>
               </span>
             
               <span class="links-of-author-item">
                 <a href="http://www.douban.com/people/chaomai" target="_blank">
-                  <i class="fa fa-douban fa-fw"></i> DouBan
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
                 </a>
               </span>
             
               <span class="links-of-author-item">
                 <a href="https://twitter.com/chao__mai" target="_blank">
-                  <i class="fa fa-twitter fa-fw"></i> Twitter
+                  
+                    <i class="fa fa-twitter"></i> Twitter
+                  
                 </a>
               </span>
             
@@ -486,14 +492,20 @@
 
       
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
           <div class="post-toc">
+            
+              
             
             
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Question"><span class="nav-number">1.</span> <span class="nav-text">Question</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Answer_1"><span class="nav-number">2.</span> <span class="nav-text">Answer 1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why_doing_exchange_in_a_loop?"><span class="nav-number">2.1.</span> <span class="nav-text">Why doing exchange in a loop?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why_to_use_weak_instead_of_strong?"><span class="nav-number">2.2.</span> <span class="nav-text">Why to use weak instead of strong?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#When_should_you_use_weak_and_when_strong?"><span class="nav-number">2.3.</span> <span class="nav-text">When should you use weak and when strong?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why_is_!expected_in_the_example?"><span class="nav-number">2.4.</span> <span class="nav-text">Why is !expected in the example?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#About_your_last_question"><span class="nav-number">2.5.</span> <span class="nav-text">About your last question</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Answer_2"><span class="nav-number">3.</span> <span class="nav-text">Answer 2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">4.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
         </section>
       
 
@@ -668,7 +680,7 @@
 
     function tocOverflowIndicator (indicator, action) {
       var $indicator = $(indicator);
-      var opacity = action === 'show' ? 0.4 : 0;
+      var opacity = action === 'show' ? 1 : 0;
       $indicator.velocity ?
         $indicator.velocity('stop').velocity({
           opacity: opacity
