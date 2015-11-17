@@ -26,9 +26,7 @@
 
 
 
-  
-    <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-  
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
 
 
 
@@ -64,7 +62,7 @@
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/ctrie_conflict.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/ctrie_gcas.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/ctrie_snapshot.png">
-<meta property="og:updated_time" content="2015-11-02T15:55:47.294Z">
+<meta property="og:updated_time" content="2015-11-17T18:47:51.728Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Notes of Non-Blocking Snapshots Concurrent Tries">
 <meta name="twitter:description" content="Hash trie的并发会存在操作丢失的情况，类似Non-blocking Binary Search Trees里的情况，这里引入了中间结点来解决。同时文章还提出了一种snapshot的方法，这种方法对于tree很有用。">
@@ -293,7 +291,7 @@
 <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">val</span> <span class="title">oldmain</span> =</span> ov.gcasRead(<span class="keyword">this</span>)</span><br><span class="line"> <span class="keyword">if</span> (oldmain eq exp) &#123;</span><br><span class="line">   <span class="keyword">if</span> (<span class="type">CAS_ROOT</span>(desc, nv)) &#123;</span><br><span class="line">     ...</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>My previous doubt lies in line 711. The <code>oldmain</code> is compared with <code>expectedmain</code>. If they are reference to same main node, then do <code>CAS_ROOT</code>.<br>Suppose thread A is executing <code>RDCSS_Complete</code> and just finished line 710. Thread B is inserting a key value pair at the mainnode of root. What if thread B changes the <code>MainNode</code> reference in the root into a new mainnode before thread A execute <code>CAS_ROOT</code>?</p>
-<p>The doubt is unnecessary. Since thread A is executing <code>RDCSS_Complete</code>, the root must be <code>RDCSS_Descriptor</code>. If Thread B want to insert at the mainnode of root, it will read root first, find it’s <code>RDCSS_Descriptor</code> and call <code>RDCSS_Complete</code> to help thread A first. So Thread B can’t change the <code>MainNode</code> reference in the root directly.</p>
+<p>The doubt is unnecessary. Since thread A is executing <code>RDCSS_Complete</code>, the root must be <code>RDCSS_Descriptor</code>. If Thread B want to insert at the <code>MainNode</code> of root, it will read root first, find it’s <code>RDCSS_Descriptor</code> and call <code>RDCSS_Complete</code> to help thread A first. So Thread B can’t change the <code>MainNode</code> reference in the root directly.</p>
 </blockquote>
 <p>（与Aleksandar Prokopec邮件的内容，就是问题和自己的理解，这里只是做个整理，不翻译了，其实是懒。。。）</p>
 <h2 id="Snashot">Snashot</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">snapshot</span>(</span>)</span><br><span class="line">	r = <span class="type">RDCSS_READ</span>()</span><br><span class="line">	expmain = <span class="type">GCAS_READ</span>(r)</span><br><span class="line">	<span class="keyword">if</span> <span class="type">RDCSS</span>(r, expmain, <span class="keyword">new</span> <span class="type">INode</span>(expmain, <span class="keyword">new</span> <span class="type">Gen</span>))</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">Ctrie</span> &#123;</span><br><span class="line">			root = <span class="keyword">new</span> <span class="type">INode</span>(expmain, <span class="keyword">new</span> <span class="type">Gen</span>)</span><br><span class="line">			readonly = <span class="literal">false</span></span><br><span class="line">		&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> snapshot()</span><br></pre></td></tr></table></figure>
