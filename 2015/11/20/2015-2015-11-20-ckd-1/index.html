@@ -1,0 +1,792 @@
+<!doctype html>
+<html class="theme-next   use-motion ">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="concurrency,snapshot," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Building Things" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+
+
+
+
+<meta name="description" content="Concurrent KDTree with Snapshots, implemented in Java. This article is about some details in implementation.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CKDTree (1)">
+<meta property="og:url" content="http://chaomai.github.io/2015/11/20/2015-2015-11-20-ckd-1/index.html">
+<meta property="og:site_name" content="Building Things">
+<meta property="og:description" content="Concurrent KDTree with Snapshots, implemented in Java. This article is about some details in implementation.">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/ckd1_2015%2011%2018%2016%2042%20Office%20Lens.jpg">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/ckd1_2015%2011%2019%2016%2026%20Office%20Lens.jpg">
+<meta property="og:updated_time" content="2015-11-20T08:01:47.646Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CKDTree (1)">
+<meta name="twitter:description" content="Concurrent KDTree with Snapshots, implemented in Java. This article is about some details in implementation.">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post',
+    motion: true
+  };
+</script>
+
+  <title> CKDTree (1) | Building Things </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Building Things</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Just want to know how it works!</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content">
+          
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                CKDTree (1)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            Posted on
+            <time itemprop="dateCreated" datetime="2015-11-20T15:55:08+08:00" content="2015-11-20">
+              2015-11-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp; In
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/data-structures/" itemprop="url" rel="index">
+                    <span itemprop="name">data structures</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/11/20/2015-2015-11-20-ckd-1/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/20/2015-2015-11-20-ckd-1/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><p>Concurrent KDTree with Snapshots, implemented in Java. This article is about some details in implementation.</p>
+<h1 id="Basic_Idea">Basic Idea</h1><p>The methods used in this structure is heavily based on ideas in CTrie (snapshot) and Non-blocking Binary Search Trees (search, insert and delete).</p>
+<ul>
+<li>RDCSS</li>
+<li>GCAS</li>
+<li>Mark and Flag</li>
+<li>Leaf-oriented tree</li>
+</ul>
+<h1 id="Problems_and_Solutions_in_Implementation">Problems and Solutions in Implementation</h1><p>下面是实现的时候遇到的问题和自己对一些细节的思考，有的已经在两篇论文里面有所记录，但是自己没注意，又踩坑了，还有的是这个结构的设计隐含的问题。</p>
+<h2 id="Dummy_Nodes">Dummy Nodes</h2><p>由于Non-blocking Binary Search Trees中的insert操作是需要mark parent的，因此，对于一棵空的tree（有一个root），parent并不存在，insert无法适用于这样的情况。delete也有类似的问题。</p>
+<p>为了避免结点数目很少的时候需要考虑很多复杂的情况，Non-blocking Binary Search Trees里提到了使用两个key为$\infty_1$，$\infty_2$（其中$\infty_1 &lt; \infty_2$）的Dummy nodes，$\infty_1 &lt; \infty_2$这样的关系是为了保证Binary Search Trees的性质。</p>
+<p>由于Java中，无法使用<code>Double.POSITIVE_INFINITY</code>来得到两个key，使得$\infty_1 &lt; \infty_2$，所以就干脆不管他们的关系，root的左右child都使用<code>Double.POSITIVE_INFINITY</code>作为key。</p>
+<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/ckd1_2015%2011%2018%2016%2042%20Office%20Lens.jpg" alt=""></p>
+<p>这样一来，</p>
+<ol>
+<li>只有在insert第一个key或者delete最后一个key的时候需要操作leaf dummy node。</li>
+<li>除（1）以外，所有update都发生在上图三角形的sub tree里面。</li>
+</ol>
+<h2 id="Right_Child_of_Root">Right Child of Root</h2><p>既然没有key会进入root的right child，那么为什么不把root的right child设置为<code>null</code>。</p>
+<p>不行，这个也是在写后续代码的时候发现的。进行<code>helpMark1</code>和<code>helpMark2</code>的时候，需要判断<code>GCAS</code>处理grand parent哪边的child，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (info.p == info.gp.GCAS_READ_LEFT_CHILD(<span class="keyword">this</span>)) &#123;</span><br><span class="line">  direction = Direction.LEFT;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  direction = Direction.RIGHT;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果要delete的leaf是children of the left child of root，也就是说此时tree里面只有一个key。存在这么一种可能性，同时有多个thread来进行delete，其中一个thread已经成功进行了delete，其他某些的thread还没有执行上述代码。当开始执行以后，就会发现<code>p</code>不等于<code>gp</code>（即root）的left child，此时如果root的right为<code>null</code>，那么就会出错。</p>
+<p><code>helpMark1</code>和<code>helpMark2</code>都包含上述操作，只是仅仅<code>helpMark1</code>才会触发问题。</p>
+<h2 id="Type_Test_in_helpMarked1">Type Test in <code>helpMarked1</code></h2><p>当要delete的leaf，它的sibling是leaf时，<code>helpMarked1</code>来处理这种的情况。</p>
+<p>在single thread的情况下，<code>helpDelete</code>在判断sibling的类型以后，如果是leaf，那么<code>helpMarked1</code>就会执行。</p>
+<p>在multithread的情况下，某个thread看到update信息以后就直接执行<code>helpMarked1</code>，但是此时sibling的类型是不知道的。因为从update信息被发布，到<code>helpMarked1</code>被执行，sibling可能早就被其他thread改变了，如果变为internal node，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Leaf&lt;V&gt; ns = <span class="keyword">new</span> Leaf&lt;&gt;(sibling.key, ((Leaf&lt;V&gt;) sibling).value);</span><br></pre></td></tr></table></figure>
+<p>那么上述代码就会报错。</p>
+<h2 id="Mark_in_helpDelete">Mark in <code>helpDelete</code></h2><p>Non-blocking Binary Search Trees提到marked的结点是不可更改的，实现的时候没有很在意，测试的时候就遇到了麻烦。</p>
+<p><code>helpDelete</code>（1）首先mark parent，（2）read leaf的sibling，（3）根据sibling的类型来进行后续的操作。</p>
+<p>（1）和（2）的顺序是不能改的，这也是mark的意义所在。mark以后，<code>helpMarked1</code>和<code>helpMarked2</code>中还会再次读取sibling，并用于构造新的node，然后<code>GCAS</code> grand parent的child。如果不能保证<code>helpDelete</code>中leaf的sibling在后续的操作中不变，那么构造出的新node很可能就是错的。</p>
+<h2 id="startGen_in_searchKey"><code>startGen</code> in <code>searchKey</code></h2><p>这个结构使用了Ctrie里GCAS的idea，在search的时候来update从root到leaf的path。search使用的version number是在开始进行search前从root里read的。为什么不到每个node的时候就read一次version number？</p>
+<p>因为如果在search到某个内部的结点的时候，执行了snapshot操作，那么root的version number就变了。此时search中read root的version number，就会造成path的错误更新，上半部分是老的version number，下面有一条新的version number的分支。</p>
+<h2 id="Retry_after_GCAS_in_searchKey">Retry after <code>GCAS</code> in <code>searchKey</code></h2><p><code>searchKey</code>中，如果发现要前往的branch是internal node，并且version低于<code>startGen</code>，那么就需要创建那个internal node新版本的copy，然后把cur node的branch设置为那个新版的node。</p>
+<p>接下来，首先想到的是在cur node处重试（即下面代码里的<code>continue;</code>），但是如果<code>continue</code>了，那么<code>gp</code>，<code>gpupdate</code>和<code>depth</code>就会被“提前”更新（cur没有往下走，它们却被更新了），尤其是<code>depth</code>，可能被重复的加上了<code>p</code>的<code>skippedDepth</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (cur <span class="keyword">instanceof</span> InternalNode) &#123;</span><br><span class="line">  gp = p;</span><br><span class="line">  gpupdate = pupdate;</span><br><span class="line">  ...</span><br><span class="line">  depth += p.skippedDepth;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (keyCompare(key, cur.key, depth++) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (left <span class="keyword">instanceof</span> InternalNode) &#123;</span><br><span class="line">      <span class="keyword">if</span> (left.gen != startGen) &#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">return</span> SearchRes.RESTART;</span><br><span class="line">        <span class="comment">// continue;</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>效率低些，但是更为稳妥的办法就是完全重新开始，<code>return SearchRes.RESTART;</code>。</p>
+<h2 id="RDCSS">RDCSS</h2><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/ckd1_2015%2011%2019%2016%2026%20Office%20Lens.jpg" alt=""></p>
+<h2 id="size_in_Snapshot"><code>size</code> in Snapshot</h2><p>未解决。</p>
+<h2 id="Readonly_Iterator">Readonly Iterator</h2><h1 id="References">References</h1><ol>
+<li>Concurrent Tries with Efficient Non-Blocking Snapshots, Aleksandar Prokopec, Nathan G. Bronson, Phil Bagwell, Martin Odersky</li>
+<li>Non-blocking Binary Search Trees, Faith Ellen, Panagiota Fatourou, Eric Ruppert, Franck van Breugel</li>
+<li>A Practical Multi-Word Compare-and-Swap Operation, Timothy L. Harris, Keir Fraser, Ian A. Pratt</li>
+</ol>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
+          
+            <a href="/tags/snapshot/" rel="tag">#snapshot</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/23/2015-2015-10-23-rdcss/" rel="next" title="RDCSS">
+                <i class="fa fa-chevron-left"></i> RDCSS
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+        </div>
+
+        
+
+
+        
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </div>
+    
+  </div>
+
+
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Chao Mai" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Chao Mai</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">Chao Mai's Blog</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">categories</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">tags</span>
+              
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ChaoMai" target="_blank">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/1898970107" target="_blank">
+                  
+                    <i class="fa fa-weibo"></i> Weibo
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.douban.com/people/chaomai" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> DouBan
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/chao__mai" target="_blank">
+                  
+                    <i class="fa fa-twitter"></i> Twitter
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic_Idea"><span class="nav-number">1.</span> <span class="nav-text">Basic Idea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Problems_and_Solutions_in_Implementation"><span class="nav-number">2.</span> <span class="nav-text">Problems and Solutions in Implementation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dummy_Nodes"><span class="nav-number">2.1.</span> <span class="nav-text">Dummy Nodes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Right_Child_of_Root"><span class="nav-number">2.2.</span> <span class="nav-text">Right Child of Root</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Type_Test_in_helpMarked1"><span class="nav-number">2.3.</span> <span class="nav-text">Type Test in helpMarked1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mark_in_helpDelete"><span class="nav-number">2.4.</span> <span class="nav-text">Mark in helpDelete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#startGen_in_searchKey"><span class="nav-number">2.5.</span> <span class="nav-text">startGen in searchKey</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Retry_after_GCAS_in_searchKey"><span class="nav-number">2.6.</span> <span class="nav-text">Retry after GCAS in searchKey</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDCSS"><span class="nav-number">2.7.</span> <span class="nav-text">RDCSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#size_in_Snapshot"><span class="nav-number">2.8.</span> <span class="nav-text">size in Snapshot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Readonly_Iterator"><span class="nav-number">2.9.</span> <span class="nav-text">Readonly Iterator</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">3.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chao Mai</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+
+  
+    
+    
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'chaomaisblog';
+      var disqus_identifier = '2015/11/20/2015-2015-11-20-ckd-1/';
+      var disqus_title = 'CKDTree (1)';
+      var disqus_url = 'http://chaomai.github.io/2015/11/20/2015-2015-11-20-ckd-1/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+  
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
+
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    motionMiddleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  <script type="text/javascript" src="/js/bootstrap.js"></script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+  
+
+</body>
+</html>
