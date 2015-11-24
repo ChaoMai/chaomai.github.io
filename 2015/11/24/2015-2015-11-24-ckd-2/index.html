@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="c++,c++11,concurrency,reading," />
+  <meta name="keywords" content="concurrency,snapshot," />
 
 
 
@@ -53,16 +53,16 @@
 
 
 
-<meta name="description" content="Hello, world of concurrency in C++!的笔记。">
+<meta name="description" content="这篇记录了另一种简单的方法来实现snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++ Concurrency in Action (1) - Hello, World of Concurrency in C++!">
-<meta property="og:url" content="http://chaomai.github.io/2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/index.html">
+<meta property="og:title" content="CKDTree (2)">
+<meta property="og:url" content="http://chaomai.github.io/2015/11/24/2015-2015-11-24-ckd-2/index.html">
 <meta property="og:site_name" content="Building Things">
-<meta property="og:description" content="Hello, world of concurrency in C++!的笔记。">
-<meta property="og:updated_time" content="2015-07-14T14:28:08.000Z">
+<meta property="og:description" content="这篇记录了另一种简单的方法来实现snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。">
+<meta property="og:updated_time" content="2015-11-24T07:44:37.760Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ Concurrency in Action (1) - Hello, World of Concurrency in C++!">
-<meta name="twitter:description" content="Hello, world of concurrency in C++!的笔记。">
+<meta name="twitter:title" content="CKDTree (2)">
+<meta name="twitter:description" content="这篇记录了另一种简单的方法来实现snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。">
 
 
 
@@ -74,7 +74,7 @@
   };
 </script>
 
-  <title> C++ Concurrency in Action (1) - Hello, World of Concurrency in C++! | Building Things </title>
+  <title> CKDTree (2) | Building Things </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -194,7 +194,7 @@
             
             
               
-                C++ Concurrency in Action (1) - Hello, World of Concurrency in C++!
+                CKDTree (2)
               
             
           </h1>
@@ -203,8 +203,8 @@
         <div class="post-meta">
           <span class="post-time">
             Posted on
-            <time itemprop="dateCreated" datetime="2015-05-17T19:35:23+08:00" content="2015-05-17">
-              2015-05-17
+            <time itemprop="dateCreated" datetime="2015-11-24T15:17:25+08:00" content="2015-11-24">
+              2015-11-24
             </time>
           </span>
 
@@ -220,6 +220,18 @@
 
                 
                 
+                  , 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/data-structures/" itemprop="url" rel="index">
+                    <span itemprop="name">data structures</span>
+                  </a>
+                </span>
+
+                
+                
 
               
             </span>
@@ -229,8 +241,8 @@
             
               <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/" itemprop="commentsCount"></span>
+              <a href="/2015/11/24/2015-2015-11-24-ckd-2/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/24/2015-2015-11-24-ckd-2/" itemprop="commentsCount"></span>
               </a>
             </span>
             
@@ -249,34 +261,18 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="关于此系列文章">关于此系列文章</h1><p>最近在看这本书，这个系列文章是我在看书过程中的笔记，记录了一些我觉得关键的地方和自己的思考。如果能帮助到你，I will be very happy :).</p>
-<h1 id="关于C++_Concurrency_in_Action">关于C++ Concurrency in Action</h1><blockquote><p>本书是一本基于C++11新标准的并发和多线程编程深度指南。从std::thread、std::mutex、std::future和std::async等基础类的使用，到内存模型和原子操作、基于锁和无锁数据结构的构建，再扩展到并行算法、线程管理，最后还介绍了多线程代码的测试工作。本书的附录部分还对C++11新语言特性中与多线程相关的项目进行了简要的介绍，并提供了C++11线程库的完整参考。</p>
-<footer><strong>并发编程网</strong><cite><a href="http://ifeve.com/c-plus-plus-concurrency-in-action/" target="_blank" rel="external">《C++ Concurrency in Action》中文版</a></cite></footer></blockquote>
-<p>2014年初要出的中文版，只是到现在还没有，看英文吧。</p>
-<h1 id="Hello,_world_of_concurrency_in_C++">Hello, world of concurrency in C++</h1><p>在C++中实现多线程，可以写出行为有保证的可移植的代码。</p>
-<h3 id="Appraoches_to_concurrency">Appraoches to concurrency</h3><h4 id="多进程">多进程</h4><p>消息传递由进程间通信实现，但是，</p>
-<ul>
-<li>由于操作系统的有很多保护机制来避免一个进程难以修改另一个的数据，因此实现通讯的方式复杂或者慢；</li>
-<li>有固有的开销，启动进程需要时间（系统需要分配资源等）。</li>
-</ul>
-<h4 id="多线程">多线程</h4><p>操作系统要做的更少，灵活的共享内存是有代价的。</p>
-<ul>
-<li>内存一致性</li>
-</ul>
-<h2 id="Why_use_concurrency">Why use concurrency</h2><ul>
-<li>separation of concerns</li>
-<li>performance</li>
-</ul>
-<h3 id="Ways_to_use_concurrency">Ways to use concurrency</h3><ul>
-<li>task parallelism, data parallelism；</li>
-<li>使用现有的并行计算能力来解决更大的问题；</li>
-<li>（两种方式有着不同的关注点：一个是利用并行来缩短任务的时间；另一个是在任务处理时间一定的情况下，并行的运行多个任务来加大处理量。）</li>
-</ul>
-<h3 id="When_not_to_use_concurrency">When not to use concurrency</h3><ul>
-<li>实现并发的cost&gt;收益；</li>
-<li>线程的启动需要时间来给os分配相关的内核资源和栈空间，如果线程完成的时间很短，那可能启动的时间就占据了运行时间的大部分；</li>
-<li>由于系统的资源有限，线程是一种有限的资源,线程越多，os必须进行更多的context switching。</li>
-</ul>
+        <span itemprop="articleBody"><h1 id="Basic_Idea">Basic Idea</h1><p>这里使用的方法是Trevor Brown的non-blocking binary search tree的<a href="http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java" target="_blank" rel="external">实现</a>里面提到的，并没有在论文里说明。</p>
+<p>基本思想非常简单，</p>
+<ol>
+<li>读取并保存所有node；</li>
+<li>接着检查已保存的node与当前tree里的node是否都一样，发现不一样的，重新snapshot；</li>
+<li>基于已保存的node，构建一棵新的tree。</li>
+</ol>
+<p>这里的snapshot和上一篇中的就有很大不同。上一篇的snapshot基本上可以算作是在调用<code>snapshot()</code>的时候，tree的状态（特殊情况下需要retry）；而这里的必须保证，从第1步完成读取的时刻起，到第2步检查结束，都没有update发生，才能返回snapshot。</p>
+<p>要注意的是，在第1和2步中，需要保存和检查所有的node（internal node和leaf）。这不同于使用GCAS的snapshot，只update internal node，在某些时刻，某些leaf实际上是共享的。</p>
+<h1 id="References">References</h1><ol>
+<li><a href="http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java" target="_blank" rel="external">http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java</a>, Trevor Brown</li>
+</ol>
 </span>
       
     </div>
@@ -285,13 +281,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag">#c++</a>
-          
-            <a href="/tags/c-11/" rel="tag">#c++11</a>
-          
             <a href="/tags/concurrency/" rel="tag">#concurrency</a>
           
-            <a href="/tags/reading/" rel="tag">#reading</a>
+            <a href="/tags/snapshot/" rel="tag">#snapshot</a>
           
         </div>
       
@@ -300,17 +292,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/05/15/2015-2015-05-15-compile-c-11-thread-with-clang/" rel="next" title="Clang++中C++11 Thread的支持">
-                <i class="fa fa-chevron-left"></i> Clang++中C++11 Thread的支持
+              <a href="/2015/11/20/2015-2015-11-20-ckd-1/" rel="next" title="CKDTree (1)">
+                <i class="fa fa-chevron-left"></i> CKDTree (1)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/05/18/2015-2015-05-18-cpp-concurrency-in-action-2/" rel="prev" title="C++ Concurrency in Action (2) - Managing Threads">
-                C++ Concurrency in Action (2) - Managing Threads <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -475,7 +463,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于此系列文章"><span class="nav-number">1.</span> <span class="nav-text">关于此系列文章</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于C++_Concurrency_in_Action"><span class="nav-number">2.</span> <span class="nav-text">关于C++ Concurrency in Action</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hello,_world_of_concurrency_in_C++"><span class="nav-number">3.</span> <span class="nav-text">Hello, world of concurrency in C++</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Appraoches_to_concurrency"><span class="nav-number">3.0.1.</span> <span class="nav-text">Appraoches to concurrency</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多进程"><span class="nav-number">3.0.1.1.</span> <span class="nav-text">多进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多线程"><span class="nav-number">3.0.1.2.</span> <span class="nav-text">多线程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why_use_concurrency"><span class="nav-number">3.1.</span> <span class="nav-text">Why use concurrency</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ways_to_use_concurrency"><span class="nav-number">3.1.1.</span> <span class="nav-text">Ways to use concurrency</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#When_not_to_use_concurrency"><span class="nav-number">3.1.2.</span> <span class="nav-text">When not to use concurrency</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic_Idea"><span class="nav-number">1.</span> <span class="nav-text">Basic Idea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">2.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -535,9 +523,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'chaomaisblog';
-      var disqus_identifier = '2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/';
-      var disqus_title = 'C++ Concurrency in Action (1) - Hello, World of Concurrency in C++!';
-      var disqus_url = 'http://chaomai.github.io/2015/05/17/2015-2015-05-17-cpp-concurrency-in-action-1/';
+      var disqus_identifier = '2015/11/24/2015-2015-11-24-ckd-2/';
+      var disqus_title = 'CKDTree (2)';
+      var disqus_url = 'http://chaomai.github.io/2015/11/24/2015-2015-11-24-ckd-2/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
