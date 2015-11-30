@@ -35,7 +35,7 @@
 <link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="concurrency,snapshot," />
+  <meta name="keywords" content="concurrency,reading," />
 
 
 
@@ -53,16 +53,19 @@
 
 
 
-<meta name="description" content="这篇记录了另一种简单的方法来实现snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。">
+<meta name="description" content="Brown在Toronto大学读PhD期间写过2篇关于k-ary的文章，他读PhD期间的导师是Ellen，而Ellen正是写了Non-blocking Binary Search Trees的那位。这篇文章里看到了好几个methods或者ideas是extended from Non-blocking Binary Search Trees。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CKDTree (2)">
-<meta property="og:url" content="http://chaomai.github.io/2015/11/24/2015-2015-11-24-ckd-2/index.html">
+<meta property="og:title" content="Notes of Non-Blocking K-Ary Search Trees">
+<meta property="og:url" content="http://chaomai.github.io/2015/11/30/2015-2015-11-30-notes-of-k-ary/index.html">
 <meta property="og:site_name" content="Building Things">
-<meta property="og:description" content="这篇记录了另一种简单的方法来实现snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。">
-<meta property="og:updated_time" content="2015-11-30T07:50:10.343Z">
+<meta property="og:description" content="Brown在Toronto大学读PhD期间写过2篇关于k-ary的文章，他读PhD期间的导师是Ellen，而Ellen正是写了Non-blocking Binary Search Trees的那位。这篇文章里看到了好几个methods或者ideas是extended from Non-blocking Binary Search Trees。">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/k-ary_dummy.png">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/k-ary_states.png">
+<meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/k-ary_deletion.png">
+<meta property="og:updated_time" content="2015-11-30T07:52:05.166Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CKDTree (2)">
-<meta name="twitter:description" content="这篇记录了另一种简单的方法来实现snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。">
+<meta name="twitter:title" content="Notes of Non-Blocking K-Ary Search Trees">
+<meta name="twitter:description" content="Brown在Toronto大学读PhD期间写过2篇关于k-ary的文章，他读PhD期间的导师是Ellen，而Ellen正是写了Non-blocking Binary Search Trees的那位。这篇文章里看到了好几个methods或者ideas是extended from Non-blocking Binary Search Trees。">
 
 
 
@@ -74,7 +77,7 @@
   };
 </script>
 
-  <title> CKDTree (2) | Building Things </title>
+  <title> Notes of Non-Blocking K-Ary Search Trees | Building Things </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -194,7 +197,7 @@
             
             
               
-                CKDTree (2)
+                Notes of Non-Blocking K-Ary Search Trees
               
             
           </h1>
@@ -203,8 +206,8 @@
         <div class="post-meta">
           <span class="post-time">
             Posted on
-            <time itemprop="dateCreated" datetime="2015-11-24T15:17:25+08:00" content="2015-11-24">
-              2015-11-24
+            <time itemprop="dateCreated" datetime="2015-11-30T15:09:25+08:00" content="2015-11-30">
+              2015-11-30
             </time>
           </span>
 
@@ -241,8 +244,8 @@
             
               <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/11/24/2015-2015-11-24-ckd-2/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/24/2015-2015-11-24-ckd-2/" itemprop="commentsCount"></span>
+              <a href="/2015/11/30/2015-2015-11-30-notes-of-k-ary/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/30/2015-2015-11-30-notes-of-k-ary/" itemprop="commentsCount"></span>
               </a>
             </span>
             
@@ -261,17 +264,74 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="Basic_Idea">Basic Idea</h1><p>这里使用的方法是Trevor Brown的non-blocking binary search tree的<a href="http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java" target="_blank" rel="external">实现</a>里面提到的，并没有在论文里说明。</p>
-<p>基本思想非常简单，</p>
+        <span itemprop="articleBody"><h1 id="About_k-ary_Search_Trees">About k-ary Search Trees</h1><ul>
+<li>No duplicate key</li>
+<li>Leaf-oriented k-ST</li>
+<li>Each leaf has zero children and at most k - 1 keys</li>
+<li>Each internal node has exactly k children and k − 1 keys (in increasing order)</li>
+</ul>
+<p>Non-blocking k-ary Search Trees需要平衡，tree的深度和每个internal node进行search和update时的work总量。</p>
+<p>大的k–&gt;减少tree的depth，但是增加了每个internal node进行search和update时的work总量。</p>
+<p>k = 4的时候，在高contention和低contention的情况下，性能都是最好的。<br>高contention时，较少的小k减少了update时影响到的key的数目，增加了并行度；低contention时，较少的depth加快了search，加快了update。</p>
+<h1 id="From_BST_to_k-ary_Search_Trees">From BST to k-ary Search Trees</h1><ul>
+<li>Insert: the BST’s insertion -&gt; sprouting insertion</li>
+<li>Delete: the  BST’s deletion -&gt; pruning deletion</li>
+<li>Coordination: extended from BST</li>
+</ul>
+<h1 id="Data_Structure">Data Structure</h1><h2 id="Nodes">Nodes</h2><p>Each <strong>leaf</strong> has zero children and <strong>at most</strong> k − 1 keys (zero keys is permitted). Each <strong>internal node</strong> has exactly k children and k − 1 keys. Inside each node, keys are maintained in <strong>increasing order</strong>.</p>
+<h2 id="Dummy_Nodes">Dummy Nodes</h2><p>Dummy nodes are used in BST to avoid special cases when there is no parent or grandparent to flag and mark. The following pruning deletion operation will meet similar problem. When perform pruning deletion, the leaf may <em>won’t have a parent or grandparent</em>. To avoid dealing with that, <strong>dummy nodes</strong> and <strong>empty leaves</strong> used again when initializing the tree.</p>
+<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/k-ary_dummy.png" alt=""></p>
+<ul>
+<li>Dummy nodes: each have k − 1 keys valued $\infty$.</li>
+<li>Empty leaves: 2k - 1 empty keys in total.</li>
+</ul>
+<h1 id="Sequential_Operations">Sequential Operations</h1><h2 id="Insertion">Insertion</h2><p>Search for the key first.</p>
+<h3 id="Sprouting_Insertion">Sprouting Insertion</h3><p>If the leaf is full, replaces the leaf by a <em>newly created</em> subtree.</p>
+<p>The newly created subtree:</p>
+<ul>
+<li>The k - 1 greatest keys among the original k - 1 keys and the new key.</li>
+<li>The children are k (the original k - 1 keys and the new key) <em>new</em> nodes.</li>
+</ul>
+<h3 id="Simple_Insertion">Simple Insertion</h3><p>If the leaf is full, replaces the leaf by a <em>newly</em> leaf with k keys (the original k - 1 keys and the new key).</p>
+<h2 id="Deletion">Deletion</h2><p>First search for the key.</p>
+<h3 id="Pruning_Deletion">Pruning Deletion</h3><p>If the leaf has one key <strong>and</strong> the parent of leaf has <em>exactly two non-empty children</em>, replace the parent with the sibling of leaf.</p>
+<h3 id="Simple_Deletion">Simple Deletion</h3><p>If the leaf has more than one key <strong>or</strong> the parent of leaf has more than two non-empty children, replace the leaf by a <em>new</em> leaf with key removed.</p>
+<h1 id="Coordination">Coordination</h1><p>Interleaved execution between concurrent updates in some particular order may cause problems (of cause).</p>
+<p>The Coordination is similar to BST, but here the scheme is extended.</p>
+<p>The following <code>UpdateStep</code> (<code>ReplaceFlag</code>, <code>PruneFlag</code> and <code>Mark</code>) objects is just like lock.</p>
+<h2 id="ReplaceFlag">ReplaceFlag</h2><p>For both types of insertion and simple deletion.</p>
+<h2 id="PruneFlag">PruneFlag</h2><p>For pruning deletion.</p>
+<h2 id="Mark">Mark</h2><p>Before an internal node is to disappear from the tree, it must ﬁrst be marked. Once a internal node is marked, its child pointer will never be changed.</p>
+<h2 id="Clean">Clean</h2><p>Initial stat of the <code>pending</code> filed in internal node.</p>
+<h1 id="Help">Help</h1><p>If an operation is unexpectedly delayed while holding access to a ﬂagged or marked node, the progress cannot be guaranteed. So helping mechanism is necessary. The method taken here is similar to the one in BST.</p>
+<p>But the helping <strong>should not be abused</strong>. To avoid many <em>duplicate operation</em>, the helping is used in limited cases.</p>
+<h1 id="On_The_Whole">On The Whole</h1><p>Just for clear the thought.</p>
+<p>The following picture isn’t presented in the paper. Because the idea in the paper is similar to BST. So it easy to imitate the original one in BST.</p>
+<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/k-ary_states.png" alt=""></p>
+<p><code>ReplaceFlag</code> is used in simple insertion, sprouting insertion and simple deletion. So the original notations, <code>ichild ...</code>, <code>dchild ...</code>, etc won’t apply.</p>
+<h1 id="Differences_between_BST_and_k-ary_Search_Trees">Differences between BST and k-ary Search Trees</h1><h2 id="Deletion-1">Deletion</h2><p>There two types of deletion in k-ary Search Trees. And a particular interleave of insertion and deletion would result in key lost.</p>
+<p><img src="http://7vilyb.com1.z0.glb.clouddn.com/k-ary_deletion.png" alt=""></p>
+<p>Suppose there are some nodes in k-ary search tree (see above figure) and two threads concurrently perform update.</p>
+<ul>
+<li>Thread ti: insert d at b (the order doesn’t mater)</li>
+<li>Thread td: delete b</li>
+</ul>
+<p>The following operation sequence is executed (direction of child isn’t mentioned, but it should be fairly easy to see),</p>
 <ol>
-<li>读取并保存所有node；</li>
-<li>接着检查已保存的node与当前tree里的node是否都一样，发现不一样的，重新snapshot；</li>
-<li>基于已保存的node，构建一棵新的tree，返回snapshot。</li>
+<li>td: <code>PruneFlag</code> gp</li>
+<li>ti: <code>ReplaceFlag</code> p<br>from now on, the p won’t be marked by td until ti finished.</li>
+<li>ti: Finish insertion and <code>Clean</code> p</li>
+<li>td: Mark p</li>
+<li>td: Change the pointer in gp to s</li>
 </ol>
-<p>这里的snapshot和上一篇中的就有很大不同。上一篇的snapshot基本上可以算作是在调用<code>snapshot()</code>的时候，tree的状态（特殊情况下需要retry）；而这里的必须保证，从第1步完成读取的时刻起，到第2步检查结束，都没有update发生，才能返回snapshot。</p>
-<p>要注意的是，在第1和2步中，需要保存和检查所有的node（internal node和leaf）。这不同于使用GCAS的snapshot，只update internal node，在某些时刻，某些leaf实际上是共享的。</p>
-<h1 id="size_in_Snapshot"><code>size</code> in Snapshot</h1><h1 id="References">References</h1><ol>
-<li><a href="http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java" target="_blank" rel="external">http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java</a>, Trevor Brown</li>
+<p><strong>Consequence:</strong> Insertion of key, d is lost. :(</p>
+<p>The problem is that pruning deletion changes the child of gp to the child of p without knowing the modification in the another child of p.</p>
+<p>Above problem won’t happen in BST’s deletion, <em>since the new node (internal node or leaf) is always built from scratch.</em></p>
+<p>So the <code>pending</code> of p must be read before <code>PruneFlag</code> set at gp and checked when performing mark cas. If any insertion occurred, the <code>pending</code> of p will be bound to changed and deletion will perform backtracking cas and restart.</p>
+<p>BTY: In BST and k-ary search tree, the <code>pending</code> of p is already  read by the end of search and the above prequesities in implementation is <strong>already done</strong>. <em>But it has special purpose and meaning here.</em></p>
+<h1 id="References">References</h1><ol>
+<li>Non-blocking k-ary Search Trees, Trevor Brown, Joanna Helga</li>
+<li>Non-blocking Binary Search Trees, Faith Ellen, Panagiota Fatourou, Eric Ruppert, Franck van Breugel</li>
 </ol>
 </span>
       
@@ -283,7 +343,7 @@
           
             <a href="/tags/concurrency/" rel="tag">#concurrency</a>
           
-            <a href="/tags/snapshot/" rel="tag">#snapshot</a>
+            <a href="/tags/reading/" rel="tag">#reading</a>
           
         </div>
       
@@ -292,17 +352,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/20/2015-2015-11-20-ckd-1/" rel="next" title="CKDTree (1)">
-                <i class="fa fa-chevron-left"></i> CKDTree (1)
+              <a href="/2015/11/24/2015-2015-11-24-ckd-2/" rel="next" title="CKDTree (2)">
+                <i class="fa fa-chevron-left"></i> CKDTree (2)
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/30/2015-2015-11-30-notes-of-k-ary/" rel="prev" title="Notes of Non-Blocking K-Ary Search Trees">
-                Notes of Non-Blocking K-Ary Search Trees <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -467,7 +523,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic_Idea"><span class="nav-number">1.</span> <span class="nav-text">Basic Idea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#size_in_Snapshot"><span class="nav-number">2.</span> <span class="nav-text">size in Snapshot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">3.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#About_k-ary_Search_Trees"><span class="nav-number">1.</span> <span class="nav-text">About k-ary Search Trees</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#From_BST_to_k-ary_Search_Trees"><span class="nav-number">2.</span> <span class="nav-text">From BST to k-ary Search Trees</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Data_Structure"><span class="nav-number">3.</span> <span class="nav-text">Data Structure</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Nodes"><span class="nav-number">3.1.</span> <span class="nav-text">Nodes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dummy_Nodes"><span class="nav-number">3.2.</span> <span class="nav-text">Dummy Nodes</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sequential_Operations"><span class="nav-number">4.</span> <span class="nav-text">Sequential Operations</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Insertion"><span class="nav-number">4.1.</span> <span class="nav-text">Insertion</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sprouting_Insertion"><span class="nav-number">4.1.1.</span> <span class="nav-text">Sprouting Insertion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Simple_Insertion"><span class="nav-number">4.1.2.</span> <span class="nav-text">Simple Insertion</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deletion"><span class="nav-number">4.2.</span> <span class="nav-text">Deletion</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pruning_Deletion"><span class="nav-number">4.2.1.</span> <span class="nav-text">Pruning Deletion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Simple_Deletion"><span class="nav-number">4.2.2.</span> <span class="nav-text">Simple Deletion</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Coordination"><span class="nav-number">5.</span> <span class="nav-text">Coordination</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ReplaceFlag"><span class="nav-number">5.1.</span> <span class="nav-text">ReplaceFlag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PruneFlag"><span class="nav-number">5.2.</span> <span class="nav-text">PruneFlag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mark"><span class="nav-number">5.3.</span> <span class="nav-text">Mark</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Clean"><span class="nav-number">5.4.</span> <span class="nav-text">Clean</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Help"><span class="nav-number">6.</span> <span class="nav-text">Help</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#On_The_Whole"><span class="nav-number">7.</span> <span class="nav-text">On The Whole</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Differences_between_BST_and_k-ary_Search_Trees"><span class="nav-number">8.</span> <span class="nav-text">Differences between BST and k-ary Search Trees</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Deletion-1"><span class="nav-number">8.1.</span> <span class="nav-text">Deletion</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">9.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -527,9 +583,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'chaomaisblog';
-      var disqus_identifier = '2015/11/24/2015-2015-11-24-ckd-2/';
-      var disqus_title = 'CKDTree (2)';
-      var disqus_url = 'http://chaomai.github.io/2015/11/24/2015-2015-11-24-ckd-2/';
+      var disqus_identifier = '2015/11/30/2015-2015-11-30-notes-of-k-ary/';
+      var disqus_title = 'Notes of Non-Blocking K-Ary Search Trees';
+      var disqus_url = 'http://chaomai.github.io/2015/11/30/2015-2015-11-30-notes-of-k-ary/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
