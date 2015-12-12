@@ -53,16 +53,16 @@
 
 
 
-<meta name="description" content="这篇记录了另一种简单的方法来实现concurrent KDTree snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。">
+<meta name="description" content="这篇是实现concurrent KDTree snapshot的第3个方法，也是打算写的最后一个方法。使用的方法来自的Range Queries in Non-blocking k-ary Search Trees。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CKDTree (2)">
-<meta property="og:url" content="http://chaomai.github.io/2015/11/24/2015-2015-11-24-ckd-2/index.html">
+<meta property="og:title" content="CKDTree(3)">
+<meta property="og:url" content="http://chaomai.github.io/2015/12/13/2015-2015-12-13-ckd-3/index.html">
 <meta property="og:site_name" content="Building Things">
-<meta property="og:description" content="这篇记录了另一种简单的方法来实现concurrent KDTree snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。">
-<meta property="og:updated_time" content="2015-12-12T06:38:18.413Z">
+<meta property="og:description" content="这篇是实现concurrent KDTree snapshot的第3个方法，也是打算写的最后一个方法。使用的方法来自的Range Queries in Non-blocking k-ary Search Trees。">
+<meta property="og:updated_time" content="2015-12-12T06:39:34.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CKDTree (2)">
-<meta name="twitter:description" content="这篇记录了另一种简单的方法来实现concurrent KDTree snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。">
+<meta name="twitter:title" content="CKDTree(3)">
+<meta name="twitter:description" content="这篇是实现concurrent KDTree snapshot的第3个方法，也是打算写的最后一个方法。使用的方法来自的Range Queries in Non-blocking k-ary Search Trees。">
 
 
 
@@ -74,7 +74,7 @@
   };
 </script>
 
-  <title> CKDTree (2) | Building Things </title>
+  <title> CKDTree(3) | Building Things </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -194,7 +194,7 @@
             
             
               
-                CKDTree (2)
+                CKDTree(3)
               
             
           </h1>
@@ -203,8 +203,8 @@
         <div class="post-meta">
           <span class="post-time">
             Posted on
-            <time itemprop="dateCreated" datetime="2015-11-24T15:17:25+08:00" content="2015-11-24">
-              2015-11-24
+            <time itemprop="dateCreated" datetime="2015-12-13T14:19:05+08:00" content="2015-12-13">
+              2015-12-13
             </time>
           </span>
 
@@ -241,8 +241,8 @@
             
               <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/11/24/2015-2015-11-24-ckd-2/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/24/2015-2015-11-24-ckd-2/" itemprop="commentsCount"></span>
+              <a href="/2015/12/13/2015-2015-12-13-ckd-3/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/13/2015-2015-12-13-ckd-3/" itemprop="commentsCount"></span>
               </a>
             </span>
             
@@ -261,17 +261,16 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="Basic_Idea">Basic Idea</h1><p>这里使用的方法是Trevor Brown的non-blocking binary search tree的<a href="http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java" target="_blank" rel="external">实现</a>里面提到的，并没有在论文里说明。</p>
-<p>基本思想非常简单，</p>
+        <span itemprop="articleBody"><h1 id="Basic_Idea">Basic Idea</h1><p>使用的方法同样来自Trevor Brown。在他的论文，Range Queries in Non-blocking k-ary Search Trees中，阐述了如何实现range query。</p>
+<p>由于进行range query时，需要tree局部的一个constant view，因此snapshot是一个合适的工具。</p>
+<p>在update操作中，这里方法比先前的方法多了一个操作：每个leaf都带有一个<code>dirty</code> field。每次进行update时，就把old leaf的<code>dirty</code>设为dirty（实现的时候，是把update info放到<code>dirty</code>）。</p>
+<p>进行snapshot的时候，</p>
 <ol>
-<li>读取并保存所有node；</li>
-<li>接着检查已保存的node与当前tree里的node是否都一样，发现不一样的，重新snapshot；</li>
-<li>基于已保存的node，构建一棵新的tree，返回snapshot。</li>
+<li>把所有leaf都放到一个list，<code>snap</code>里面，</li>
+<li>检测<code>snap</code>中每个leaf的<code>dirty</code>。如果发现<code>dirty</code>已被设置为update info，那么就help update info，并重新开始snapshot。</li>
 </ol>
-<p>这里的snapshot和上一篇中的就有很大不同。上一篇的snapshot基本上可以算作是在调用<code>snapshot()</code>的时候，tree的状态（特殊情况下需要retry）；而这里的必须保证，从第1步完成读取的时刻起，到第2步检查结束，都没有update发生，才能返回snapshot。</p>
-<p>要注意的是，在第1和2步中，需要保存和检查所有的node（internal node和leaf）。这不同于使用GCAS的snapshot，只update internal node，在某些时刻，某些leaf实际上是共享的。</p>
-<h1 id="size_in_Snapshot"><code>size</code> in Snapshot</h1><h1 id="References">References</h1><ol>
-<li><a href="http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java" target="_blank" rel="external">http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java</a>, Trevor Brown</li>
+<h1 id="References">References</h1><ol>
+<li>Range Queries in Non-blocking k-ary Search Trees, Trevor Brown, Hillel Avni</li>
 </ol>
 </span>
       
@@ -292,17 +291,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/20/2015-2015-11-20-ckd-1/" rel="next" title="CKDTree (1)">
-                <i class="fa fa-chevron-left"></i> CKDTree (1)
+              <a href="/2015/12/12/2015-2015-12-12-notes-of-k-ary-range-query/" rel="next" title="Notes of Range Queries in Non-Blocking K-Ary Search Trees">
+                <i class="fa fa-chevron-left"></i> Notes of Range Queries in Non-Blocking K-Ary Search Trees
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/30/2015-2015-11-30-notes-of-k-ary/" rel="prev" title="Notes of Non-Blocking K-Ary Search Trees">
-                Notes of Non-Blocking K-Ary Search Trees <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -467,7 +462,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic_Idea"><span class="nav-number">1.</span> <span class="nav-text">Basic Idea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#size_in_Snapshot"><span class="nav-number">2.</span> <span class="nav-text">size in Snapshot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">3.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic_Idea"><span class="nav-number">1.</span> <span class="nav-text">Basic Idea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">2.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -527,9 +522,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'chaomaisblog';
-      var disqus_identifier = '2015/11/24/2015-2015-11-24-ckd-2/';
-      var disqus_title = 'CKDTree (2)';
-      var disqus_url = 'http://chaomai.github.io/2015/11/24/2015-2015-11-24-ckd-2/';
+      var disqus_identifier = '2015/12/13/2015-2015-12-13-ckd-3/';
+      var disqus_title = 'CKDTree(3)';
+      var disqus_url = 'http://chaomai.github.io/2015/12/13/2015-2015-12-13-ckd-3/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
