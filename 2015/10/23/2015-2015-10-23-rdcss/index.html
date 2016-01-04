@@ -266,7 +266,7 @@
       
         <span itemprop="articleBody"><p>RDCSS是Harris提出的一种实现double compare single swap方法，它的语义（也就是DCAS）如下，</p>
 <p><img src="http://7vilyb.com1.z0.glb.clouddn.com/rdcss_semantic.png" alt=""></p>
-<h1 id="The_CAS1_Approach">The CAS1 Approach</h1><p>下面使用CAS1（single word compare and swap）来实现RDCSS。</p>
+<h1 id="The_CAS1_Approach"><a href="#The_CAS1_Approach" class="headerlink" title="The CAS1 Approach"></a>The CAS1 Approach</h1><p>下面使用CAS1（single word compare and swap）来实现RDCSS。</p>
 <p>这是descriptor和两个data section的示意图，</p>
 <p><img src="http://7vilyb.com1.z0.glb.clouddn.com/rdcss_descriptor.png" alt=""></p>
 <p>下面是RDCSS的伪代码，</p>
@@ -283,11 +283,11 @@
 <li><p><strong><code>return r</code>：</strong>返回a2里老的value，包括执行成功的情况和H1（1）。</p>
 </li>
 </ol>
-<h1 id="Problem">Problem</h1><p><strong>C2的if进行比较以后，会不会有其他thread改变o1？</strong></p>
+<h1 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h1><p><strong>C2的if进行比较以后，会不会有其他thread改变o1？</strong></p>
 <p>这里是一直没有想明白的。在看了Ctrie的代码以后，发现在做snapshot的时候，里面的root，mainnode和这里的Data section，Control section是对应的。要是这里存在这个问题，那么Ctrie里也存在（会不会有其他thread改变root里mainnode的reference）。</p>
 <p>从Ctrie的角度来看，只要有thread在执行<code>RDCSS_Complete</code>，那么root一定是<code>RDCSS_Descriptor</code>。而任何thread想要更改root里mainnode，就必须首先read root。所以mainnode不会在某个thread正执行<code>RDCSS_Complete</code>的时候被改变。<br>（在上一篇，Notes of Non-Blocking Snapshots Concurrent Tries的<strong>A detail in <code>RDCSS_Complete</code></strong>部分，有详细的解释。）</p>
 <p>再回过头来看这里的RDCSS，这里的Data section会不会相当于就是一个guard，要更改Control section，就必须首先read Data section。这样，在某个thread执行<code>RDCSS_Complete</code>的时候，其他thread直接去改变o1就是不可能的。（没有在这篇论文里面找到相关的说明，这里只是自己的理解。）</p>
-<h1 id="References">References</h1><ol>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
 <li>A Practical Multi-Word Compare-and-Swap Operation, Timothy L. Harris, Keir Fraser, Ian A. Pratt</li>
 <li><a href="http://cstheory.stackexchange.com/questions/7083/a-practical-multi-word-compare-and-swap-operation" target="_blank" rel="external">A practical multi-word compare-and-swap operationn - cstheory</a></li>
 </ol>
@@ -394,7 +394,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -508,7 +508,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

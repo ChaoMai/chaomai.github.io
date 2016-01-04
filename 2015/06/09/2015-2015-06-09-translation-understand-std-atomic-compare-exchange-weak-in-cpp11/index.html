@@ -251,7 +251,7 @@
       
         <span itemprop="articleBody"><blockquote class="blockquote-center"><br><br>原文是stackoverflow上的<a href="http://stackoverflow.com/questions/25199838/understanding-stdatomiccompare-exchange-weak-in-c11" target="_blank" rel="external">一个关于<code>compare_exchange_weak()</code>问题和相应的答案</a>。<br><br></blockquote>
 
-<h2 id="Question">Question</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">compare_exchange_weak</span> <span class="params">(T&amp; expected, T val, ..)</span></span>;</span><br></pre></td></tr></table></figure>
+<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">compare_exchange_weak</span> <span class="params">(T&amp; expected, T val, ..)</span></span>;</span><br></pre></td></tr></table></figure>
 <p><code>compare_exchange_weak()</code>是C++11中提供的compare-exchange原语之一。之所以是<strong>weak</strong>，是因为即使在对象的值等于<code>expected</code>的情况下，也返回false。这是因为在某些平台上的<strong>spurious failure</strong>，这些平台使用了一系列的指令（而不是像在x86上一样，使用单条的指令）来实现CAS。在这种平台上，context switch, reloading of the same address (or cache line) by another thread等，将会导致这条原语失败。由于不是因为对象的值（不等于<code>expected</code>）导致的操作失败，因此是<code>spurious</code>。相反的，it’s kind of timing issues。</p>
 <p>但是困扰我的是C++11标准（ISO/IEC 14882）里的，</p>
 <blockquote>
@@ -269,22 +269,22 @@
 <p>When a compare-and-exchange is in a loop, the weak version will yield better performance on some platforms.</p>
 </blockquote>
 <p>但是根据上面的分析，两个版本的loop应该有相同或类似的性能。我遗漏了什么吗？</p>
-<h2 id="Answer_1">Answer 1</h2><h3 id="Why_doing_exchange_in_a_loop?">Why doing exchange in a loop?</h3><p>通常来说，你想要在进行下一步的工作前完成当前的工作，因此，你把<code>compare_exchange_weak</code>放入了一个loop，以便一直尝试exchange直到成功（也就是说，返回<code>true</code>）。</p>
+<h2 id="Answer_1"><a href="#Answer_1" class="headerlink" title="Answer 1"></a>Answer 1</h2><h3 id="Why_doing_exchange_in_a_loop_3F"><a href="#Why_doing_exchange_in_a_loop_3F" class="headerlink" title="Why doing exchange in a loop?"></a>Why doing exchange in a loop?</h3><p>通常来说，你想要在进行下一步的工作前完成当前的工作，因此，你把<code>compare_exchange_weak</code>放入了一个loop，以便一直尝试exchange直到成功（也就是说，返回<code>true</code>）。</p>
 <p>要注意的是，<code>compare_exchange_strong</code>也常常用在loop中。它不会因为spurious failure而失败，但会因为concurrent writes而失败。</p>
-<h3 id="Why_to_use_weak_instead_of_strong?">Why to use <code>weak</code> instead of <code>strong</code>?</h3><p>很简单：spurious failure并不会经常发生，因此这不会有大的性能损失。相反，tolerate这种failure允许在某些平台上有更高效的<code>weak</code>版本的实现（与<code>strong</code>相比较）。<code>strong</code>必须每次都检查spurious failure，并处理它，这是有代价的。</p>
+<h3 id="Why_to_use_weak_instead_of_strong_3F"><a href="#Why_to_use_weak_instead_of_strong_3F" class="headerlink" title="Why to use weak instead of strong?"></a>Why to use <code>weak</code> instead of <code>strong</code>?</h3><p>很简单：spurious failure并不会经常发生，因此这不会有大的性能损失。相反，tolerate这种failure允许在某些平台上有更高效的<code>weak</code>版本的实现（与<code>strong</code>相比较）。<code>strong</code>必须每次都检查spurious failure，并处理它，这是有代价的。</p>
 <p>因此，<code>weak</code>在某些平台上比<code>strong</code>更快使得<code>weak</code>被使用。</p>
-<h3 id="When_should_you_use_weak_and_when_strong?">When should you use <code>weak</code> and when <code>strong</code>?</h3><p>这个<a href="http://en.cppreference.com/w/cpp/atomic/atomic/compare_exchange" target="_blank" rel="external">参考文献</a>指明了什么时候用<code>weak</code>，什么时候用<code>strong</code>：</p>
+<h3 id="When_should_you_use_weak_and_when_strong_3F"><a href="#When_should_you_use_weak_and_when_strong_3F" class="headerlink" title="When should you use weak and when strong?"></a>When should you use <code>weak</code> and when <code>strong</code>?</h3><p>这个<a href="http://en.cppreference.com/w/cpp/atomic/atomic/compare_exchange" target="_blank" rel="external">参考文献</a>指明了什么时候用<code>weak</code>，什么时候用<code>strong</code>：</p>
 <blockquote>
 <p>When a compare-and-exchange is in a loop, the weak version will yield better performance on some platforms. When a weak compare-and-exchange would require a loop and a strong one would not, the strong one is preferable.</p>
 <p>当compare-and-exchange在loop中，weak版本在某些平台上会有更高的性能。当一个weak的compare-and-exchange需要一个loop，而strong的不需要，那么用strong的更合适。</p>
 </blockquote>
 <p>因此这个答案很容易记住：如果你使用loop仅仅是由于spurious failure，那么不要使用loop；用<code>strong</code>。如果你无法避免的要使用loop，那么就是用<code>weak</code>。</p>
-<h3 id="Why_is_!expected_in_the_example?">Why is <code>!expected</code> in the example?</h3><p>这视实际情况和期望的语义而定，但是通常it is not needed for correctness。忽略它会产生一个非常相似的语义。仅仅在另一个线程可能会把值reset为<code>false</code>的情况下，这个语义才会有细微的差别（但是我没有找到一个比较meaningful的例子），Tony D的评论有更详细的解释。</p>
+<h3 id="Why_is__21expected_in_the_example_3F"><a href="#Why_is__21expected_in_the_example_3F" class="headerlink" title="Why is !expected in the example?"></a>Why is <code>!expected</code> in the example?</h3><p>这视实际情况和期望的语义而定，但是通常it is not needed for correctness。忽略它会产生一个非常相似的语义。仅仅在另一个线程可能会把值reset为<code>false</code>的情况下，这个语义才会有细微的差别（但是我没有找到一个比较meaningful的例子），Tony D的评论有更详细的解释。</p>
 <p><strong>Tony D：</strong></p>
 <p>“Why is !expected in the example? It is not needed for correctness. Omitting it would yield the same semantics.”</p>
 <p>并非如此。假设第一个exchange由于b已经是<code>true</code>而失败，此时<code>expected</code>变为<code>true</code>。如果没有<code>&amp;&amp; !expected</code>的话，它只会再次loop，并且（傻傻的）将<code>true</code>与<code>true</code>交换。这可能会成功并且退出<code>while</code> loop。But could exhibit meaningfully different behavior if b had meanwhile changed back to false, in which case the loop would continue and may ultimately set b true yet again before breaking.</p>
 <p>当其他线程写入<code>true</code>时，这是个简单快捷的方法：我们只需要终止，而不是再次尝试写入<code>true</code>。</p>
-<h3 id="About_your_last_question">About your last question</h3><blockquote>
+<h3 id="About_your_last_question"><a href="#About_your_last_question" class="headerlink" title="About your last question"></a>About your last question</h3><blockquote>
 <p>但是根据上面的分析，两个版本的loop应该有相同或类似的性能。我遗漏了什么吗？</p>
 </blockquote>
 <p>在<a href="http://en.wikipedia.org/wiki/Load-link/store-conditional" target="_blank" rel="external">Wikipedia</a>：</p>
@@ -294,8 +294,8 @@
 <p>因此，LL/SC在发生context switch的时候将会fail spuriously。现在，<code>strong</code>版本的会使用它“自己的小loop”来检测spurious failure，并且通过重试来处理它。要注意的是，它自己的loop要比一个普通的CAS loop要复杂，因为它必须区分spurious failure（并处理它）和由于并发访问导致的失败（这会导致返回值为<code>false</code>）。<code>weak</code>版的并没有这样自己的loop。</p>
 <p>既然你在两个例子中都显式的使用了loop，在<code>strong</code>版本中是完全没有必要使用loop的。结果是，在<code>strong</code>版本中，做了两次failure的检查；一次是<code>compare_exchange_strong</code>做的（由于它要区分spurious failure和并发访问，这要更复杂），另一是你自己的loop做的。这样代价高昂的检查时没有必要的，<code>weak</code>快的原因就在这里。</p>
 <p>Also note that your argument (LL/SC) is just one possibility to implement this. There are more platforms that have even different instruction sets. In addition (and more importantly), note that std::atomic must support all operations for all possible data types, 因此即使你声明了一个一千万字节的结构体，你还是可以用compare_exchange来做这个。即使当CPU有CAS指令，你也不用能够CAS一千万字节，因此编译器会生成其他的指令（可能是acquire lock，然后进行non-atomic compare and swap，接着release lock）。现在，想想当swap一千万字节的时候会发生什么。因此尽管spurious error对于8 byte的exchanges可能是非常罕见的，在这种情况下，它可能更常见。</p>
-<h2 id="Answer_2">Answer 2</h2><p><strong>To be continued…</strong></p>
-<h2 id="References">References</h2><ol>
+<h2 id="Answer_2"><a href="#Answer_2" class="headerlink" title="Answer 2"></a>Answer 2</h2><p><strong>To be continued…</strong></p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
 <li><a href="http://stackoverflow.com/questions/25199838/understanding-stdatomiccompare-exchange-weak-in-c11" target="_blank" rel="external">Understanding std::atomic::compare_exchange_weak() in C++11</a></li>
 </ol>
 </span>
@@ -405,7 +405,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -498,7 +498,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Question"><span class="nav-number">1.</span> <span class="nav-text">Question</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Answer_1"><span class="nav-number">2.</span> <span class="nav-text">Answer 1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why_doing_exchange_in_a_loop?"><span class="nav-number">2.1.</span> <span class="nav-text">Why doing exchange in a loop?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why_to_use_weak_instead_of_strong?"><span class="nav-number">2.2.</span> <span class="nav-text">Why to use weak instead of strong?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#When_should_you_use_weak_and_when_strong?"><span class="nav-number">2.3.</span> <span class="nav-text">When should you use weak and when strong?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why_is_!expected_in_the_example?"><span class="nav-number">2.4.</span> <span class="nav-text">Why is !expected in the example?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#About_your_last_question"><span class="nav-number">2.5.</span> <span class="nav-text">About your last question</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Answer_2"><span class="nav-number">3.</span> <span class="nav-text">Answer 2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">4.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Question"><span class="nav-number">1.</span> <span class="nav-text">Question</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Answer_1"><span class="nav-number">2.</span> <span class="nav-text">Answer 1</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why_doing_exchange_in_a_loop_3F"><span class="nav-number">2.1.</span> <span class="nav-text">Why doing exchange in a loop?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why_to_use_weak_instead_of_strong_3F"><span class="nav-number">2.2.</span> <span class="nav-text">Why to use weak instead of strong?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#When_should_you_use_weak_and_when_strong_3F"><span class="nav-number">2.3.</span> <span class="nav-text">When should you use weak and when strong?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Why_is__21expected_in_the_example_3F"><span class="nav-number">2.4.</span> <span class="nav-text">Why is !expected in the example?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#About_your_last_question"><span class="nav-number">2.5.</span> <span class="nav-text">About your last question</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Answer_2"><span class="nav-number">3.</span> <span class="nav-text">Answer 2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">4.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -519,7 +519,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

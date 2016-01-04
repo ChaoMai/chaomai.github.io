@@ -261,7 +261,7 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="Approaches_to_Range_Queries">Approaches to Range Queries</h1><ul>
+        <span itemprop="articleBody"><h1 id="Approaches_to_Range_Queries"><a href="#Approaches_to_Range_Queries" class="headerlink" title="Approaches to Range Queries"></a>Approaches to Range Queries</h1><ul>
 <li>STM</li>
 <li>Lock</li>
 <li>Persistent data structures</li>
@@ -271,15 +271,15 @@
 </ul>
 </li>
 </ul>
-<h1 id="Range_Query_in_k-ary_Search_Trees">Range Query in k-ary Search Trees</h1><h2 id="dirty_field"><code>dirty</code> field</h2><p>The <code>dirty</code> field is set to dirty when the leaf is affected by some update operations (<code>helpInsert</code> and <code>helpMark</code>).</p>
-<h2 id="Validate"><code>Validate</code></h2><p>The <code>Validate</code> check all leaves stored in <code>snap</code>. If any <code>dirty</code> field is true, than <code>Validate</code> returns false.</p>
-<h2 id="Range_Query">Range Query</h2><p>The abridged <code>RangeQuery</code> follows few steps,</p>
+<h1 id="Range_Query_in_k-ary_Search_Trees"><a href="#Range_Query_in_k-ary_Search_Trees" class="headerlink" title="Range Query in k-ary Search Trees"></a>Range Query in k-ary Search Trees</h1><h2 id="dirty_field"><a href="#dirty_field" class="headerlink" title="dirty field"></a><code>dirty</code> field</h2><p>The <code>dirty</code> field is set to dirty when the leaf is affected by some update operations (<code>helpInsert</code> and <code>helpMark</code>).</p>
+<h2 id="Validate"><a href="#Validate" class="headerlink" title="Validate"></a><code>Validate</code></h2><p>The <code>Validate</code> check all leaves stored in <code>snap</code>. If any <code>dirty</code> field is true, than <code>Validate</code> returns false.</p>
+<h2 id="Range_Query"><a href="#Range_Query" class="headerlink" title="Range Query"></a>Range Query</h2><p>The abridged <code>RangeQuery</code> follows few steps,</p>
 <ol>
 <li>Use DFS to populate <code>snap</code> with all leaves that may contain a key in range.</li>
 <li>Invoke <code>Validate</code> to check all the leaves stored in <code>snap</code>. If <code>Validate</code> returns false, than retry.</li>
 <li>Extract all keys in range from <code>snap</code> and return.</li>
 </ol>
-<h1 id="Differences_between_snaphots_in_BST_and_range_query_in_k-ary_search_trees">Differences between snaphots in BST and range query in k-ary search trees</h1><table>
+<h1 id="Differences_between_snaphots_in_BST_and_range_query_in_k-ary_search_trees"><a href="#Differences_between_snaphots_in_BST_and_range_query_in_k-ary_search_trees" class="headerlink" title="Differences between snaphots in BST and range query in k-ary search trees"></a>Differences between snaphots in BST and range query in k-ary search trees</h1><table>
 <thead>
 <tr>
 <th>-</th>
@@ -301,7 +301,7 @@
 </tbody>
 </table>
 <p><em>Just personal opinion, may contain errors.</em></p>
-<h1 id="Some_Doubts">Some Doubts</h1><h2 id="Theorem_3_in_Proof">Theorem 3 in Proof</h2><p>In the paper,</p>
+<h1 id="Some_Doubts"><a href="#Some_Doubts" class="headerlink" title="Some Doubts"></a>Some Doubts</h1><h2 id="Theorem_3_in_Proof"><a href="#Theorem_3_in_Proof" class="headerlink" title="Theorem 3 in Proof"></a>Theorem 3 in Proof</h2><p>In the paper,</p>
 <blockquote>
 <p>Theorem 3. All operations are non-blocking.</p>
 </blockquote>
@@ -311,7 +311,7 @@
 <p>My question:<br>If the update operations are always exist (insertion and deletion are frequently invoked), than <code>RangeQuery</code> cannot return. So the <code>RangeQuery</code> is actually blocked by these update operations.</p>
 <p>Answer from Brown:<br>However, your intuition about range queries blocking is not quite correct. What you are referring to is <strong>starvation</strong>. <strong>Starvation can happen in any algorithm that is not wait-free.</strong> In order to be non-blocking, the algorithm simply needs to guarantee that, if operations are performed infinitely often, then operations will succeed infinitely often. (I.e., the system, as a whole, makes progress, even if some thread(s) starve.) Equivalently, a non-blocking progress guarantee simply states that it is impossible for /all/ threads to block forever. In your example, the fact that a range query is blocked by updates is not a problem, because the updates make progress.</p>
 </blockquote>
-<h1 id="References">References</h1><ol>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
 <li>Non-blocking k-ary Search Trees, Trevor Brown, Joanna Helga</li>
 <li>Range Queries in Non-blocking k-ary Search Trees, Trevor Brown, Hillel Avni</li>
 </ol>
@@ -416,7 +416,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -530,7 +530,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

@@ -254,7 +254,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -pthread -E <span class="operator">-d</span>M test.c &gt; dm.pthread.txt</span><br><span class="line">$ gcc          -E <span class="operator">-d</span>M test.c &gt; dm.nopthread.txt</span><br><span class="line">$ diff dm.pthread.txt dm.nopthread.txt</span><br><span class="line"><span class="number">152</span>d151</span><br><span class="line">&lt; <span class="comment">#define _REENTRANT 1</span></span><br><span class="line"><span class="number">208</span>d206</span><br><span class="line">&lt; <span class="comment">#define __USE_REENTRANT 1</span></span><br></pre></td></tr></table></figure>
 <p>-lpthread只会告诉编译器，要链接到pthread库，但是这些宏不会被定义。</p>
 <p>编译时，应该使用-pthread。</p>
-<h1 id="reference">reference</h1><ol>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><ol>
 <li><a href="http://stackoverflow.com/questions/23250863/difference-between-pthread-and-lpthread-while-compiling" target="_blank" rel="external">difference-between-pthread-and-lpthread-while-compiling</a></li>
 </ol>
 </span>
@@ -356,7 +356,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -470,7 +470,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

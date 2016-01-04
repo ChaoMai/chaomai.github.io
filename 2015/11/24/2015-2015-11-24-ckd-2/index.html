@@ -261,7 +261,7 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="Basic_Idea">Basic Idea</h1><p>这里使用的方法是Trevor Brown的non-blocking binary search tree的<a href="http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java" target="_blank" rel="external">实现</a>里面提到的，并没有在论文里说明。</p>
+        <span itemprop="articleBody"><h1 id="Basic_Idea"><a href="#Basic_Idea" class="headerlink" title="Basic Idea"></a>Basic Idea</h1><p>这里使用的方法是Trevor Brown的non-blocking binary search tree的<a href="http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java" target="_blank" rel="external">实现</a>里面提到的，并没有在论文里说明。</p>
 <p>基本思想非常简单，</p>
 <ol>
 <li>读取并保存所有node；</li>
@@ -270,7 +270,7 @@
 </ol>
 <p>这里的snapshot和上一篇中的就有很大不同。上一篇的snapshot基本上可以算作是在调用<code>snapshot()</code>的时候，tree的状态（特殊情况下需要retry）；而这里的必须保证，从第1步完成读取的时刻起，到第2步检查结束，都没有update发生，才能返回snapshot。</p>
 <p>要注意的是，在第1和2步中，需要保存和检查所有的node（internal node和leaf）。这不同于使用GCAS的snapshot，只update internal node，在某些时刻，某些leaf实际上是共享的。</p>
-<h1 id="size_in_Snapshot"><code>size</code> in Snapshot</h1><h1 id="References">References</h1><ol>
+<h1 id="size_in_Snapshot"><a href="#size_in_Snapshot" class="headerlink" title="size in Snapshot"></a><code>size</code> in Snapshot</h1><h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
 <li><a href="http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java" target="_blank" rel="external">http://www.cs.utoronto.ca/~tabrown/ksts/StaticDictionary5.java</a>, Trevor Brown</li>
 </ol>
 </span>
@@ -374,7 +374,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -488,7 +488,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

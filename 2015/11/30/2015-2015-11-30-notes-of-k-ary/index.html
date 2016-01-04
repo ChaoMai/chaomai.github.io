@@ -264,7 +264,7 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="About_k-ary_Search_Trees">About k-ary Search Trees</h1><ul>
+        <span itemprop="articleBody"><h1 id="About_k-ary_Search_Trees"><a href="#About_k-ary_Search_Trees" class="headerlink" title="About k-ary Search Trees"></a>About k-ary Search Trees</h1><ul>
 <li>No duplicate key</li>
 <li>Leaf-oriented k-ST</li>
 <li>Each leaf has zero children and at most k - 1 keys</li>
@@ -273,43 +273,43 @@
 <p>Non-blocking k-ary Search Trees需要平衡，tree的深度和每个internal node进行search和update时的work总量。</p>
 <p>大的k–&gt;减少tree的depth，但是增加了每个internal node进行search和update时的work总量。</p>
 <p>k = 4的时候，在高contention和低contention的情况下，性能都是最好的。<br>高contention时，较少的小k减少了update时影响到的key的数目，增加了并行度；低contention时，较少的depth加快了search，加快了update。</p>
-<h1 id="From_BST_to_k-ary_Search_Trees">From BST to k-ary Search Trees</h1><ul>
+<h1 id="From_BST_to_k-ary_Search_Trees"><a href="#From_BST_to_k-ary_Search_Trees" class="headerlink" title="From BST to k-ary Search Trees"></a>From BST to k-ary Search Trees</h1><ul>
 <li>Insert: the BST’s insertion -&gt; sprouting insertion</li>
 <li>Delete: the  BST’s deletion -&gt; pruning deletion</li>
 <li>Coordination: extended from BST</li>
 </ul>
-<h1 id="Data_Structure">Data Structure</h1><h2 id="Nodes">Nodes</h2><p>Each <strong>leaf</strong> has zero children and <strong>at most</strong> k − 1 keys (zero keys is permitted). Each <strong>internal node</strong> has exactly k children and k − 1 keys. Inside each node, keys are maintained in <strong>increasing order</strong>.</p>
-<h2 id="Dummy_Nodes">Dummy Nodes</h2><p>Dummy nodes are used in BST to avoid special cases when there is no parent or grandparent to flag and mark. The following pruning deletion operation will meet similar problem. When perform pruning deletion, the leaf may <em>won’t have a parent or grandparent</em>. To avoid dealing with that, <strong>dummy nodes</strong> and <strong>empty leaves</strong> used again when initializing the tree.</p>
+<h1 id="Data_Structure"><a href="#Data_Structure" class="headerlink" title="Data Structure"></a>Data Structure</h1><h2 id="Nodes"><a href="#Nodes" class="headerlink" title="Nodes"></a>Nodes</h2><p>Each <strong>leaf</strong> has zero children and <strong>at most</strong> k − 1 keys (zero keys is permitted). Each <strong>internal node</strong> has exactly k children and k − 1 keys. Inside each node, keys are maintained in <strong>increasing order</strong>.</p>
+<h2 id="Dummy_Nodes"><a href="#Dummy_Nodes" class="headerlink" title="Dummy Nodes"></a>Dummy Nodes</h2><p>Dummy nodes are used in BST to avoid special cases when there is no parent or grandparent to flag and mark. The following pruning deletion operation will meet similar problem. When perform pruning deletion, the leaf may <em>won’t have a parent or grandparent</em>. To avoid dealing with that, <strong>dummy nodes</strong> and <strong>empty leaves</strong> used again when initializing the tree.</p>
 <p><img src="http://7vilyb.com1.z0.glb.clouddn.com/k-ary_dummy.png" alt=""></p>
 <ul>
 <li>Dummy nodes: each have k − 1 keys valued $\infty$.</li>
 <li>Empty leaves: 2k - 1 empty keys in total.</li>
 </ul>
-<h1 id="Sequential_Operations">Sequential Operations</h1><h2 id="Insertion">Insertion</h2><p>Search for the key first.</p>
-<h3 id="Sprouting_Insertion">Sprouting Insertion</h3><p>If the leaf is full, replaces the leaf by a <em>newly created</em> subtree.</p>
+<h1 id="Sequential_Operations"><a href="#Sequential_Operations" class="headerlink" title="Sequential Operations"></a>Sequential Operations</h1><h2 id="Insertion"><a href="#Insertion" class="headerlink" title="Insertion"></a>Insertion</h2><p>Search for the key first.</p>
+<h3 id="Sprouting_Insertion"><a href="#Sprouting_Insertion" class="headerlink" title="Sprouting Insertion"></a>Sprouting Insertion</h3><p>If the leaf is full, replaces the leaf by a <em>newly created</em> subtree.</p>
 <p>The newly created subtree:</p>
 <ul>
 <li>The k - 1 greatest keys among the original k - 1 keys and the new key.</li>
 <li>The children are k (the original k - 1 keys and the new key) <em>new</em> nodes.</li>
 </ul>
-<h3 id="Simple_Insertion">Simple Insertion</h3><p>If the leaf is full, replaces the leaf by a <em>newly</em> leaf with k keys (the original k - 1 keys and the new key).</p>
-<h2 id="Deletion">Deletion</h2><p>First search for the key.</p>
-<h3 id="Pruning_Deletion">Pruning Deletion</h3><p>If the leaf has one key <strong>and</strong> the parent of leaf has <em>exactly two non-empty children</em>, replace the parent with the sibling of leaf.</p>
-<h3 id="Simple_Deletion">Simple Deletion</h3><p>If the leaf has more than one key <strong>or</strong> the parent of leaf has more than two non-empty children, replace the leaf by a <em>new</em> leaf with key removed.</p>
-<h1 id="Coordination">Coordination</h1><p>Interleaved execution between concurrent updates in some particular order may cause problems (of cause).</p>
+<h3 id="Simple_Insertion"><a href="#Simple_Insertion" class="headerlink" title="Simple Insertion"></a>Simple Insertion</h3><p>If the leaf is full, replaces the leaf by a <em>newly</em> leaf with k keys (the original k - 1 keys and the new key).</p>
+<h2 id="Deletion"><a href="#Deletion" class="headerlink" title="Deletion"></a>Deletion</h2><p>First search for the key.</p>
+<h3 id="Pruning_Deletion"><a href="#Pruning_Deletion" class="headerlink" title="Pruning Deletion"></a>Pruning Deletion</h3><p>If the leaf has one key <strong>and</strong> the parent of leaf has <em>exactly two non-empty children</em>, replace the parent with the sibling of leaf.</p>
+<h3 id="Simple_Deletion"><a href="#Simple_Deletion" class="headerlink" title="Simple Deletion"></a>Simple Deletion</h3><p>If the leaf has more than one key <strong>or</strong> the parent of leaf has more than two non-empty children, replace the leaf by a <em>new</em> leaf with key removed.</p>
+<h1 id="Coordination"><a href="#Coordination" class="headerlink" title="Coordination"></a>Coordination</h1><p>Interleaved execution between concurrent updates in some particular order may cause problems (of cause).</p>
 <p>The Coordination is similar to BST, but here the scheme is extended.</p>
 <p>The following <code>UpdateStep</code> (<code>ReplaceFlag</code>, <code>PruneFlag</code> and <code>Mark</code>) objects is just like lock.</p>
-<h2 id="ReplaceFlag">ReplaceFlag</h2><p>For both types of insertion and simple deletion.</p>
-<h2 id="PruneFlag">PruneFlag</h2><p>For pruning deletion.</p>
-<h2 id="Mark">Mark</h2><p>Before an internal node is to disappear from the tree, it must ﬁrst be marked. Once a internal node is marked, its child pointer will never be changed.</p>
-<h2 id="Clean">Clean</h2><p>Initial stat of the <code>pending</code> filed in internal node.</p>
-<h1 id="Help_Mechanism">Help Mechanism</h1><p>If an operation is unexpectedly delayed while holding access to a ﬂagged or marked node, the progress cannot be guaranteed. So helping mechanism is necessary. The method taken here is similar to the one in BST.</p>
+<h2 id="ReplaceFlag"><a href="#ReplaceFlag" class="headerlink" title="ReplaceFlag"></a>ReplaceFlag</h2><p>For both types of insertion and simple deletion.</p>
+<h2 id="PruneFlag"><a href="#PruneFlag" class="headerlink" title="PruneFlag"></a>PruneFlag</h2><p>For pruning deletion.</p>
+<h2 id="Mark"><a href="#Mark" class="headerlink" title="Mark"></a>Mark</h2><p>Before an internal node is to disappear from the tree, it must ﬁrst be marked. Once a internal node is marked, its child pointer will never be changed.</p>
+<h2 id="Clean"><a href="#Clean" class="headerlink" title="Clean"></a>Clean</h2><p>Initial stat of the <code>pending</code> filed in internal node.</p>
+<h1 id="Help_Mechanism"><a href="#Help_Mechanism" class="headerlink" title="Help Mechanism"></a>Help Mechanism</h1><p>If an operation is unexpectedly delayed while holding access to a ﬂagged or marked node, the progress cannot be guaranteed. So helping mechanism is necessary. The method taken here is similar to the one in BST.</p>
 <p>But the helping <strong>should not be abused</strong>. To avoid many <em>duplicate operation</em>, the helping is used in limited cases.</p>
-<h1 id="On_The_Whole">On The Whole</h1><p>Just for clear the thought.</p>
+<h1 id="On_The_Whole"><a href="#On_The_Whole" class="headerlink" title="On The Whole"></a>On The Whole</h1><p>Just for clear the thought.</p>
 <p>The following picture isn’t presented in the paper. Because the idea in the paper is similar to BST. So it easy to imitate the original one in BST.</p>
 <p><img src="http://7vilyb.com1.z0.glb.clouddn.com/k-ary_states.png" alt=""></p>
 <p><code>ReplaceFlag</code> is used in simple insertion, sprouting insertion and simple deletion. So the original notations, <code>ichild ...</code>, <code>dchild ...</code>, etc won’t apply.</p>
-<h1 id="Differences_between_BST_and_k-ary_Search_Trees">Differences between BST and k-ary Search Trees</h1><h2 id="Deletion-1">Deletion</h2><p>There two types of deletion in k-ary Search Trees. And a particular interleave of insertion and deletion would result in key lost.</p>
+<h1 id="Differences_between_BST_and_k-ary_Search_Trees"><a href="#Differences_between_BST_and_k-ary_Search_Trees" class="headerlink" title="Differences between BST and k-ary Search Trees"></a>Differences between BST and k-ary Search Trees</h1><h2 id="Deletion-1"><a href="#Deletion-1" class="headerlink" title="Deletion"></a>Deletion</h2><p>There two types of deletion in k-ary Search Trees. And a particular interleave of insertion and deletion would result in key lost.</p>
 <p><img src="http://7vilyb.com1.z0.glb.clouddn.com/k-ary_deletion.png" alt=""></p>
 <p>Suppose there are some nodes in k-ary search tree (see above figure) and two threads concurrently perform update.</p>
 <ul>
@@ -329,10 +329,10 @@
 <p>Above problem won’t happen in BST’s deletion, <em>since the new node (internal node or leaf) is always built from scratch.</em></p>
 <p>So the <code>pending</code> of p must be read before <code>PruneFlag</code> set at gp and checked when performing mark cas. If any insertion occurred, the <code>pending</code> of p will be bound to changed and deletion will perform backtracking cas and restart.</p>
 <p>BTY: In BST and k-ary search tree, the <code>pending</code> of p is already  read by the end of search and the above prerequisites in implementation is <strong>already done</strong>. <em>But it has special purpose and meaning here.</em></p>
-<h1 id="Some_Doubts">Some Doubts</h1><h2 id="CAS_and_CASet">CAS and CASet</h2><p>In k-ary search trees, CASet (compare-and-set) is used to implement CAS.But the prerequisites is the algorithm doesn’t suffer from the ABA problem.</p>
+<h1 id="Some_Doubts"><a href="#Some_Doubts" class="headerlink" title="Some Doubts"></a>Some Doubts</h1><h2 id="CAS_and_CASet"><a href="#CAS_and_CASet" class="headerlink" title="CAS and CASet"></a>CAS and CASet</h2><p>In k-ary search trees, CASet (compare-and-set) is used to implement CAS.But the prerequisites is the algorithm doesn’t suffer from the ABA problem.</p>
 <figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x.<span class="type">CAS</span>(expect, value)</span><br><span class="line">  <span class="literal">result</span> = read(x)</span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">result</span> != expect) <span class="keyword">return</span> <span class="literal">result</span></span><br><span class="line">  <span class="keyword">if</span> (x.<span class="type">CASet</span>(expect, value)) <span class="keyword">return</span> expect</span><br><span class="line">  <span class="keyword">return</span> read(x)</span><br></pre></td></tr></table></figure>
 <p>The reason why these algorithms doesn’t suffer from ABA problem is quite clear for me. But what does the prerequisites (doesn’t suffer from the ABA) for?</p>
-<h1 id="References">References</h1><ol>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
 <li>Non-blocking k-ary Search Trees, Trevor Brown, Joanna Helga</li>
 <li>Non-blocking Binary Search Trees, Faith Ellen, Panagiota Fatourou, Eric Ruppert, Franck van Breugel</li>
 </ol>
@@ -437,7 +437,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -551,7 +551,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

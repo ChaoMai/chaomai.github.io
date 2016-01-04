@@ -266,16 +266,16 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="specification">specification</h1><ul>
+        <span itemprop="articleBody"><h1 id="specification"><a href="#specification" class="headerlink" title="specification"></a>specification</h1><ul>
 <li>ordered（ascending）</li>
 <li>no duplicated key</li>
 </ul>
-<h1 id="features">features</h1><ul>
+<h1 id="features"><a href="#features" class="headerlink" title="features"></a>features</h1><ul>
 <li>non-blocking</li>
 <li>linearizable</li>
 <li>compare-and-swap based</li>
 </ul>
-<h1 id="仅使用一个cas的缺陷">仅使用一个cas的缺陷</h1><ul>
+<h1 id="u4EC5_u4F7F_u7528_u4E00_u4E2Acas_u7684_u7F3A_u9677"><a href="#u4EC5_u4F7F_u7528_u4E00_u4E2Acas_u7684_u7F3A_u9677" class="headerlink" title="仅使用一个cas的缺陷"></a>仅使用一个cas的缺陷</h1><ul>
 <li><p>insert<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_single_insert.png" alt=""></p>
 </li>
 <li><p>delete<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_single_delete.png" alt=""></p>
@@ -286,20 +286,20 @@
 <li>insert and delete<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_insert_and_delete.png" alt=""></li>
 </ul>
 <p>但是如果一个insert和一个delete同时进行，问题就会出现。删除30的时候，一个cas无法保证，也不能避免10和30之间的修改。</p>
-<h1 id="解决方法：用两个cas">解决方法：用两个cas</h1><h2 id="基本思想">基本思想</h2><ul>
+<h1 id="u89E3_u51B3_u65B9_u6CD5_uFF1A_u7528_u4E24_u4E2Acas"><a href="#u89E3_u51B3_u65B9_u6CD5_uFF1A_u7528_u4E24_u4E2Acas" class="headerlink" title="解决方法：用两个cas"></a>解决方法：用两个cas</h1><h2 id="u57FA_u672C_u601D_u60F3"><a href="#u57FA_u672C_u601D_u60F3" class="headerlink" title="基本思想"></a>基本思想</h2><ul>
 <li><p>stage 1<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_logically_delete.png" alt=""><br>  用一个cas mark将要被删除结点的next field（logically deleted）；</p>
 </li>
 <li><p>stage 2<br>  <img src="http://7vilyb.com1.z0.glb.clouddn.com/harris_physically_delete.png" alt=""><br>  另一个cas来进行删除结点（physically deleted）。</p>
 </li>
 </ul>
 <p>stage 1结束以后，list的结构保持不变，mark以后的结点，避免了新节点insert到该结点的后面。</p>
-<h1 id="algorithm">algorithm</h1><h2 id="marked_and_unmarked">marked and unmarked</h2><blockquote>
+<h1 id="algorithm"><a href="#algorithm" class="headerlink" title="algorithm"></a>algorithm</h1><h2 id="marked_and_unmarked"><a href="#marked_and_unmarked" class="headerlink" title="marked and unmarked"></a>marked and unmarked</h2><blockquote>
 <p>A node is marked if and only if its next field is marked.</p>
 </blockquote>
 <p>这句话是关键：论文中的mark，实际上是mark了要被删除结点的next指针，而不是要被删除的结点本身。<br>我觉得从另一个视角来看，mark的效果是，不允许改变<strong>要被删除结点的后继结点</strong>。这点从避免前文提到的问题的角度来说，也应该是正确的理解。</p>
 <p><code>get_marked_reference</code>和<code>get_unmarked_reference</code>是以copy的形式传入reference，mark或者unmark以后的并不是reference本身。</p>
-<h2 id="数据结构">数据结构</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> Node &#123;</span><br><span class="line">  key_type key;</span><br><span class="line">  node *next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="built_in">list</span> &#123;</span><br><span class="line">  node *head;</span><br><span class="line">  node *tail;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="search">search</h2><p>满足这么几个要求：</p>
+<h2 id="u6570_u636E_u7ED3_u6784"><a href="#u6570_u636E_u7ED3_u6784" class="headerlink" title="数据结构"></a>数据结构</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> Node &#123;</span><br><span class="line">  key_type key;</span><br><span class="line">  node *next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="built_in">list</span> &#123;</span><br><span class="line">  node *head;</span><br><span class="line">  node *tail;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="search"><a href="#search" class="headerlink" title="search"></a>search</h2><p>满足这么几个要求：</p>
 <ul>
 <li>left_node.key &lt; search_key &lt;= right_node.key</li>
 <li>left_node and right_node are unmarked</li>
@@ -314,11 +314,11 @@
 </li>
 <li>移除left_node and right_node之间的一个或多个marked结点</li>
 </ul>
-<h2 id="insert">insert</h2><ul>
+<h2 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h2><ul>
 <li>找到left_node和right_node</li>
 <li>cas插入</li>
 </ul>
-<h2 id="delete">delete</h2><p>如前文解决方法中描述的，分两个阶段：</p>
+<h2 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h2><p>如前文解决方法中描述的，分两个阶段：</p>
 <ul>
 <li>stage 1:<ul>
 <li>找到left_node和right_node</li>
@@ -334,11 +334,11 @@
 </ul>
 </li>
 </ul>
-<h2 id="find">find</h2><ul>
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><ul>
 <li>找到left_node和right_node</li>
 <li>right_node == search_key</li>
 </ul>
-<h1 id="Reference">Reference</h1><ol>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
 <li>A Pragmatic Implementation of Non-Blocking Linked-lists, Timothy L. Harris.</li>
 </ol>
 </span>
@@ -442,7 +442,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -535,7 +535,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#specification"><span class="nav-number">1.</span> <span class="nav-text">specification</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#features"><span class="nav-number">2.</span> <span class="nav-text">features</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#仅使用一个cas的缺陷"><span class="nav-number">3.</span> <span class="nav-text">仅使用一个cas的缺陷</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决方法：用两个cas"><span class="nav-number">4.</span> <span class="nav-text">解决方法：用两个cas</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本思想"><span class="nav-number">4.1.</span> <span class="nav-text">基本思想</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#algorithm"><span class="nav-number">5.</span> <span class="nav-text">algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#marked_and_unmarked"><span class="nav-number">5.1.</span> <span class="nav-text">marked and unmarked</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构"><span class="nav-number">5.2.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#search"><span class="nav-number">5.3.</span> <span class="nav-text">search</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#insert"><span class="nav-number">5.4.</span> <span class="nav-text">insert</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delete"><span class="nav-number">5.5.</span> <span class="nav-text">delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-number">5.6.</span> <span class="nav-text">find</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#specification"><span class="nav-number">1.</span> <span class="nav-text">specification</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#features"><span class="nav-number">2.</span> <span class="nav-text">features</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u4EC5_u4F7F_u7528_u4E00_u4E2Acas_u7684_u7F3A_u9677"><span class="nav-number">3.</span> <span class="nav-text">仅使用一个cas的缺陷</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u89E3_u51B3_u65B9_u6CD5_uFF1A_u7528_u4E24_u4E2Acas"><span class="nav-number">4.</span> <span class="nav-text">解决方法：用两个cas</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u57FA_u672C_u601D_u60F3"><span class="nav-number">4.1.</span> <span class="nav-text">基本思想</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#algorithm"><span class="nav-number">5.</span> <span class="nav-text">algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#marked_and_unmarked"><span class="nav-number">5.1.</span> <span class="nav-text">marked and unmarked</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u6570_u636E_u7ED3_u6784"><span class="nav-number">5.2.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#search"><span class="nav-number">5.3.</span> <span class="nav-text">search</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#insert"><span class="nav-number">5.4.</span> <span class="nav-text">insert</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delete"><span class="nav-number">5.5.</span> <span class="nav-text">delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-number">5.6.</span> <span class="nav-text">find</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -556,7 +556,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

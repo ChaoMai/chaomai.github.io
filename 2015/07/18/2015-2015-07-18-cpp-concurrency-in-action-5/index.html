@@ -249,21 +249,21 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="Memory_model_basics">Memory model basics</h1><p>two aspects:</p>
+        <span itemprop="articleBody"><h1 id="Memory_model_basics"><a href="#Memory_model_basics" class="headerlink" title="Memory model basics"></a>Memory model basics</h1><p>two aspects:</p>
 <ul>
 <li>the basic structural aspects;</li>
 <li>the concurrency aspects.</li>
 </ul>
-<h2 id="Objects_and_memory_location">Objects and memory location</h2><p>C++程序中所有的数据都是由object组成，object是”a region of storage”。一个对象存储在一个或多个<strong>memory location</strong>。</p>
+<h2 id="Objects_and_memory_location"><a href="#Objects_and_memory_location" class="headerlink" title="Objects and memory location"></a>Objects and memory location</h2><p>C++程序中所有的数据都是由object组成，object是”a region of storage”。一个对象存储在一个或多个<strong>memory location</strong>。</p>
 <p>每个memory location，</p>
 <ul>
 <li>要么是，一个标量的一个对象（或子对象）；</li>
 <li>要么是，相邻bit fields的序列。（虽然相邻的bit fields是不同对象，它们仍然算作相同的memory location，除非用长度为0的bit fields隔开。）</li>
 </ul>
-<h2 id="Modification_orders">Modification orders</h2><p>C++程序中的每个对象都定义了一个modification order，它由程序中的所有线程对这个对象的write组成， starting with the object’s initialization。</p>
+<h2 id="Modification_orders"><a href="#Modification_orders" class="headerlink" title="Modification orders"></a>Modification orders</h2><p>C++程序中的每个对象都定义了一个modification order，它由程序中的所有线程对这个对象的write组成， starting with the object’s initialization。</p>
 <p>在绝大多数情况下，这个order在每次运行的时候都是不同的，但对于一个给定的执行，所有的线程都必须agree on the order。如果不使用原子类型，你就必须提供有效的同步来使得这些线程都agree on the modification order of each variable。但是线程并没有必要agree on the relative order of separate objects。</p>
-<h1 id="Atomic_Operations_and_types_in_C++">Atomic Operations and types in C++</h1><p>一个atomic operation是<strong>indivisible operation</strong>，要么完成，要么不完成。</p>
-<h2 id="The_standard_atomic_types">The standard atomic types</h2><p><code>is_lock_free()</code>：给定类型的操作是直接由atomic instructions完成，还是由编译器和库提供的内部锁完成。</p>
+<h1 id="Atomic_Operations_and_types_in_C++"><a href="#Atomic_Operations_and_types_in_C++" class="headerlink" title="Atomic Operations and types in C++"></a>Atomic Operations and types in C++</h1><p>一个atomic operation是<strong>indivisible operation</strong>，要么完成，要么不完成。</p>
+<h2 id="The_standard_atomic_types"><a href="#The_standard_atomic_types" class="headerlink" title="The standard atomic types"></a>The standard atomic types</h2><p><code>is_lock_free()</code>：给定类型的操作是直接由atomic instructions完成，还是由编译器和库提供的内部锁完成。</p>
 <p><code>std::atomic_flag</code>没有提供<code>is_lock_free()</code>成员函数。因为在这个类型上的操作required to be lock-free，一旦有了这个lock-free的类型，就能够以它为基础，进而实现所有其他的atomic类型。</p>
 <p>在大多数平台上，所有内置类型的atomic变种都<strong>应该</strong>是lock-free的，但这并不是必须的。</p>
 <p>要注意的是，由于历史的原因，在有的平台，atomic类型指的不一定是<code>std::atomic&lt;&gt;</code>的specialization（如：<code>atomic_bool</code>和<code>std::atomic&lt;bool&gt;</code>）。如果混用，就可能导致不兼容的情况出现。</p>
@@ -460,12 +460,12 @@
 <li>Read-modify-write</li>
 </ol>
 <p>默认是<code>memory_order_seq_cst</code>。</p>
-<h2 id="Operations_on_std::atomic_flag">Operations on <code>std::atomic_flag</code></h2><p>代表一个boolean flag，只能是两种状态：set或clear，并且总是starts clear。</p>
+<h2 id="Operations_on_std_3A_3Aatomic_flag"><a href="#Operations_on_std_3A_3Aatomic_flag" class="headerlink" title="Operations on std::atomic_flag"></a>Operations on <code>std::atomic_flag</code></h2><p>代表一个boolean flag，只能是两种状态：set或clear，并且总是starts clear。</p>
 <p>必须用<code>ATOMIC_FLAG_INIT</code>来初始化，<code>std::atomic_flag guard = ATOMIC_FLAG_INIT</code>。这是唯一需要使用这样的特殊方式来初始化的类型，也是<strong>唯一一个</strong>保证lock-free的。</p>
 <p>如果是<code>static</code>，那么在首次操作flag的时候初始化。</p>
 <p>用于实现spinlock，</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> spinlock_mutex &#123;</span><br><span class="line">    <span class="built_in">std</span>::atomic_flag flag;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    spinlock_mutex():</span><br><span class="line">        flag(ATOMIC_FLAG_INIT) &#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(flag.test_and_set(<span class="built_in">std</span>::memory_order_acquire));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        flag.clear(<span class="built_in">std</span>::memory_order_release);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="Operations_on_std::atomic&lt;bool&gt;">Operations on <code>std::atomic&lt;bool&gt;</code></h2><p>可用nonatomic bool来初始化，还可以向实例赋nonatomic bool值，<strong><code>std::atomic&lt;bool&gt;</code>可能不是lock-free的！</strong></p>
+<h2 id="Operations_on_std_3A_3Aatomic_26lt_3Bbool_26gt_3B"><a href="#Operations_on_std_3A_3Aatomic_26lt_3Bbool_26gt_3B" class="headerlink" title="Operations on std::atomic&lt;bool&gt;"></a>Operations on <code>std::atomic&lt;bool&gt;</code></h2><p>可用nonatomic bool来初始化，还可以向实例赋nonatomic bool值，<strong><code>std::atomic&lt;bool&gt;</code>可能不是lock-free的！</strong></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">bool</span>&gt; b(<span class="literal">true</span>);</span><br><span class="line">b = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>write：<code>store()</code>；</li>
@@ -488,7 +488,7 @@
 <li>它们是read-modify-write operation。</li>
 </ol>
 <p><em>蛋疼的作者啊，很多地方扯到memory-ordering语义，但是总是说“leave to section 5.3…”</em></p>
-<h2 id="Operations_on_std::atomic&lt;T*&gt;">Operations on <code>std::atomic&lt;T*&gt;</code></h2><p><code>std::atomic&lt;bool&gt;</code>有的成员函数，这个也有。</p>
+<h2 id="Operations_on_std_3A_3Aatomic_26lt_3BT*_26gt_3B"><a href="#Operations_on_std_3A_3Aatomic_26lt_3BT*_26gt_3B" class="headerlink" title="Operations on std::atomic&lt;T*&gt;"></a>Operations on <code>std::atomic&lt;T*&gt;</code></h2><p><code>std::atomic&lt;bool&gt;</code>有的成员函数，这个也有。</p>
 <p><code>std::atomic&lt;T*&gt;</code>还提供了pointer arithmetic operations，由<code>fetch_add()</code>和<code>fetch_sub()</code>实现。</p>
 <p><strong><code>fetch_add()</code>和<code>fetch_sub()</code></strong></p>
 <ol>
@@ -497,8 +497,8 @@
  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Foo&#123;&#125;;</span><br><span class="line">Foo some_array[<span class="number">5</span>];</span><br><span class="line"><span class="built_in">std</span>::atomic&lt;Foo*&gt; p(some_array);</span><br><span class="line">Foo* x=p.fetch_add(<span class="number">2</span>);</span><br><span class="line">assert(x==some_array);</span><br><span class="line">assert(p.load()==&amp;some_array[<span class="number">2</span>]);</span><br><span class="line">x=(p-=<span class="number">1</span>);</span><br><span class="line">assert(x==&amp;some_array[<span class="number">1</span>]);</span><br><span class="line">assert(p.load()==&amp;some_array[<span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="Operations_on_standard_atomic_integral_types">Operations on standard atomic integral types</h2><p>Only division, multiplication, and shift operators are missing。因为atomic integral types通常作为计数器或位域来使用，如果需要额外的操作，可以在loop中用<code>compare_exchange_weak()</code>来实现。</p>
-<h2 id="The_std::atomic&lt;&gt;_primary_class_template">The <code>std::atomic&lt;&gt;</code> primary class template</h2><p>要将user-defined type用于<code>std::atomic&lt;&gt;</code>，UDT必须满足：</p>
+<h2 id="Operations_on_standard_atomic_integral_types"><a href="#Operations_on_standard_atomic_integral_types" class="headerlink" title="Operations on standard atomic integral types"></a>Operations on standard atomic integral types</h2><p>Only division, multiplication, and shift operators are missing。因为atomic integral types通常作为计数器或位域来使用，如果需要额外的操作，可以在loop中用<code>compare_exchange_weak()</code>来实现。</p>
+<h2 id="The_std_3A_3Aatomic_26lt_3B_26gt_3B_primary_class_template"><a href="#The_std_3A_3Aatomic_26lt_3B_26gt_3B_primary_class_template" class="headerlink" title="The std::atomic&lt;&gt; primary class template"></a>The <code>std::atomic&lt;&gt;</code> primary class template</h2><p>要将user-defined type用于<code>std::atomic&lt;&gt;</code>，UDT必须满足：</p>
 <ol>
 <li><p>必须有trivial copy-assignment operator；</p>
 <blockquote>
@@ -530,7 +530,7 @@
 </ol>
 <p><strong><code>std::atomic&lt;float&gt; and std::atomic&lt;double&gt;</code>？</strong></p>
 <p>因为表示的不同，即使相等<code>compare_exchange_strong()</code>也会fail。</p>
-<h2 id="Free_functions_for_atomic_operations">Free functions for atomic operations</h2><p>与原子类型的成员函数相对应，也有相应的非成员函数，大多数前面都会加上<code>atomic_</code>。</p>
+<h2 id="Free_functions_for_atomic_operations"><a href="#Free_functions_for_atomic_operations" class="headerlink" title="Free functions for atomic operations"></a>Free functions for atomic operations</h2><p>与原子类型的成员函数相对应，也有相应的非成员函数，大多数前面都会加上<code>atomic_</code>。</p>
 <p>要注意的地方有：</p>
 <ol>
 <li>用含有<code>_explict</code>的版本来指定memory ordering；</li>
@@ -550,7 +550,7 @@
 <li><p><code>std::shared_ptr&lt;&gt;</code>算是特殊，它非atomic type，但支持load, store, exchange and compare/exchange。这些free functions第一个参数接受<code>std::shared_ptr&lt;&gt;*</code>。</p>
 </li>
 </ol>
-<h1 id="Reference">Reference</h1><ol>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
 <li><a href="http://stackoverflow.com/questions/24437396/stdatomic-flag-as-member-variable" target="_blank" rel="external">std::atomic_flag as member variable</a></li>
 </ol>
 </span>
@@ -658,7 +658,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -751,7 +751,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Memory_model_basics"><span class="nav-number">1.</span> <span class="nav-text">Memory model basics</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Objects_and_memory_location"><span class="nav-number">1.1.</span> <span class="nav-text">Objects and memory location</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Modification_orders"><span class="nav-number">1.2.</span> <span class="nav-text">Modification orders</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Atomic_Operations_and_types_in_C++"><span class="nav-number">2.</span> <span class="nav-text">Atomic Operations and types in C++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#The_standard_atomic_types"><span class="nav-number">2.1.</span> <span class="nav-text">The standard atomic types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operations_on_std::atomic_flag"><span class="nav-number">2.2.</span> <span class="nav-text">Operations on std::atomic_flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operations_on_std::atomic<bool>"><span class="nav-number">2.3.</span> <span class="nav-text">Operations on std::atomic<bool></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operations_on_std::atomic<T*>"><span class="nav-number">2.4.</span> <span class="nav-text">Operations on std::atomic<T*></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operations_on_standard_atomic_integral_types"><span class="nav-number">2.5.</span> <span class="nav-text">Operations on standard atomic integral types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The_std::atomic<>_primary_class_template"><span class="nav-number">2.6.</span> <span class="nav-text">The std::atomic<> primary class template</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Free_functions_for_atomic_operations"><span class="nav-number">2.7.</span> <span class="nav-text">Free functions for atomic operations</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Memory_model_basics"><span class="nav-number">1.</span> <span class="nav-text">Memory model basics</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Objects_and_memory_location"><span class="nav-number">1.1.</span> <span class="nav-text">Objects and memory location</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Modification_orders"><span class="nav-number">1.2.</span> <span class="nav-text">Modification orders</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Atomic_Operations_and_types_in_C++"><span class="nav-number">2.</span> <span class="nav-text">Atomic Operations and types in C++</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#The_standard_atomic_types"><span class="nav-number">2.1.</span> <span class="nav-text">The standard atomic types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operations_on_std_3A_3Aatomic_flag"><span class="nav-number">2.2.</span> <span class="nav-text">Operations on std::atomic_flag</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operations_on_std_3A_3Aatomic_26lt_3Bbool_26gt_3B"><span class="nav-number">2.3.</span> <span class="nav-text">Operations on std::atomic<bool></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operations_on_std_3A_3Aatomic_26lt_3BT*_26gt_3B"><span class="nav-number">2.4.</span> <span class="nav-text">Operations on std::atomic<T*></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Operations_on_standard_atomic_integral_types"><span class="nav-number">2.5.</span> <span class="nav-text">Operations on standard atomic integral types</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The_std_3A_3Aatomic_26lt_3B_26gt_3B_primary_class_template"><span class="nav-number">2.6.</span> <span class="nav-text">The std::atomic<> primary class template</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Free_functions_for_atomic_operations"><span class="nav-number">2.7.</span> <span class="nav-text">Free functions for atomic operations</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -772,7 +772,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

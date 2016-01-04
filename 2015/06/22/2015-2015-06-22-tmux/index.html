@@ -249,11 +249,11 @@
       
 
       
-        <span itemprop="articleBody"><h2 id="Basic">Basic</h2><h3 id="Creating_Named_Sessions">Creating Named Sessions</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new-session <span class="operator">-s</span> basic</span><br></pre></td></tr></table></figure>
+        <span itemprop="articleBody"><h2 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h2><h3 id="Creating_Named_Sessions"><a href="#Creating_Named_Sessions" class="headerlink" title="Creating Named Sessions"></a>Creating Named Sessions</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new-session <span class="operator">-s</span> basic</span><br></pre></td></tr></table></figure>
 <p>or</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new <span class="operator">-s</span> basic</span><br></pre></td></tr></table></figure>
-<h3 id="Detaching_Sessions">Detaching Sessions</h3><p><code>CTRL-b</code>, then <code>d</code></p>
-<h3 id="Reattaching_to_Existing_Sessions">Reattaching to Existing Sessions</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new-session <span class="operator">-s</span> basic</span><br></pre></td></tr></table></figure>
+<h3 id="Detaching_Sessions"><a href="#Detaching_Sessions" class="headerlink" title="Detaching Sessions"></a>Detaching Sessions</h3><p><code>CTRL-b</code>, then <code>d</code></p>
+<h3 id="Reattaching_to_Existing_Sessions"><a href="#Reattaching_to_Existing_Sessions" class="headerlink" title="Reattaching to Existing Sessions"></a>Reattaching to Existing Sessions</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new-session <span class="operator">-s</span> basic</span><br></pre></td></tr></table></figure>
 <p>or</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux ls</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -262,14 +262,14 @@
 <li>If there are multiple sessions, then <code>tmux attach -t second_session</code>. BTY, you can also use this when you only have one session.</li>
 </ol>
 </blockquote>
-<h3 id="Killing_Sessions">Killing Sessions</h3><ul>
+<h3 id="Killing_Sessions"><a href="#Killing_Sessions" class="headerlink" title="Killing Sessions"></a>Killing Sessions</h3><ul>
 <li>In sesssion, use <code>exit</code>.</li>
 <li>Kill specific session when not in session,</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux <span class="built_in">kill</span>-session -t basic</span><br></pre></td></tr></table></figure>
 <p>BTY, if there is no sessions, after typing <code>tmux ls</code>, you will get</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">failed to connect to server: Connection refused</span><br></pre></td></tr></table></figure>
-<h3 id="Creating_and_Naming_Windows">Creating and Naming Windows</h3><ul>
+<h3 id="Creating_and_Naming_Windows"><a href="#Creating_and_Naming_Windows" class="headerlink" title="Creating and Naming Windows"></a>Creating and Naming Windows</h3><ul>
 <li><p>In terminal</p>
 <p>  <code>-n</code>: the name of new window.</p>
   <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new <span class="operator">-s</span> windows -n shell</span><br></pre></td></tr></table></figure>
@@ -279,7 +279,7 @@
 <p>  <code>PREFIX ,</code> will rename the new window.</p>
 </li>
 </ul>
-<h3 id="Moving_Between_Windows">Moving Between Windows</h3><ul>
+<h3 id="Moving_Between_Windows"><a href="#Moving_Between_Windows" class="headerlink" title="Moving Between Windows"></a>Moving Between Windows</h3><ul>
 <li><p>next and previous window</p>
 <p>  <code>PREFIX n</code> and <code>PREFIX p</code></p>
 </li>
@@ -293,12 +293,12 @@
 <p>  <code>PREFIX w</code></p>
 </li>
 </ul>
-<h3 id="Close_a_Window">Close a Window</h3><ul>
+<h3 id="Close_a_Window"><a href="#Close_a_Window" class="headerlink" title="Close a Window"></a>Close a Window</h3><ul>
 <li>type <code>exit</code> after command finish executed.</li>
 <li><code>PREFIX &amp;</code></li>
 </ul>
 <p>If you want to quit a tmux session, you’ll have to close all windows.</p>
-<h3 id="Panes">Panes</h3><ul>
+<h3 id="Panes"><a href="#Panes" class="headerlink" title="Panes"></a>Panes</h3><ul>
 <li>vertically: <code>PREFIX %</code></li>
 <li>horizontally: <code>PREFIX &quot;</code></li>
 <li>switch between them:<ul>
@@ -307,7 +307,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="Pane_Layouts">Pane Layouts</h3><p>types:</p>
+<h3 id="Pane_Layouts"><a href="#Pane_Layouts" class="headerlink" title="Pane Layouts"></a>Pane Layouts</h3><p>types:</p>
 <ul>
 <li>even-horizontal</li>
 <li>even-vertical</li>
@@ -316,11 +316,11 @@
 <li>tiled</li>
 </ul>
 <p>cycle through these types by pressing <code>PREFIX SPACEBAR</code>.</p>
-<h3 id="Closing_Panes">Closing Panes</h3><ul>
+<h3 id="Closing_Panes"><a href="#Closing_Panes" class="headerlink" title="Closing Panes"></a>Closing Panes</h3><ul>
 <li><code>exit</code></li>
 <li><code>PREFIX X</code>. If there is only one pane in current window, it will close this window at the same time.</li>
 </ul>
-<h3 id="Command_Mode">Command Mode</h3><p>press <code>PREFIX :</code> to enter command mode.</p>
+<h3 id="Command_Mode"><a href="#Command_Mode" class="headerlink" title="Command Mode"></a>Command Mode</h3><p>press <code>PREFIX :</code> to enter command mode.</p>
 <ul>
 <li>create new window with a name,</li>
 </ul>
@@ -330,7 +330,7 @@
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new-window -n processes <span class="string">"top"</span></span><br></pre></td></tr></table></figure>
 <p><code>top</code> will execute immediately after new window created. What’s really cool is that <strong>this window close instantly when you press <code>q</code> to close top.</strong></p>
-<h3 id="Quick_Reference">Quick Reference</h3><p><strong>创建会话</strong></p>
+<h3 id="Quick_Reference"><a href="#Quick_Reference" class="headerlink" title="Quick Reference"></a>Quick Reference</h3><p><strong>创建会话</strong></p>
 <table>
 <thead>
 <tr>
@@ -420,7 +420,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="References">References</h2><ol>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
 <li>[tmux-Productive-Mouse-Free-Development_zh(<a href="https://github.com/aqua7regia/tmux-Productive-Mouse-Free-Development_zh" target="_blank" rel="external">https://github.com/aqua7regia/tmux-Productive-Mouse-Free-Development_zh</a>)</li>
 </ol>
 </span>
@@ -524,7 +524,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -638,7 +638,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

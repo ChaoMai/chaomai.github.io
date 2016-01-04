@@ -251,20 +251,20 @@
       
         <span itemprop="articleBody"><blockquote class="blockquote-center"><br><br>原文：<a href="http://cenalulu.github.io/linux/character-encoding/" target="_blank" rel="external">十分钟搞清字符集和字符编码</a><br><br></blockquote>
 
-<h2 id="字符集">字符集</h2><p>字符集就规定了某个文字对应的二进制数字存放方式（编码）和某串二进制数值代表了哪个文字（解码）的转换关系。</p>
-<h2 id="字符编码">字符编码</h2><p>字符集只是一个规则集合的名字，对应到真实生活中，字符集就是对某种语言的称呼。</p>
+<h2 id="u5B57_u7B26_u96C6"><a href="#u5B57_u7B26_u96C6" class="headerlink" title="字符集"></a>字符集</h2><p>字符集就规定了某个文字对应的二进制数字存放方式（编码）和某串二进制数值代表了哪个文字（解码）的转换关系。</p>
+<h2 id="u5B57_u7B26_u7F16_u7801"><a href="#u5B57_u7B26_u7F16_u7801" class="headerlink" title="字符编码"></a>字符编码</h2><p>字符集只是一个规则集合的名字，对应到真实生活中，字符集就是对某种语言的称呼。</p>
 <p>对于一个字符集来说要正确编码转码一个字符需要三个关键元素：字库表（character repertoire）、编码字符集（coded character set）、字符编码（character encoding form）</p>
-<h3 id="字库表">字库表</h3><p>一个相当于所有可读或者可显示字符的数据库，字库表决定了整个字符集能够展现表示的所有字符的范围。</p>
-<h3 id="编码字符集">编码字符集</h3><p>用一个编码值<strong>code point</strong>来表示一个字符在字库中的位置。</p>
-<h3 id="字符编码-1">字符编码</h3><p>将编码字符集和实际存储数值之间的转换关系。</p>
+<h3 id="u5B57_u5E93_u8868"><a href="#u5B57_u5E93_u8868" class="headerlink" title="字库表"></a>字库表</h3><p>一个相当于所有可读或者可显示字符的数据库，字库表决定了整个字符集能够展现表示的所有字符的范围。</p>
+<h3 id="u7F16_u7801_u5B57_u7B26_u96C6"><a href="#u7F16_u7801_u5B57_u7B26_u96C6" class="headerlink" title="编码字符集"></a>编码字符集</h3><p>用一个编码值<strong>code point</strong>来表示一个字符在字库中的位置。</p>
+<h3 id="u5B57_u7B26_u7F16_u7801-1"><a href="#u5B57_u7B26_u7F16_u7801-1" class="headerlink" title="字符编码"></a>字符编码</h3><p>将编码字符集和实际存储数值之间的转换关系。</p>
 <p>一般来说都会直接将code point的值作为编码后的值直接存储。例如在ASCII中<code>A</code>在表中排第65位，而编码后<code>A</code>的数值是<code>0100 0001</code>也即十进制的65的二进制转换结果。</p>
 <ul>
 <li>为什么还要多此一举通过字符编码把序号转换成另外一种存储格式？</li>
 </ul>
 <p>统一字库表的目的是为了能够涵盖世界上所有的字符，但实际使用过程中会发现真正用的上的字符相对整个字库表来说比例非常低。而如果把每个字符都用字库表中的序号来存储的话，每个字符就需要3个字节（这里以Unicode字库为例），这样对于原本用仅占一个字符的ASCII编码的英语地区国家显然是一个额外成本（存储体积是原来的三倍）。于是就出现了UTF-8这样的变长编码。在UTF-8编码中原本只需要一个字节的ASCII字符，仍然只占一个字节。而像中文及日语这样的复杂字符就需要2个到3个字节来存储。</p>
-<h2 id="UTF-8和Unicode的关系">UTF-8和Unicode的关系</h2><p>Unicode就是上文中提到的编码字符集，而UTF-8就是字符编码，即Unicode规则字库的一种实现形式。</p>
+<h2 id="UTF-8_u548CUnicode_u7684_u5173_u7CFB"><a href="#UTF-8_u548CUnicode_u7684_u5173_u7CFB" class="headerlink" title="UTF-8和Unicode的关系"></a>UTF-8和Unicode的关系</h2><p>Unicode就是上文中提到的编码字符集，而UTF-8就是字符编码，即Unicode规则字库的一种实现形式。</p>
 <p>Unicode标准几乎涵盖了各个国家语言可能出现的符号和文字，并将为他们编号。详见：Unicode on Wikipedia。Unicode的编号从<code>0000</code>开始一直到<code>10FFFF</code>共分为16个Plane，每个Plane中有65536个字符。而UTF-8则只实现了第一个Plane，可见UTF-8虽然是一个当今接受度最广的字符集编码，但是它并没有涵盖整个Unicode的字库，这也造成了它在某些场景下对于特殊字符的处理困难。</p>
-<h2 id="UTF-8编码简介">UTF-8编码简介</h2><h3 id="UTF-8的物理存储和Unicode序号的转换关系">UTF-8的物理存储和Unicode序号的转换关系</h3><p>UTF-8编码为变长编码。最小编码单位（<code>code unit</code>）为一个字节。一个字节的前1-3个bit为描述性部分，后面为实际序号部分。</p>
+<h2 id="UTF-8_u7F16_u7801_u7B80_u4ECB"><a href="#UTF-8_u7F16_u7801_u7B80_u4ECB" class="headerlink" title="UTF-8编码简介"></a>UTF-8编码简介</h2><h3 id="UTF-8_u7684_u7269_u7406_u5B58_u50A8_u548CUnicode_u5E8F_u53F7_u7684_u8F6C_u6362_u5173_u7CFB"><a href="#UTF-8_u7684_u7269_u7406_u5B58_u50A8_u548CUnicode_u5E8F_u53F7_u7684_u8F6C_u6362_u5173_u7CFB" class="headerlink" title="UTF-8的物理存储和Unicode序号的转换关系"></a>UTF-8的物理存储和Unicode序号的转换关系</h3><p>UTF-8编码为变长编码。最小编码单位（<code>code unit</code>）为一个字节。一个字节的前1-3个bit为描述性部分，后面为实际序号部分。</p>
 <ul>
 <li>如果一个字节的第一位为0，那么代表当前字符为单字节字符，占用一个字节的空间。0之后的所有部分（7个bit）代表在Unicode中的序号。</li>
 </ul>
@@ -384,8 +384,8 @@
 <li>2个字节的UTF-8十六进制编码一定是以<code>C</code>或<code>D</code>开头的。</li>
 <li>1个字节的UTF-8十六进制编码一定是以比<code>8</code>小的数字开头的。</li>
 </ul>
-<h2 id="乱码">乱码</h2><p>编码和解码时用了不同或者不兼容的字符集。</p>
-<h1 id="Reference">Reference</h1><ol>
+<h2 id="u4E71_u7801"><a href="#u4E71_u7801" class="headerlink" title="乱码"></a>乱码</h2><p>编码和解码时用了不同或者不兼容的字符集。</p>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
 <li><a href="http://cenalulu.github.io/linux/character-encoding/" target="_blank" rel="external">十分钟搞清字符集和字符编码</a></li>
 <li><a href="http://cenalulu.github.io/python/python-encoding/" target="_blank" rel="external">关于Python的默认字符集</a></li>
 <li><a href="http://www.ruanyifeng.com/blog/2007/10/ascii_unicode_and_utf-8.html" target="_blank" rel="external">字符编码笔记：ASCII，Unicode和UTF-8</a></li>
@@ -491,7 +491,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -584,7 +584,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#字符集"><span class="nav-number">1.</span> <span class="nav-text">字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符编码"><span class="nav-number">2.</span> <span class="nav-text">字符编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字库表"><span class="nav-number">2.1.</span> <span class="nav-text">字库表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编码字符集"><span class="nav-number">2.2.</span> <span class="nav-text">编码字符集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符编码-1"><span class="nav-number">2.3.</span> <span class="nav-text">字符编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UTF-8和Unicode的关系"><span class="nav-number">3.</span> <span class="nav-text">UTF-8和Unicode的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UTF-8编码简介"><span class="nav-number">4.</span> <span class="nav-text">UTF-8编码简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UTF-8的物理存储和Unicode序号的转换关系"><span class="nav-number">4.1.</span> <span class="nav-text">UTF-8的物理存储和Unicode序号的转换关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乱码"><span class="nav-number">5.</span> <span class="nav-text">乱码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number"></span> <span class="nav-text">Reference</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#u5B57_u7B26_u96C6"><span class="nav-number">1.</span> <span class="nav-text">字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u5B57_u7B26_u7F16_u7801"><span class="nav-number">2.</span> <span class="nav-text">字符编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5B57_u5E93_u8868"><span class="nav-number">2.1.</span> <span class="nav-text">字库表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u7F16_u7801_u5B57_u7B26_u96C6"><span class="nav-number">2.2.</span> <span class="nav-text">编码字符集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5B57_u7B26_u7F16_u7801-1"><span class="nav-number">2.3.</span> <span class="nav-text">字符编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UTF-8_u548CUnicode_u7684_u5173_u7CFB"><span class="nav-number">3.</span> <span class="nav-text">UTF-8和Unicode的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UTF-8_u7F16_u7801_u7B80_u4ECB"><span class="nav-number">4.</span> <span class="nav-text">UTF-8编码简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UTF-8_u7684_u7269_u7406_u5B58_u50A8_u548CUnicode_u5E8F_u53F7_u7684_u8F6C_u6362_u5173_u7CFB"><span class="nav-number">4.1.</span> <span class="nav-text">UTF-8的物理存储和Unicode序号的转换关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u4E71_u7801"><span class="nav-number">5.</span> <span class="nav-text">乱码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number"></span> <span class="nav-text">Reference</span></a></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -605,7 +605,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

@@ -249,19 +249,19 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="问题">问题</h1><p>在Ubuntu中使用Clang++，</p>
+        <span itemprop="articleBody"><h1 id="u95EE_u9898"><a href="#u95EE_u9898" class="headerlink" title="问题"></a>问题</h1><p>在Ubuntu中使用Clang++，</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang++-<span class="number">3.7</span> -std=c++<span class="number">11</span> test.cpp</span><br></pre></td></tr></table></figure>
 <p>编译C++11编写的多线程代码时，</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello World\n"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="function">thread <span class="title">t</span><span class="params">(f)</span></span>;</span><br><span class="line">  t.join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>发现如下问题：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/tmp/<span class="built_in">test</span>-<span class="number">9606</span>ba.o: In <span class="keyword">function</span> `std::thread::thread&lt;void (&amp;)()&gt;(void (&amp;)())<span class="string">':</span><br><span class="line">test.cpp:(.text[_ZNSt6threadC2IRFvvEJEEEOT_DpOT0_]+0x21): undefined reference to `pthread_create'</span></span><br><span class="line">clang: error: linker <span class="built_in">command</span> failed with <span class="built_in">exit</span> code <span class="number">1</span> (use -v to see invocation)</span><br></pre></td></tr></table></figure>
-<h1 id="分析">分析</h1><ol>
+<h1 id="u5206_u6790"><a href="#u5206_u6790" class="headerlink" title="分析"></a>分析</h1><ol>
 <li><p>在Linux中，Standard C++ library的默认实现是libstdc++。虽然安装了clang，但是编译时使用的仍然是GNU的libstdc++。</p>
 </li>
 <li><p>执行clang++ -v以后，可以知道使用的线程模型是posix。</p>
 </li>
 </ol>
-<h1 id="解决">解决</h1><p>既然底层使用了posix来实现C++11的线程，那么编译的时候必然要有-pthread</p>
+<h1 id="u89E3_u51B3"><a href="#u89E3_u51B3" class="headerlink" title="解决"></a>解决</h1><p>既然底层使用了posix来实现C++11的线程，那么编译的时候必然要有-pthread</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang++-<span class="number">3.7</span> -std=c++<span class="number">11</span> -pthread test.cpp</span><br></pre></td></tr></table></figure>
 </span>
       
@@ -366,7 +366,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -459,7 +459,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u95EE_u9898"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u5206_u6790"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u89E3_u51B3"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -480,7 +480,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

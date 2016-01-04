@@ -249,7 +249,7 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="Locks">Locks</h1><p>lock是一个抽象的概念。一个基本的前提就是一个lock保护着某种共享资源的访问。如果你own一个lock，那么你就能访问被保护的共享资源。如果你没有own lock，那么你就不能够访问这个共享资源。</p>
+        <span itemprop="articleBody"><h1 id="Locks"><a href="#Locks" class="headerlink" title="Locks"></a>Locks</h1><p>lock是一个抽象的概念。一个基本的前提就是一个lock保护着某种共享资源的访问。如果你own一个lock，那么你就能访问被保护的共享资源。如果你没有own lock，那么你就不能够访问这个共享资源。</p>
 <p>为了own一个lock，你首先需要某种lockable对象。然后你从那个对象获得lock。这个操作精确的术语可能会有很多。例如，如果你有一个lockable对象XYZ，你可以：</p>
 <ul>
 <li>acquire the lock on XYZ,</li>
@@ -269,10 +269,10 @@
 </ul>
 <p>当你以合适的方式relinquish ownership，如果所需的条件都满足了，那么一个被block的尝试获得锁的操作现在将会继续。</p>
 <p>例如一个lockable对象只允许有3个owners，那么第4个尝试获得lock的操作将block。当3个中的某个owner 释放了lock，那么第4个尝试获得lock的操作将会成功。</p>
-<h1 id="Ownership">Ownership</h1><p>“own” a lock的意思视lockable对象确切的类型而定。某些lockable对象会对ownership有非常严格的定义：this specific thread owns the lock, through the use of that specific object, within this particular scope.</p>
+<h1 id="Ownership"><a href="#Ownership" class="headerlink" title="Ownership"></a>Ownership</h1><p>“own” a lock的意思视lockable对象确切的类型而定。某些lockable对象会对ownership有非常严格的定义：this specific thread owns the lock, through the use of that specific object, within this particular scope.</p>
 <p>在其他情况下，这个定义会更不稳定，ownership of the lock会更抽象。在这些情况下，ownership can be relinquished by a different thread or object than the thread or object that acquired the lock.</p>
 <p>注：其实就想看这篇文章里说Ownership的部分，后面的就不翻译了:)</p>
-<h1 id="Reference">Reference</h1><ul>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul>
 <li>原文：<a href="https://www.justsoftwaresolutions.co.uk/threading/locks-mutexes-semaphores.html" target="_blank" rel="external">Locks, Mutexes, and Semaphores: Types of Synchronization Objects</a></li>
 </ul>
 </span>
@@ -380,7 +380,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -494,7 +494,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>

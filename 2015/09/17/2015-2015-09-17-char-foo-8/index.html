@@ -249,22 +249,22 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="declaration">declaration</h1><p>one <strong>basic type</strong> + zero or more <strong>derived types</strong></p>
-<h2 id="basic_type">basic type</h2><p><code>char</code>, <code>signed char</code>, <code>unsigned char</code>, <code>short</code>, <code>unsigned short</code>, <code>int</code>, <code>unsigned int</code>, <code>long</code>, <code>unsigned long</code>, <code>float</code>, <code>double</code>, <code>void</code>, <code>struct tag</code>, <code>union tag</code>, <code>enum tag</code>, <code>long long</code>, <code>unsigned long long</code>, <code>long double</code></p>
-<h2 id="derived_types">derived types</h2><p><code>*</code>: pointer to …   - always on the left side<br><code>[]</code>: array of …   - always on the left side<br><code>()</code>: function returning …   - always on the left side</p>
-<h1 id="operator_precedence">operator precedence</h1><p>The <code>[]</code> and <code>()</code> have higher precedence than <code>*</code>.</p>
-<h2 id="the_rule_to_read_declaration">the rule to read declaration</h2><p>There is a <a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_blank" rel="external">“right-left” rule</a>. I think the rule is based on the precedence.</p>
+        <span itemprop="articleBody"><h1 id="declaration"><a href="#declaration" class="headerlink" title="declaration"></a>declaration</h1><p>one <strong>basic type</strong> + zero or more <strong>derived types</strong></p>
+<h2 id="basic_type"><a href="#basic_type" class="headerlink" title="basic type"></a>basic type</h2><p><code>char</code>, <code>signed char</code>, <code>unsigned char</code>, <code>short</code>, <code>unsigned short</code>, <code>int</code>, <code>unsigned int</code>, <code>long</code>, <code>unsigned long</code>, <code>float</code>, <code>double</code>, <code>void</code>, <code>struct tag</code>, <code>union tag</code>, <code>enum tag</code>, <code>long long</code>, <code>unsigned long long</code>, <code>long double</code></p>
+<h2 id="derived_types"><a href="#derived_types" class="headerlink" title="derived types"></a>derived types</h2><p><code>*</code>: pointer to …   - always on the left side<br><code>[]</code>: array of …   - always on the left side<br><code>()</code>: function returning …   - always on the left side</p>
+<h1 id="operator_precedence"><a href="#operator_precedence" class="headerlink" title="operator precedence"></a>operator precedence</h1><p>The <code>[]</code> and <code>()</code> have higher precedence than <code>*</code>.</p>
+<h2 id="the_rule_to_read_declaration"><a href="#the_rule_to_read_declaration" class="headerlink" title="the rule to read declaration"></a>the rule to read declaration</h2><p>There is a <a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_blank" rel="external">“right-left” rule</a>. I think the rule is based on the precedence.</p>
 <p><a href="http://stackoverflow.com/questions/859634/c-pointer-to-array-array-of-pointers-disambiguation" target="_blank" rel="external">C pointer to array/array of pointers disambiguation</a> also mentioned <em>“go right when you can, go left when you must”</em>.</p>
-<h2 id="find_error_in_declaration">find error in declaration</h2><p>Since we can read complex declaration by applying the rule mentioned before, we also can find error in declaration with the knowledge of what is legal in C.</p>
+<h2 id="find_error_in_declaration"><a href="#find_error_in_declaration" class="headerlink" title="find error in declaration"></a>find error in declaration</h2><p>Since we can read complex declaration by applying the rule mentioned before, we also can find error in declaration with the knowledge of what is legal in C.</p>
 <p>Some illegal declarations,</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// array of functions?</span></span><br><span class="line"><span class="comment">// error: 'a' declared as array of functions of type 'int ()'</span></span><br><span class="line"><span class="keyword">int</span> a[]();</span><br><span class="line"></span><br><span class="line"><span class="comment">// a function returning function?</span></span><br><span class="line"><span class="comment">// error: function cannot return function type 'int ()'</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">b</span><span class="params">()</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// array of functions?</span></span><br><span class="line"><span class="comment">// a function returning array of int?</span></span><br><span class="line"><span class="comment">// error: function cannot return array type 'int []'</span></span><br><span class="line"><span class="comment">// error: 'c' declared as array of functions of type 'int ()'</span></span><br><span class="line"><span class="keyword">int</span> c[]()[];</span><br><span class="line"></span><br><span class="line"><span class="comment">// array of functions?</span></span><br><span class="line"><span class="comment">// error: 'd' declared as array of functions of type 'int ()'</span></span><br><span class="line"><span class="keyword">int</span> (*d)[]();</span><br></pre></td></tr></table></figure>
-<h1 id="char_*(*(**foo[][8])())[]"><code>char *(*(**foo[][8])())[]</code></h1><p>foo is array of array of 8 pointer to pointer to function returning pointer to array of pointer to char.</p>
-<h1 id="summary">summary</h1><ol>
+<h1 id="char_*_28*_28**foo_5B_5D_5B8_5D_29_28_29_29_5B_5D"><a href="#char_*_28*_28**foo_5B_5D_5B8_5D_29_28_29_29_5B_5D" class="headerlink" title="char *(*(**foo[][8])())[]"></a><code>char *(*(**foo[][8])())[]</code></h1><p>foo is array of array of 8 pointer to pointer to function returning pointer to array of pointer to char.</p>
+<h1 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h1><ol>
 <li>The key is the <a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_blank" rel="external">“right-left” rule</a>.</li>
 <li>Be aware of what is legal in C.</li>
 <li>数组指针，指针数组。。。Well, the Chinese description is really ambiguous.</li>
 </ol>
-<h1 id="references">references</h1><ol>
+<h1 id="references"><a href="#references" class="headerlink" title="references"></a>references</h1><ol>
 <li><a href="http://unixwiz.net/techtips/reading-cdecl.html" target="_blank" rel="external">Reading C type declarations</a></li>
 <li><a href="http://ieng9.ucsd.edu/~cs30x/rt_lt.rule.html" target="_blank" rel="external">The “right-left” rule</a></li>
 <li><a href="http://stackoverflow.com/questions/859634/c-pointer-to-array-array-of-pointers-disambiguation" target="_blank" rel="external">C pointer to array/array of pointers disambiguation</a></li>
@@ -368,7 +368,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -461,7 +461,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#declaration"><span class="nav-number">1.</span> <span class="nav-text">declaration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#basic_type"><span class="nav-number">1.1.</span> <span class="nav-text">basic type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#derived_types"><span class="nav-number">1.2.</span> <span class="nav-text">derived types</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#operator_precedence"><span class="nav-number">2.</span> <span class="nav-text">operator precedence</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#the_rule_to_read_declaration"><span class="nav-number">2.1.</span> <span class="nav-text">the rule to read declaration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find_error_in_declaration"><span class="nav-number">2.2.</span> <span class="nav-text">find error in declaration</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#char_*(*(**foo[][8])())[]"><span class="nav-number">3.</span> <span class="nav-text">char *(*(**foo[][8])())[]</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#summary"><span class="nav-number">4.</span> <span class="nav-text">summary</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#references"><span class="nav-number">5.</span> <span class="nav-text">references</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#declaration"><span class="nav-number">1.</span> <span class="nav-text">declaration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#basic_type"><span class="nav-number">1.1.</span> <span class="nav-text">basic type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#derived_types"><span class="nav-number">1.2.</span> <span class="nav-text">derived types</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#operator_precedence"><span class="nav-number">2.</span> <span class="nav-text">operator precedence</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#the_rule_to_read_declaration"><span class="nav-number">2.1.</span> <span class="nav-text">the rule to read declaration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find_error_in_declaration"><span class="nav-number">2.2.</span> <span class="nav-text">find error in declaration</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#char_*_28*_28**foo_5B_5D_5B8_5D_29_28_29_29_5B_5D"><span class="nav-number">3.</span> <span class="nav-text">char *(*(**foo[][8])())[]</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#summary"><span class="nav-number">4.</span> <span class="nav-text">summary</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#references"><span class="nav-number">5.</span> <span class="nav-text">references</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -482,7 +482,7 @@
         <div class="copyright" >
   
   &copy;  2014 - 
-  <span itemprop="copyrightYear">2015</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="icon-next-heart fa fa-heart"></i>
   </span>
