@@ -1,5 +1,11 @@
 <!doctype html>
-<html class="theme-next   use-motion ">
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -32,7 +38,7 @@
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="chaomai" />
@@ -46,7 +52,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
 
 
 
@@ -66,10 +72,16 @@
 
 
 <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Mist',
-    sidebar: 'post',
-    motion: true
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
   };
 </script>
 
@@ -78,15 +90,6 @@
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
-  <!--[if lte IE 8]>
-  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
-    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
-      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
-           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
-           style='margin-left:auto;margin-right:auto;display: block;'/>
-    </a>
-  </div>
-<![endif]-->
   
 
 
@@ -94,9 +97,16 @@
 
 
 
-  <div class="container one-column 
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
    page-home 
-">
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -138,6 +148,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-about">
           <a href="/about" rel="section">
             
@@ -157,7 +177,18 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
 
+      
       
       
     </ul>
@@ -171,8 +202,9 @@
 
     <main id="main" class="main">
       <div class="main-inner">
-        <div id="content" class="content">
-          
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
   <section id="posts" class="posts-expand">
 
     
@@ -207,8 +239,8 @@
             
               
                 
-                <a class="post-title-link" href="/2015/09/26/2015-2015-09-26-notes-of-rlu/" itemprop="url">
-                  Notes of Read-Log-Update a Lightweight Synchronization Mechanism for Concurrent Programming
+                <a class="post-title-link" href="/2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/" itemprop="url">
+                  Notes of Non-Blocking Binary Search Trees
                 </a>
               
             
@@ -217,15 +249,22 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
-            <time itemprop="dateCreated" datetime="2015-09-26T13:34:55+08:00" content="2015-09-26">
-              2015-09-26
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-10-04T17:21:49+08:00" content="2015-10-04">
+              2015-10-04
             </time>
           </span>
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -255,29 +294,155 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/26/2015-2015-09-26-notes-of-rlu/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/26/2015-2015-09-26-notes-of-rlu/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">今年SOSP的文章，提出了Read-Log-Update，使用了Clock-based logging mechanism和Object-level write-log per thread，解决了RCU不能有多个writer等缺陷。其中的RLU Deferring减少了synchronize调用的次数，提高了cache hit。</span>
+          使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目，还有就是Excellent tutorial about helping mechanism!
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/09/26/2015-2015-09-26-notes-of-rlu/" itemprop="url">
+                  Notes of Read-Log-Update a Lightweight Synchronization Mechanism for Concurrent Programming
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-09-26T13:34:55+08:00" content="2015-09-26">
+              2015-09-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/data-structures/" itemprop="url" rel="index">
+                    <span itemprop="name">data structures</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/09/26/2015-2015-09-26-notes-of-rlu/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/26/2015-2015-09-26-notes-of-rlu/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          今年SOSP的文章，提出了Read-Log-Update，使用了Clock-based logging mechanism和Object-level write-log per thread，解决了RCU不能有多个writer等缺陷。其中的RLU Deferring减少了synchronize调用的次数，提高了cache hit。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/09/26/2015-2015-09-26-notes-of-rlu/">
               Read more &raquo;
@@ -332,7 +497,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-09-25T19:00:58+08:00" content="2015-09-25">
               2015-09-25
             </time>
@@ -340,7 +508,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -370,29 +542,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/25/2015-2015-09-25-rcu/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/25/2015-2015-09-25-rcu/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/09/25/2015-2015-09-25-rcu/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/25/2015-2015-09-25-rcu/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">RCU is a synchronization mechanism, which is widely used in the Linux kernel.</span>
+          RCU is a synchronization mechanism, which is widely used in the Linux kernel.
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/09/25/2015-2015-09-25-rcu/">
               Read more &raquo;
@@ -447,7 +621,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-09-17T00:06:18+08:00" content="2015-09-17">
               2015-09-17
             </time>
@@ -455,7 +632,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -473,29 +654,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/17/2015-2015-09-17-char-foo-8/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/17/2015-2015-09-17-char-foo-8/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/09/17/2015-2015-09-17-char-foo-8/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/17/2015-2015-09-17-char-foo-8/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">Understand complex declaration in C.</span>
+          Understand complex declaration in C.
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/09/17/2015-2015-09-17-char-foo-8/">
               Read more &raquo;
@@ -550,7 +733,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-09-05T12:27:15+08:00" content="2015-09-05">
               2015-09-05
             </time>
@@ -558,7 +744,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -588,29 +778,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/05/2015-2015-09-05-notes-of-to-lock-swap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/05/2015-2015-09-05-notes-of-to-lock-swap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/09/05/2015-2015-09-05-notes-of-to-lock-swap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/05/2015-2015-09-05-notes-of-to-lock-swap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">主要研究了HTM and lock-free indexing的相互影响。</span>
+          主要研究了HTM and lock-free indexing的相互影响。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/09/05/2015-2015-09-05-notes-of-to-lock-swap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/">
               Read more &raquo;
@@ -665,7 +857,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-09-05T11:21:11+08:00" content="2015-09-05">
               2015-09-05
             </time>
@@ -673,7 +868,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/life/" itemprop="url" rel="index">
@@ -691,29 +890,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/05/2015-2015-09-05-running-summary/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/05/2015-2015-09-05-running-summary/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/09/05/2015-2015-09-05-running-summary/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/05/2015-2015-09-05-running-summary/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">近期跑步的时候遇到的问题，以及一些注意事项的记录。</span>
+          近期跑步的时候遇到的问题，以及一些注意事项的记录。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/09/05/2015-2015-09-05-running-summary/">
               Read more &raquo;
@@ -768,7 +969,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-07-30T23:30:59+08:00" content="2015-07-30">
               2015-07-30
             </time>
@@ -776,7 +980,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -806,29 +1014,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/07/30/2015-2015-07-30-harris-non-blocking-linked-lists/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/30/2015-2015-07-30-harris-non-blocking-linked-lists/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/07/30/2015-2015-07-30-harris-non-blocking-linked-lists/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/30/2015-2015-07-30-harris-non-blocking-linked-lists/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">Harris的这篇论文提出了一种新的non-blocking linked-list，不同于Valois使用auxiliary node，Harris在操作的时候进行了mark，解决了插入丢失的问题。论文中有详细的伪代码，清晰的描述了实现的细节。但要注意的是，实际实现必然涉及到内存回收，没有自动内存回收机制的语言会有点麻烦。</span>
+          Harris的这篇论文提出了一种新的non-blocking linked-list，不同于Valois使用auxiliary node，Harris在操作的时候进行了mark，解决了插入丢失的问题。论文中有详细的伪代码，清晰的描述了实现的细节。但要注意的是，实际实现必然涉及到内存回收，没有自动内存回收机制的语言会有点麻烦。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/07/30/2015-2015-07-30-harris-non-blocking-linked-lists/">
               Read more &raquo;
@@ -883,7 +1093,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-07-18T18:41:54+08:00" content="2015-07-18">
               2015-07-18
             </time>
@@ -891,7 +1104,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -909,29 +1126,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/07/18/2015-2015-07-18-cpp-concurrency-in-action-5/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/18/2015-2015-07-18-cpp-concurrency-in-action-5/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/07/18/2015-2015-07-18-cpp-concurrency-in-action-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/07/18/2015-2015-07-18-cpp-concurrency-in-action-5/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">The C++ memory model and operations on atomic types的笔记。</span>
+          The C++ memory model and operations on atomic types的笔记。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/07/18/2015-2015-07-18-cpp-concurrency-in-action-5/">
               Read more &raquo;
@@ -986,7 +1205,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-06-26T17:15:43+08:00" content="2015-06-26">
               2015-06-26
             </time>
@@ -994,7 +1216,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/spark/" itemprop="url" rel="index">
@@ -1012,29 +1238,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/06/26/2015-2015-06-26-notes-of-cs100-1x-introduction-to-big-data-with-apache-spark-1/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/26/2015-2015-06-26-notes-of-cs100-1x-introduction-to-big-data-with-apache-spark-1/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/06/26/2015-2015-06-26-notes-of-cs100-1x-introduction-to-big-data-with-apache-spark-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/26/2015-2015-06-26-notes-of-cs100-1x-introduction-to-big-data-with-apache-spark-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">Notes of Lecture 3 Big Data, Hardware Trends, and Apache Spark.</span>
+          Notes of Lecture 3 Big Data, Hardware Trends, and Apache Spark.
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/06/26/2015-2015-06-26-notes-of-cs100-1x-introduction-to-big-data-with-apache-spark-1/">
               Read more &raquo;
@@ -1089,7 +1317,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-06-22T20:36:57+08:00" content="2015-06-22">
               2015-06-22
             </time>
@@ -1097,7 +1328,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -1115,134 +1350,33 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/06/22/2015-2015-06-22-tmux/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/22/2015-2015-06-22-tmux/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/06/22/2015-2015-06-22-tmux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/22/2015-2015-06-22-tmux/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">tmux的简单操作。</span>
+          tmux的简单操作。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/06/22/2015-2015-06-22-tmux/">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/06/16/2015-2015-06-16-apt-get-hold-version/" itemprop="url">
-                  Apt-Get Hold Version
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            Posted on
-            <time itemprop="dateCreated" datetime="2015-06-16T22:56:47+08:00" content="2015-06-16">
-              2015-06-16
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; In
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/06/16/2015-2015-06-16-apt-get-hold-version/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/16/2015-2015-06-16-apt-get-hold-version/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="description">在ubuntu上进行update的时候，有的时候会不想升级某些包，这时可以用dpkg来hold住包，不让它升级。</span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/06/16/2015-2015-06-16-apt-get-hold-version/">
               Read more &raquo;
             </a>
           </div>
@@ -1274,17 +1408,15 @@
 
 
 
+          </div>
+          
+
+
+          
+
         </div>
-
         
-
-
-        
-
-      </div>
-
-      
-        
+          
   
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
@@ -1303,30 +1435,32 @@
 
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Chao Mai" itemprop="image"/>
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Chao Mai" />
           <p class="site-author-name" itemprop="name">Chao Mai</p>
+          <p class="site-description motion-element" itemprop="description">Chao Mai's Blog</p>
         </div>
-        <p class="site-description motion-element" itemprop="description">Chao Mai's Blog</p>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-count">37</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
-            
-              <span class="site-state-item-count">7</span>
+            <a href="/categories">
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">categories</span>
-              
+              </a>
           </div>
 
           <div class="site-state-item site-state-tags">
-            
+            <a href="/tags">
               <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">tags</span>
-              
+              </a>
           </div>
 
         </nav>
@@ -1346,7 +1480,7 @@
               <span class="links-of-author-item">
                 <a href="https://github.com/ChaoMai" target="_blank">
                   
-                    <i class="fa fa-github"></i> GitHub
+                    <i class="fa fa-globe"></i> github
                   
                 </a>
               </span>
@@ -1354,7 +1488,7 @@
               <span class="links-of-author-item">
                 <a href="http://weibo.com/1898970107" target="_blank">
                   
-                    <i class="fa fa-weibo"></i> Weibo
+                    <i class="fa fa-globe"></i> weibo
                   
                 </a>
               </span>
@@ -1362,7 +1496,7 @@
               <span class="links-of-author-item">
                 <a href="http://www.douban.com/people/chaomai" target="_blank">
                   
-                    <i class="fa fa-globe"></i> DouBan
+                    <i class="fa fa-globe"></i> douban
                   
                 </a>
               </span>
@@ -1370,7 +1504,15 @@
               <span class="links-of-author-item">
                 <a href="https://twitter.com/chao__mai" target="_blank">
                   
-                    <i class="fa fa-twitter"></i> Twitter
+                    <i class="fa fa-globe"></i> twitter
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/chaomai" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> zhihu
                   
                 </a>
               </span>
@@ -1399,7 +1541,8 @@
   </aside>
 
 
-      
+        
+      </div>
     </main>
 
     <footer id="footer" class="footer">
@@ -1421,7 +1564,7 @@
 <div class="theme-info">
   Theme -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -1433,14 +1576,57 @@
     <div class="back-to-top"></div>
   </div>
 
+  
+
+
+  
+
+
+
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
   
-    
-    
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
 
   
 
@@ -1464,26 +1650,6 @@
   
 
 
-  
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
-
-
-  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
-
-
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-
-  <script type="text/javascript" src="/js/bootstrap.js"></script>
 
   
   
@@ -1513,6 +1679,7 @@
 
   
   
+
 
 </body>
 </html>

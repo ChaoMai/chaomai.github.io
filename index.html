@@ -1,5 +1,11 @@
 <!doctype html>
-<html class="theme-next   use-motion ">
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -32,7 +38,7 @@
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="chaomai" />
@@ -46,7 +52,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
 
 
 
@@ -66,10 +72,16 @@
 
 
 <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Mist',
-    sidebar: 'post',
-    motion: true
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
   };
 </script>
 
@@ -78,15 +90,6 @@
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
-  <!--[if lte IE 8]>
-  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
-    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
-      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
-           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
-           style='margin-left:auto;margin-right:auto;display: block;'/>
-    </a>
-  </div>
-<![endif]-->
   
 
 
@@ -94,9 +97,16 @@
 
 
 
-  <div class="container one-column 
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
    page-home 
-">
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -138,6 +148,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-about">
           <a href="/about" rel="section">
             
@@ -157,7 +177,18 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
 
+      
       
       
     </ul>
@@ -171,8 +202,9 @@
 
     <main id="main" class="main">
       <div class="main-inner">
-        <div id="content" class="content">
-          
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
   <section id="posts" class="posts-expand">
 
     
@@ -211,6 +243,146 @@
             
               
                 
+                <a class="post-title-link" href="/2016/01/18/2016-2016-01-18-the-prime-and-realted-algorithms/" itemprop="url">
+                  素数相关问题及算法
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-01-18T15:38:59+08:00" content="2016-01-18">
+              2016-01-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/algorithms/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithms</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/18/2016-2016-01-18-the-prime-and-realted-algorithms/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/01/18/2016-2016-01-18-the-prime-and-realted-algorithms/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="u8BD5_u9664_u6CD5"><a href="#u8BD5_u9664_u6CD5" class="headerlink" title="试除法"></a>试除法</h1><p>根据素数的定义，对于自然数$n$，只要能够找到除了1和它本身以外，能够整除该数的正整数，那么它就不是素数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isPrime</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span> &amp;&amp; i != n) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>又因为，如果$d$是$n$的约数，那么$n=d \times n/d$，故$n/d$也是，且$\min{d, n/d} \leq \sqrt{n}$,</p>
+<p>因此只需要测试到$\sqrt{n}$即可。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isPrime</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i * i &lt;= n; ++i) &#123;</span><br><span class="line">        <span class="comment">// i won't equal to n, so i != n is unnecessary.</span></span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述方法需要约$2^{n/2}/((n/2)\ln 2)$次测试。</p>
+<h1 id="u57C3_u6C0F_u7B5B"><a href="#u57C3_u6C0F_u7B5B" class="headerlink" title="埃氏筛"></a>埃氏筛</h1><p>对于单个小整数，试除法尚可，但是如果要枚举$n$以内的素数，使用试除法就需要对$n$以内的所有自然数都做测试，效率太低。</p>
+<p>埃拉托斯特尼筛法，简称埃氏筛，从2开始，将每个素数的所有倍数标记为合数，如果这个$n$小于最后一个标出的素数的平方，那么所有小于$n$且未标记的都是素数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; isPrime(n, <span class="literal">true</span>);</span><br><span class="line">isPrime[<span class="number">0</span>] = isPrime[<span class="number">1</span>] = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (i * i &lt; n) &#123;</span><br><span class="line">    <span class="keyword">if</span> (isPrime[i]) &#123;</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">while</span> (i * j &lt;= n) &#123;</span><br><span class="line">            isPrime[i * j] = <span class="literal">false</span>;</span><br><span class="line">            ++j;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ++i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>埃氏筛的时间复杂度为$O(n\log n \log n)$，但这个方法最大的问题在于，需要的内存随着$n$的增大而增大。</p>
+<h1 id="u6574_u6570_u5206_u89E3"><a href="#u6574_u6570_u5206_u89E3" class="headerlink" title="整数分解"></a>整数分解</h1><h2 id="u8BD5_u9664_u6CD5-1"><a href="#u8BD5_u9664_u6CD5-1" class="headerlink" title="试除法"></a>试除法</h2><p>分解整数，普通方法是用短除法，从最小的素数除起，知道结果为素数为止。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i * i &lt;= n; ++i) &#123;</span><br><span class="line">    <span class="keyword">while</span> (n % i == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; i;</span><br><span class="line">        n /= i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (n &gt; <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>既然是从最小的素数除起，上述代码在每次<code>++i</code>后，为什么不检测<code>i</code>是否为素数？</p>
+<p>原因是，内层循环相当于已经把当前<code>i</code>的所有倍数去除了，类似埃氏筛，故下次取到的能够整除$n$的<code>i</code>是素数。</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
+<li><a href="https://en.wikipedia.org/wiki/Trial_division" target="_blank" rel="external">Trial division</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes" target="_blank" rel="external">Sieve of Eratosthenes</a></li>
+<li><a href="http://algorithm.yuanbin.me/zh-hans/basics_algorithm/math/prime.html" target="_blank" rel="external">Prime</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/01/04/2016-2016-01-04-cpp-virtual-function/" itemprop="url">
                   C++虚函数
                 </a>
@@ -221,7 +393,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2016-01-04T21:03:55+08:00" content="2016-01-04">
               2016-01-04
             </time>
@@ -229,7 +404,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -247,29 +426,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2016/01/04/2016-2016-01-04-cpp-virtual-function/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/01/04/2016-2016-01-04-cpp-virtual-function/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2016/01/04/2016-2016-01-04-cpp-virtual-function/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/01/04/2016-2016-01-04-cpp-virtual-function/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">C++中有编译时多态和运行时多态，运行时多态是由虚函数实现的。虚函数是用过虚函数表（vftable，virtual function table）来实现的，这个表包含了这个类的虚函数地址，解决了继承、覆盖。当使用父类指针来操作一个子类对象的时候，通过子类对象的虚函数表指针（vfptr，virtual function table pointer）找到子类的vftable，进而找到应该调用的函数。</span>
+          C++中有编译时多态和运行时多态，运行时多态是由虚函数实现的。虚函数是用过虚函数表（vftable，virtual function table）来实现的，这个表包含了这个类的虚函数地址，解决了继承、覆盖。当使用父类指针来操作一个子类对象的时候，通过子类对象的虚函数表指针（vfptr，virtual function table pointer）找到子类的vftable，进而找到应该调用的函数。
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/01/04/2016-2016-01-04-cpp-virtual-function/">
               Read more &raquo;
@@ -324,7 +505,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-12-13T14:19:05+08:00" content="2015-12-13">
               2015-12-13
             </time>
@@ -332,7 +516,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -362,29 +550,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/12/13/2015-2015-12-13-ckd-3/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/13/2015-2015-12-13-ckd-3/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/12/13/2015-2015-12-13-ckd-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/13/2015-2015-12-13-ckd-3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">这篇是实现concurrent KDTree snapshot的第3个方法，也是打算写的最后一个方法。使用的方法来自的Range Queries in Non-blocking k-ary Search Trees。</span>
+          这篇是实现concurrent KDTree snapshot的第3个方法，也是打算写的最后一个方法。使用的方法来自的Range Queries in Non-blocking k-ary Search Trees。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/12/13/2015-2015-12-13-ckd-3/">
               Read more &raquo;
@@ -439,7 +629,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-12-12T14:20:46+08:00" content="2015-12-12">
               2015-12-12
             </time>
@@ -447,7 +640,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -477,29 +674,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/12/12/2015-2015-12-12-notes-of-k-ary-range-query/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/12/2015-2015-12-12-notes-of-k-ary-range-query/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/12/12/2015-2015-12-12-notes-of-k-ary-range-query/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/12/2015-2015-12-12-notes-of-k-ary-range-query/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">这篇是k-ary的第二篇，为k-ary加入了range query，列举了range query的各种实现方法：STM，lock，Persistent data structures和snapshots，并说明各种方法的优劣，提出了range query的新方法。</span>
+          这篇是k-ary的第二篇，为k-ary加入了range query，列举了range query的各种实现方法：STM，lock，Persistent data structures和snapshots，并说明各种方法的优劣，提出了range query的新方法。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/12/12/2015-2015-12-12-notes-of-k-ary-range-query/">
               Read more &raquo;
@@ -554,7 +753,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-11-30T15:09:25+08:00" content="2015-11-30">
               2015-11-30
             </time>
@@ -562,7 +764,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -592,29 +798,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/30/2015-2015-11-30-notes-of-k-ary/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/30/2015-2015-11-30-notes-of-k-ary/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/11/30/2015-2015-11-30-notes-of-k-ary/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/30/2015-2015-11-30-notes-of-k-ary/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">Brown在Toronto大学读PhD期间写过2篇关于k-ary的文章，他读PhD期间的导师是Ellen，而Ellen正是写了Non-blocking Binary Search Trees的那位。这篇文章里看到了好几个methods或者ideas是extended from Non-blocking Binary Search Trees。</span>
+          Brown在Toronto大学读PhD期间写过2篇关于k-ary的文章，他读PhD期间的导师是Ellen，而Ellen正是写了Non-blocking Binary Search Trees的那位。这篇文章里看到了好几个methods或者ideas是extended from Non-blocking Binary Search Trees。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/11/30/2015-2015-11-30-notes-of-k-ary/">
               Read more &raquo;
@@ -669,7 +877,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-11-24T15:17:25+08:00" content="2015-11-24">
               2015-11-24
             </time>
@@ -677,7 +888,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -707,29 +922,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/24/2015-2015-11-24-ckd-2/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/24/2015-2015-11-24-ckd-2/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/11/24/2015-2015-11-24-ckd-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/24/2015-2015-11-24-ckd-2/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">这篇记录了另一种简单的方法来实现concurrent KDTree snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。</span>
+          这篇记录了另一种简单的方法来实现concurrent KDTree snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/11/24/2015-2015-11-24-ckd-2/">
               Read more &raquo;
@@ -784,7 +1001,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-11-20T15:55:08+08:00" content="2015-11-20">
               2015-11-20
             </time>
@@ -792,7 +1012,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -822,29 +1046,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/11/20/2015-2015-11-20-ckd-1/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/20/2015-2015-11-20-ckd-1/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/11/20/2015-2015-11-20-ckd-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/20/2015-2015-11-20-ckd-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">Concurrent KDTree with Snapshots, implemented in Java. This article is about some details in implementation.</span>
+          Concurrent KDTree with Snapshots, implemented in Java. This article is about some details in implementation.
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/11/20/2015-2015-11-20-ckd-1/">
               Read more &raquo;
@@ -899,7 +1125,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-10-23T21:42:51+08:00" content="2015-10-23">
               2015-10-23
             </time>
@@ -907,7 +1136,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -937,29 +1170,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/23/2015-2015-10-23-rdcss/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/23/2015-2015-10-23-rdcss/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/10/23/2015-2015-10-23-rdcss/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/23/2015-2015-10-23-rdcss/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">RDCSS是Harris提出的一种实现double compare single swap方法，使用了single word compare and swap来实现。</span>
+          RDCSS是Harris提出的一种实现double compare single swap方法，使用了single word compare and swap来实现。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/10/23/2015-2015-10-23-rdcss/">
               Read more &raquo;
@@ -1014,7 +1249,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-10-22T22:15:12+08:00" content="2015-10-22">
               2015-10-22
             </time>
@@ -1022,7 +1260,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -1052,29 +1294,31 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/22/2015-2015-10-22-notes-of-non-blocking-snapshots-concurrent-tries/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/22/2015-2015-10-22-notes-of-non-blocking-snapshots-concurrent-tries/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/10/22/2015-2015-10-22-notes-of-non-blocking-snapshots-concurrent-tries/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/22/2015-2015-10-22-notes-of-non-blocking-snapshots-concurrent-tries/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">Hash trie的并发会存在操作丢失的情况，类似Non-blocking Binary Search Trees里的情况，这里引入了中间结点来解决。同时文章还提出了一种snapshot的方法，这种方法对于tree很有用。</span>
+          Hash trie的并发会存在操作丢失的情况，类似Non-blocking Binary Search Trees里的情况，这里引入了中间结点来解决。同时文章还提出了一种snapshot的方法，这种方法对于tree很有用。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/10/22/2015-2015-10-22-notes-of-non-blocking-snapshots-concurrent-tries/">
               Read more &raquo;
@@ -1129,7 +1373,10 @@
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2015-10-12T21:43:54+08:00" content="2015-10-12">
               2015-10-12
             </time>
@@ -1137,7 +1384,11 @@
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/programming/" itemprop="url" rel="index">
@@ -1167,146 +1418,33 @@
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/12/2015-2015-10-12-miscellaneous-material-about-concurrency/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/12/2015-2015-10-12-miscellaneous-material-about-concurrency/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2015/10/12/2015-2015-10-12-miscellaneous-material-about-concurrency/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/12/2015-2015-10-12-miscellaneous-material-about-concurrency/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
         
-          <span itemprop="description">简单记录了一些关于并发的资料（hash table，spinlock，rwlock和CPU对HTM的支持）。</span>
+          简单记录了一些关于并发的资料（hash table，spinlock，rwlock和CPU对HTM的支持）。
           <div class="post-more-link text-center">
             <a class="btn" href="/2015/10/12/2015-2015-10-12-miscellaneous-material-about-concurrency/">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/" itemprop="url">
-                  Notes of Non-Blocking Binary Search Trees
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            Posted on
-            <time itemprop="dateCreated" datetime="2015-10-04T17:21:49+08:00" content="2015-10-04">
-              2015-10-04
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp; In
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/programming/" itemprop="url" rel="index">
-                    <span itemprop="name">programming</span>
-                  </a>
-                </span>
-
-                
-                
-                  , 
-                
-
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/programming/data-structures/" itemprop="url" rel="index">
-                    <span itemprop="name">data structures</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-            
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="description">使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目，还有就是Excellent tutorial about helping mechanism!</span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/04/2015-2015-10-04-notes-of-non-blocking-binary-search-trees/">
               Read more &raquo;
             </a>
           </div>
@@ -1338,17 +1476,15 @@
 
 
 
+          </div>
+          
+
+
+          
+
         </div>
-
         
-
-
-        
-
-      </div>
-
-      
-        
+          
   
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
@@ -1367,30 +1503,32 @@
 
       <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Chao Mai" itemprop="image"/>
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Chao Mai" />
           <p class="site-author-name" itemprop="name">Chao Mai</p>
+          <p class="site-description motion-element" itemprop="description">Chao Mai's Blog</p>
         </div>
-        <p class="site-description motion-element" itemprop="description">Chao Mai's Blog</p>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-count">37</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
-            
-              <span class="site-state-item-count">7</span>
+            <a href="/categories">
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">categories</span>
-              
+              </a>
           </div>
 
           <div class="site-state-item site-state-tags">
-            
+            <a href="/tags">
               <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">tags</span>
-              
+              </a>
           </div>
 
         </nav>
@@ -1410,7 +1548,7 @@
               <span class="links-of-author-item">
                 <a href="https://github.com/ChaoMai" target="_blank">
                   
-                    <i class="fa fa-github"></i> GitHub
+                    <i class="fa fa-globe"></i> github
                   
                 </a>
               </span>
@@ -1418,7 +1556,7 @@
               <span class="links-of-author-item">
                 <a href="http://weibo.com/1898970107" target="_blank">
                   
-                    <i class="fa fa-weibo"></i> Weibo
+                    <i class="fa fa-globe"></i> weibo
                   
                 </a>
               </span>
@@ -1426,7 +1564,7 @@
               <span class="links-of-author-item">
                 <a href="http://www.douban.com/people/chaomai" target="_blank">
                   
-                    <i class="fa fa-globe"></i> DouBan
+                    <i class="fa fa-globe"></i> douban
                   
                 </a>
               </span>
@@ -1434,7 +1572,15 @@
               <span class="links-of-author-item">
                 <a href="https://twitter.com/chao__mai" target="_blank">
                   
-                    <i class="fa fa-twitter"></i> Twitter
+                    <i class="fa fa-globe"></i> twitter
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/chaomai" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> zhihu
                   
                 </a>
               </span>
@@ -1463,7 +1609,8 @@
   </aside>
 
 
-      
+        
+      </div>
     </main>
 
     <footer id="footer" class="footer">
@@ -1485,7 +1632,7 @@
 <div class="theme-info">
   Theme -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -1497,14 +1644,57 @@
     <div class="back-to-top"></div>
   </div>
 
+  
+
+
+  
+
+
+
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
   
-    
-    
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
 
   
 
@@ -1528,26 +1718,6 @@
   
 
 
-  
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
-
-
-  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
-
-
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-
-  <script type="text/javascript" src="/js/bootstrap.js"></script>
 
   
   
@@ -1577,6 +1747,7 @@
 
   
   
+
 
 </body>
 </html>

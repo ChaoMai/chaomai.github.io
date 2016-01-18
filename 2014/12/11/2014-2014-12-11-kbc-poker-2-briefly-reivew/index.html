@@ -1,5 +1,11 @@
 <!doctype html>
-<html class="theme-next   use-motion ">
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -32,7 +38,7 @@
 
 <link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=0.4.5.2" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="keyboard," />
@@ -46,7 +52,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
 
 
 
@@ -85,10 +91,16 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 
 
 <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Mist',
-    sidebar: 'post',
-    motion: true
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
   };
 </script>
 
@@ -97,15 +109,6 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
 
-  <!--[if lte IE 8]>
-  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
-    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
-      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
-           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
-           style='margin-left:auto;margin-right:auto;display: block;'/>
-    </a>
-  </div>
-<![endif]-->
   
 
 
@@ -113,7 +116,14 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 
 
 
-  <div class="container one-column page-post-detail">
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -155,6 +165,16 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-about">
           <a href="/about" rel="section">
             
@@ -174,7 +194,18 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
 
+      
       
       
     </ul>
@@ -188,8 +219,9 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 
     <main id="main" class="main">
       <div class="main-inner">
-        <div id="content" class="content">
-          
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
     
@@ -220,7 +252,10 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 
         <div class="post-meta">
           <span class="post-time">
-            Posted on
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="2014-12-11T23:20:42+08:00" content="2014-12-11">
               2014-12-11
             </time>
@@ -228,7 +263,11 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 
           
             <span class="post-category" >
-              &nbsp; | &nbsp; In
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/hardware/" itemprop="url" rel="index">
@@ -246,28 +285,30 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
           
             
               <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/" itemprop="commentsCount"></span>
-              </a>
-            </span>
+                &nbsp; | &nbsp;
+                <a href="/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
           
 
+          
+          
         </div>
       </header>
     
 
 
-    <div class="post-body">
+    <div class="post-body" itemprop="articleBody">
 
       
       
 
       
-        <span itemprop="articleBody"><h1 id="KBC_Poker_2"><a href="#KBC_Poker_2" class="headerlink" title="KBC Poker 2"></a>KBC Poker 2</h1><p>用倦Thindpad T420自带的键盘，也想尝试一下机械键盘的手感如何，就入手了一个机械键盘，KBC Poker 2。</p>
+        <h1 id="KBC_Poker_2"><a href="#KBC_Poker_2" class="headerlink" title="KBC Poker 2"></a>KBC Poker 2</h1><p>用倦Thindpad T420自带的键盘，也想尝试一下机械键盘的手感如何，就入手了一个机械键盘，KBC Poker 2。</p>
 <p>入手Poker 2的原因不仅仅是Filco Minila Air和HHKB的价格有点高，还有一点吸引我的原因就是Poker 2支持全键位硬件可编程。</p>
 <p>Poker 2已经是第二代了，相比起第一代，带来了许多的改进，网上的总结有这么几点：</p>
 <blockquote><ul>
@@ -315,7 +356,7 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 </ul>
 <p>将开关1和3都拨到ON的位置，效果：Caps变成了Fn，左Win变成了Caps。</p>
 <p>到这里键位修改就完成了。</p>
-</span>
+
       
     </div>
 
@@ -361,25 +402,26 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
   </div>
 
 
-        </div>
+          </div>
+          
 
-        
 
-
-        
+          
   <div class="comments" id="comments">
     
       <div id="disqus_thread">
-        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
       </div>
     
   </div>
 
 
-      </div>
-
-      
+        </div>
         
+          
   
   <div class="sidebar-toggle">
     <div class="sidebar-toggle-line-wrap">
@@ -397,7 +439,7 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table Of Contents
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
             Overview
@@ -407,30 +449,32 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 
       <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" src="/images/default_avatar.jpg" alt="Chao Mai" itemprop="image"/>
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Chao Mai" />
           <p class="site-author-name" itemprop="name">Chao Mai</p>
+          <p class="site-description motion-element" itemprop="description">Chao Mai's Blog</p>
         </div>
-        <p class="site-description motion-element" itemprop="description">Chao Mai's Blog</p>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-count">37</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
-            
-              <span class="site-state-item-count">7</span>
+            <a href="/categories">
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">categories</span>
-              
+              </a>
           </div>
 
           <div class="site-state-item site-state-tags">
-            
+            <a href="/tags">
               <span class="site-state-item-count">24</span>
               <span class="site-state-item-name">tags</span>
-              
+              </a>
           </div>
 
         </nav>
@@ -450,7 +494,7 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
               <span class="links-of-author-item">
                 <a href="https://github.com/ChaoMai" target="_blank">
                   
-                    <i class="fa fa-github"></i> GitHub
+                    <i class="fa fa-globe"></i> github
                   
                 </a>
               </span>
@@ -458,7 +502,7 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
               <span class="links-of-author-item">
                 <a href="http://weibo.com/1898970107" target="_blank">
                   
-                    <i class="fa fa-weibo"></i> Weibo
+                    <i class="fa fa-globe"></i> weibo
                   
                 </a>
               </span>
@@ -466,7 +510,7 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
               <span class="links-of-author-item">
                 <a href="http://www.douban.com/people/chaomai" target="_blank">
                   
-                    <i class="fa fa-globe"></i> DouBan
+                    <i class="fa fa-globe"></i> douban
                   
                 </a>
               </span>
@@ -474,7 +518,15 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
               <span class="links-of-author-item">
                 <a href="https://twitter.com/chao__mai" target="_blank">
                   
-                    <i class="fa fa-twitter"></i> Twitter
+                    <i class="fa fa-globe"></i> twitter
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/chaomai" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> zhihu
                   
                 </a>
               </span>
@@ -520,7 +572,8 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
   </aside>
 
 
-      
+        
+      </div>
     </main>
 
     <footer id="footer" class="footer">
@@ -542,7 +595,7 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 <div class="theme-info">
   Theme -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -554,60 +607,48 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
     <div class="back-to-top"></div>
   </div>
 
+  
+
+
+  
+
+
+
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
 
-  
-  
-
-  
-    
-    
-
-  
-
-    <script type="text/javascript">
-      var disqus_shortname = 'chaomaisblog';
-      var disqus_identifier = '2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/';
-      var disqus_title = '入手KBC Poker 2';
-      var disqus_url = 'http://chaomai.github.io/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/';
-
-      function run_disqus_script(disqus_script){
-        var dsq = document.createElement('script');
-        dsq.type = 'text/javascript';
-        dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      }
-
-      run_disqus_script('count.js');
-      
-        run_disqus_script('embed.js');
-      
-    </script>
-  
-
-
-  
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
-  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
-
-
-  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
-<script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
-
-<script type="text/javascript" src="/js/motion.js?v=0.4.5.2" id="motion.global"></script>
-
-
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
   <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-  
-  
-<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
 
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
 
 <script type="text/javascript" id="sidebar.toc.highlight">
   $(document).ready(function () {
@@ -741,7 +782,7 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 
     $('.post-toc a').on('click', function (e) {
       e.preventDefault();
-      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
       var offset = $(targetSelector).offset().top;
       hasVelocity ?
         html.velocity('stop').velocity('scroll', {
@@ -754,11 +795,12 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
     });
 
     // Expand sidebar on post detail page by default, when post has a toc.
-    motionMiddleWares.sidebar = function () {
+    NexT.motion.middleWares.sidebar = function () {
       var $tocContent = $('.post-toc-content');
+
       if (CONFIG.sidebar === 'post') {
         if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          displaySidebar();
+          NexT.utils.displaySidebar();
         }
       }
     };
@@ -767,7 +809,41 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 
 
 
-  <script type="text/javascript" src="/js/bootstrap.js"></script>
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'chaomaisblog';
+      var disqus_identifier = '2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/';
+      var disqus_title = '入手KBC Poker 2';
+      var disqus_url = 'http://chaomai.github.io/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
 
   
   
@@ -797,6 +873,7 @@ Poker 2已经是第二代了，相比起第一代，带来了许多的改进，�
 
   
   
+
 
 </body>
 </html>
