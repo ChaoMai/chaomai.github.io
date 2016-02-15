@@ -3415,6 +3415,131 @@
   </entry>
   
   <entry>
+    <title><![CDATA[C++ 初始化]]></title>
+    <link href="http://chaomai.github.io/2014/02/17/2014-2014-02-17-cpp-initialization/"/>
+    <id>http://chaomai.github.io/2014/02/17/2014-2014-02-17-cpp-initialization/</id>
+    <published>2014-02-17T12:56:12.000Z</published>
+    <updated>2016-02-15T17:38:45.475Z</updated>
+    <content type="html"><![CDATA[<h1 id="u5217_u8868_u521D_u59CB_u5316_uFF08list_initialization_uFF09"><a href="#u5217_u8868_u521D_u59CB_u5316_uFF08list_initialization_uFF09" class="headerlink" title="列表初始化（list initialization）"></a>列表初始化（list initialization）</h1><p>注：对于内置类型的变量，如果使用列表初始化且初始化存在丢失信息的风险，则编译器将报错。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> d = <span class="number">3.14</span>;</span><br><span class="line"><span class="keyword">int</span> i&#123;d&#125;; <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="u9ED8_u8BA4_u521D_u59CB_u5316_uFF08default_initialization_uFF09"><a href="#u9ED8_u8BA4_u521D_u59CB_u5316_uFF08default_initialization_uFF09" class="headerlink" title="默认初始化（default initialization）"></a>默认初始化（default initialization）</h1><p>如果定义变量时没有指定初值，则变量被默认初始化，具体值由变量类型决定。对象被默认初始化时自动执行默认构造函数。</p>
+<h2 id="u4F55_u65F6_u53D1_u751F"><a href="#u4F55_u65F6_u53D1_u751F" class="headerlink" title="何时发生"></a>何时发生</h2><ul>
+<li><p>当在块作用域中不使用任何初始值定义一个非静态变量或者数组时；</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a;</span><br><span class="line">  <span class="keyword">double</span> b[<span class="number">10</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当一个类本身含有类类型的成员且使用合成的默认构造函数时；</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> A &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> a;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> B &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  A a;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当类类型的成员没有在构造函数初始值列表中显示地初始化时。</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> A &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  A(<span class="keyword">int</span> a) : a_(a) &#123;&#125;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">int</span> a_;</span><br><span class="line">  <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="u503C_u521D_u59CB_u5316"><a href="#u503C_u521D_u59CB_u5316" class="headerlink" title="值初始化"></a>值初始化</h1><p>对于内置类型，则元素初始值自动设为0；如果是类类型，则由类来默认初始化。</p>
+<h2 id="u4F55_u65F6_u53D1_u751F-1"><a href="#u4F55_u65F6_u53D1_u751F-1" class="headerlink" title="何时发生"></a>何时发生</h2><ul>
+<li><p>在数组初始化时，提供的初始值的数量少于数组的大小；</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> arr[<span class="number">5</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;; <span class="comment">// a[] = &#123;1, 2, 3, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>不使用初始值定义一个局部静态变量时；</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">int</span> s; <span class="comment">// s值为0</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用<code>T()</code>来显示地请求值初始化时;</p>
+</li>
+<li>使用列表初始化来初始化聚合类，列表中元素数量少于类的成员数量时，后续成员被值初始化。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Aggre &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> i;</span><br><span class="line">  <span class="keyword">double</span> d;</span><br><span class="line">  <span class="keyword">char</span> c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Aggre aggre = &#123;<span class="number">1</span>&#125; <span class="comment">// d和c都是0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
+<li><a href="https://www.zhihu.com/question/36735960" target="_blank" rel="external">C++值初始化，默认初始化，以及其他初始化类型的区别</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h1 id="u5217_u8868_u521D_u59CB_u5316_uFF08list_initialization_uFF09"><a href="#u5217_u8868_u521D_u59CB_u5316_uFF08list_initialization_uFF09]]>
+    </summary>
+    
+      <category term="c++" scheme="http://chaomai.github.io/tags/c/"/>
+    
+      <category term="programming" scheme="http://chaomai.github.io/categories/programming/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[C++IO库]]></title>
+    <link href="http://chaomai.github.io/2014/02/16/2014-2014-02-16-cpp-io-library/"/>
+    <id>http://chaomai.github.io/2014/02/16/2014-2014-02-16-cpp-io-library/</id>
+    <published>2014-02-16T14:10:25.000Z</published>
+    <updated>2016-02-15T17:38:25.285Z</updated>
+    <content type="html"><![CDATA[<h1 id="iostream"><a href="#iostream" class="headerlink" title="iostream"></a><code>iostream</code></h1><h2 id="u6761_u4EF6_u72B6_u6001"><a href="#u6761_u4EF6_u72B6_u6001" class="headerlink" title="条件状态"></a>条件状态</h2><p><code>strm::iostate</code>是<strong>机器相关</strong>的位类型，用来标识流错误状态，有4个值，<code>strm::badbit</code>，<code>strm::failbit</code>，<code>strm::eofbit</code>和<code>strm::goodbit</code>。可用<code>ios::bad()</code>，<code>ios::fail()</code>，<code>ios::eof()</code>和<code>ios::good()</code>来得知各个flag是否置位；用<code>ios::rdstate()</code>来获取流的当前状态。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">badbit: <span class="number">0001</span></span><br><span class="line">failbit: <span class="number">0100</span></span><br><span class="line">eofbit: <span class="number">0010</span></span><br><span class="line">goodbit: <span class="number">0000</span></span><br></pre></td></tr></table></figure>
+<p>不同的错误会导致不同的flag被置位，</p>
+<ul>
+<li>eof -&gt; eofbit，failbit</li>
+<li>fail -&gt; failbit</li>
+<li>bad -&gt; badbit，且fail()返回true</li>
+</ul>
+<p>用<code>ios::clear()</code>和<code>ios::setstate()</code>可以对flag进行置位，两者区别在于，<code>ios::clear()</code>会先将原先的所有flag先复位，而后者不会，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> ios::setstate (iostate state) &#123;</span><br><span class="line">  clear(rdstate() | state);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="u8F93_u51FA_u7F13_u51B2"><a href="#u8F93_u51FA_u7F13_u51B2" class="headerlink" title="输出缓冲"></a>输出缓冲</h2><p>每个输出流都管理一个缓冲区。</p>
+<h3 id="u7F13_u51B2_u5237_u65B0"><a href="#u7F13_u51B2_u5237_u65B0" class="headerlink" title="缓冲刷新"></a>缓冲刷新</h3><p>即数据真正写到输出设备或文件，会有以下原因，</p>
+<ul>
+<li>程序正常结束，main函数return；</li>
+<li>缓冲区满，需要刷新才能写入后续数据；</li>
+<li>使用操纵符；<ul>
+<li><code>endl</code>：换行并刷新缓冲区；</li>
+<li><code>flush</code>：刷新缓冲区，不附加任何额外字符；</li>
+<li><code>ends</code>：附加一个空字符，刷新缓冲区。</li>
+</ul>
+</li>
+<li><code>unitbuf</code>和<code>nounitbuf</code>；<br>  使用<code>unitbuf</code>后，接下来的每次写操作都进行一次flush；使用<code>nounitbuf</code>返回正常的缓冲方式。</li>
+<li>关联输入流和输出流。<br>  关联一个输入流到输出流时，从输入流读取数据，会先刷新关联的输出流，<code>cin</code>和<code>cout</code>是被关联的。使用<code>tie</code>进行关联。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tie的两个重载版本</span></span><br><span class="line"><span class="comment">// 两个版本都返回已经tied ostream，如果没有，则返回nullptr</span></span><br><span class="line">ostream* os = <span class="built_in">cin</span>.tie();</span><br><span class="line">(*os) &lt;&lt; <span class="string">"tie version 1"</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">ostream* old_os = <span class="built_in">cin</span>.tie(<span class="literal">nullptr</span>);</span><br><span class="line">ostream* null_os = <span class="built_in">cin</span>.tie();</span><br><span class="line">(*old_os) &lt;&lt; <span class="string">"tie version 2"</span> &lt;&lt; endl;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; boolalpha &lt;&lt; (old_os == &amp;<span class="built_in">cout</span>) &lt;&lt; <span class="string">"\n"</span> &lt;&lt; (null_os == <span class="literal">nullptr</span>) &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">// true true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> ch;</span><br><span class="line"><span class="comment">// 此时上面的两个true并不会输出</span></span><br><span class="line"><span class="built_in">cin</span> &gt;&gt; ch;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; ch &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+<h1 id="fstream"><a href="#fstream" class="headerlink" title="fstream"></a><code>fstream</code></h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">op1=&#62;operation: iostream&#10;op2=&#62;operation: fstream&#10;&#10;op2(right)-&#62;op1</span><br></pre></td></tr></table></figure>
+<p>继承自<code>iostream</code>，</p>
+<ul>
+<li>接受一个<code>iostream</code>类型引用或指针参数的函数，可用一个对应的<code>fstream</code>类型来调用；</li>
+<li>支持<code>iostream</code>的所有操作。</li>
+</ul>
+<p><code>fstream</code>也有自己特有的行为和操作，</p>
+<ul>
+<li><code>fstream::fstream(s)</code>：创建对象并打开文件<code>s</code>；</li>
+<li><code>fstream::open()</code>：打开文件，并与<code>fstream</code>对象关联；</li>
+<li><code>fstream::close()</code>：关闭与<code>fstream</code>对象关联的文件；</li>
+<li><code>fstream::is_open()</code>：与<code>fstream</code>对象关联的文件是否成功打开，且未关闭；</li>
+<li>对于已打开的<code>fstream</code>对象，再次<code>open()</code>会失败；</li>
+<li><p><code>open()</code>失败-&gt;failbit；</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ifstream <span class="title">ifs</span><span class="params">(...)</span></span>;</span><br><span class="line"><span class="keyword">if</span> (ifs) &#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当<code>fstream</code>对象被销毁，<code>close()</code>会被自动调用。</p>
+</li>
+</ul>
+<h2 id="u6587_u4EF6_u6A21_u5F0F"><a href="#u6587_u4EF6_u6A21_u5F0F" class="headerlink" title="文件模式"></a>文件模式</h2><p>对于<code>ofstream</code>，</p>
+<ul>
+<li>未指定打开模式时，以<code>out</code>打开；</li>
+<li>通常<code>out</code>意味着同时使用<code>trunc</code>；</li>
+<li><code>app</code>不能与<code>trunc</code>同时设置；</li>
+<li><code>app</code>和<code>ate</code>；<ul>
+<li><code>app</code>，所有的输出操作都在文件末尾，不能seek around；</li>
+<li><code>ate</code>，初始位置在文件末尾，可以seed around。</li>
+</ul>
+</li>
+</ul>
+<h1 id="sstream"><a href="#sstream" class="headerlink" title="sstream"></a><code>sstream</code></h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">op1=&#62;operation: iostream&#10;op2=&#62;operation: sstream&#10;&#10;op2(right)-&#62;op1</span><br></pre></td></tr></table></figure>
+<p>类似<code>fstream</code>，<code>sstream</code>也包含特有的操作，</p>
+<ul>
+<li><code>sstream::sstream(s)</code>：创建对象，并保存<code>s</code>的copy；</li>
+<li><code>sstream::str()</code>：返回保存的string的copy；</li>
+<li><code>sstream::str(s)</code>：copy<code>s</code>到对象中。</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h1 id="iostream"><a href="#iostream" class="headerlink" title="iostream"></a><code>iostream</code></h1><h2 id="u6761_u4EF6_u72B6_u6001"><a ]]>
+    </summary>
+    
+      <category term="c++" scheme="http://chaomai.github.io/tags/c/"/>
+    
+      <category term="programming" scheme="http://chaomai.github.io/categories/programming/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[C++Primer - 第1章 开始]]></title>
     <link href="http://chaomai.github.io/2014/02/06/2014-2014-02-06-cpp-primer-ch1/"/>
     <id>http://chaomai.github.io/2014/02/06/2014-2014-02-06-cpp-primer-ch1/</id>

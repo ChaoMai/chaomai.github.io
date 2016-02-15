@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="linux,tmux," />
+  <meta name="keywords" content="c++," />
 
 
 
@@ -59,16 +59,22 @@
 
 
 
-<meta name="description" content="tmux的简单操作。">
+<meta name="description" content="列表初始化（list initialization）注：对于内置类型的变量，如果使用列表初始化且初始化存在丢失信息的风险，则编译器将报错。12double d = 3.14;int i&amp;#123;d&amp;#125;; // 错误
+默认初始化（default initialization）如果定义变量时没有指定初值，则变量被默认初始化，具体值由变量类型决定。对象被默认初始化时自动执行默认构造函数。
+何时">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tmux">
-<meta property="og:url" content="http://chaomai.github.io/2015/06/22/2015-2015-06-22-tmux/index.html">
+<meta property="og:title" content="C++ 初始化">
+<meta property="og:url" content="http://chaomai.github.io/2014/02/17/2014-2014-02-17-cpp-initialization/index.html">
 <meta property="og:site_name" content="Building Things">
-<meta property="og:description" content="tmux的简单操作。">
-<meta property="og:updated_time" content="2015-09-25T11:08:59.000Z">
+<meta property="og:description" content="列表初始化（list initialization）注：对于内置类型的变量，如果使用列表初始化且初始化存在丢失信息的风险，则编译器将报错。12double d = 3.14;int i&amp;#123;d&amp;#125;; // 错误
+默认初始化（default initialization）如果定义变量时没有指定初值，则变量被默认初始化，具体值由变量类型决定。对象被默认初始化时自动执行默认构造函数。
+何时">
+<meta property="og:updated_time" content="2016-02-15T17:38:45.475Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tmux">
-<meta name="twitter:description" content="tmux的简单操作。">
+<meta name="twitter:title" content="C++ 初始化">
+<meta name="twitter:description" content="列表初始化（list initialization）注：对于内置类型的变量，如果使用列表初始化且初始化存在丢失信息的风险，则编译器将报错。12double d = 3.14;int i&amp;#123;d&amp;#125;; // 错误
+默认初始化（default initialization）如果定义变量时没有指定初值，则变量被默认初始化，具体值由变量类型决定。对象被默认初始化时自动执行默认构造函数。
+何时">
 
 
 
@@ -86,7 +92,7 @@
   };
 </script>
 
-  <title> Tmux | Building Things </title>
+  <title> C++ 初始化 | Building Things </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -226,7 +232,7 @@
             
             
               
-                Tmux
+                C++ 初始化
               
             
           </h1>
@@ -238,8 +244,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-06-22T20:36:57+08:00" content="2015-06-22">
-              2015-06-22
+            <time itemprop="dateCreated" datetime="2014-02-17T20:56:12+08:00" content="2014-02-17">
+              2014-02-17
             </time>
           </span>
 
@@ -268,8 +274,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/06/22/2015-2015-06-22-tmux/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/22/2015-2015-06-22-tmux/" itemprop="commentsCount"></span>
+                <a href="/2014/02/17/2014-2014-02-17-cpp-initialization/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/02/17/2014-2014-02-17-cpp-initialization/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -290,179 +296,34 @@
       
 
       
-        <h2 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h2><h3 id="Creating_Named_Sessions"><a href="#Creating_Named_Sessions" class="headerlink" title="Creating Named Sessions"></a>Creating Named Sessions</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new-session <span class="operator">-s</span> basic</span><br></pre></td></tr></table></figure>
-<p>or</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new <span class="operator">-s</span> basic</span><br></pre></td></tr></table></figure>
-<h3 id="Detaching_Sessions"><a href="#Detaching_Sessions" class="headerlink" title="Detaching Sessions"></a>Detaching Sessions</h3><p><code>CTRL-b</code>, then <code>d</code></p>
-<h3 id="Reattaching_to_Existing_Sessions"><a href="#Reattaching_to_Existing_Sessions" class="headerlink" title="Reattaching to Existing Sessions"></a>Reattaching to Existing Sessions</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new-session <span class="operator">-s</span> basic</span><br></pre></td></tr></table></figure>
-<p>or</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux ls</span><br></pre></td></tr></table></figure>
-<blockquote>
-<ol>
-<li>If there is only session, then <code>tmux attach</code>.</li>
-<li>If there are multiple sessions, then <code>tmux attach -t second_session</code>. BTY, you can also use this when you only have one session.</li>
-</ol>
-</blockquote>
-<h3 id="Killing_Sessions"><a href="#Killing_Sessions" class="headerlink" title="Killing Sessions"></a>Killing Sessions</h3><ul>
-<li>In sesssion, use <code>exit</code>.</li>
-<li>Kill specific session when not in session,</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux <span class="built_in">kill</span>-session -t basic</span><br></pre></td></tr></table></figure>
-<p>BTY, if there is no sessions, after typing <code>tmux ls</code>, you will get</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">failed to connect to server: Connection refused</span><br></pre></td></tr></table></figure>
-<h3 id="Creating_and_Naming_Windows"><a href="#Creating_and_Naming_Windows" class="headerlink" title="Creating and Naming Windows"></a>Creating and Naming Windows</h3><ul>
-<li><p>In terminal</p>
-<p>  <code>-n</code>: the name of new window.</p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new <span class="operator">-s</span> windows -n shell</span><br></pre></td></tr></table></figure>
+        <h1 id="u5217_u8868_u521D_u59CB_u5316_uFF08list_initialization_uFF09"><a href="#u5217_u8868_u521D_u59CB_u5316_uFF08list_initialization_uFF09" class="headerlink" title="列表初始化（list initialization）"></a>列表初始化（list initialization）</h1><p>注：对于内置类型的变量，如果使用列表初始化且初始化存在丢失信息的风险，则编译器将报错。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> d = <span class="number">3.14</span>;</span><br><span class="line"><span class="keyword">int</span> i&#123;d&#125;; <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="u9ED8_u8BA4_u521D_u59CB_u5316_uFF08default_initialization_uFF09"><a href="#u9ED8_u8BA4_u521D_u59CB_u5316_uFF08default_initialization_uFF09" class="headerlink" title="默认初始化（default initialization）"></a>默认初始化（default initialization）</h1><p>如果定义变量时没有指定初值，则变量被默认初始化，具体值由变量类型决定。对象被默认初始化时自动执行默认构造函数。</p>
+<h2 id="u4F55_u65F6_u53D1_u751F"><a href="#u4F55_u65F6_u53D1_u751F" class="headerlink" title="何时发生"></a>何时发生</h2><ul>
+<li><p>当在块作用域中不使用任何初始值定义一个非静态变量或者数组时；</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a;</span><br><span class="line">  <span class="keyword">double</span> b[<span class="number">10</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>In session</p>
-<p>  <code>PREFIX c</code></p>
-<p>  <code>PREFIX ,</code> will rename the new window.</p>
+<li><p>当一个类本身含有类类型的成员且使用合成的默认构造函数时；</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> A &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> a;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> B &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  A a;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当类类型的成员没有在构造函数初始值列表中显示地初始化时。</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> A &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  A(<span class="keyword">int</span> a) : a_(a) &#123;&#125;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">int</span> a_;</span><br><span class="line">  <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="Moving_Between_Windows"><a href="#Moving_Between_Windows" class="headerlink" title="Moving Between Windows"></a>Moving Between Windows</h3><ul>
-<li><p>next and previous window</p>
-<p>  <code>PREFIX n</code> and <code>PREFIX p</code></p>
+<h1 id="u503C_u521D_u59CB_u5316"><a href="#u503C_u521D_u59CB_u5316" class="headerlink" title="值初始化"></a>值初始化</h1><p>对于内置类型，则元素初始值自动设为0；如果是类类型，则由类来默认初始化。</p>
+<h2 id="u4F55_u65F6_u53D1_u751F-1"><a href="#u4F55_u65F6_u53D1_u751F-1" class="headerlink" title="何时发生"></a>何时发生</h2><ul>
+<li><p>在数组初始化时，提供的初始值的数量少于数组的大小；</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> arr[<span class="number">5</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;; <span class="comment">// a[] = &#123;1, 2, 3, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>default id of window</p>
-<p>  <code>PREFIX 0</code> to <code>PREFIX 9</code></p>
+<li><p>不使用初始值定义一个局部静态变量时；</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">int</span> s; <span class="comment">// s值为0</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>find a window</p>
-<p>  <code>PREFIX f</code></p>
+<li><p>使用<code>T()</code>来显示地请求值初始化时;</p>
 </li>
-<li><p>window list</p>
-<p>  <code>PREFIX w</code></p>
-</li>
-</ul>
-<h3 id="Close_a_Window"><a href="#Close_a_Window" class="headerlink" title="Close a Window"></a>Close a Window</h3><ul>
-<li>type <code>exit</code> after command finish executed.</li>
-<li><code>PREFIX &amp;</code></li>
-</ul>
-<p>If you want to quit a tmux session, you’ll have to close all windows.</p>
-<h3 id="Panes"><a href="#Panes" class="headerlink" title="Panes"></a>Panes</h3><ul>
-<li>vertically: <code>PREFIX %</code></li>
-<li>horizontally: <code>PREFIX &quot;</code></li>
-<li>switch between them:<ul>
-<li>cycle through: <code>PREFIX o</code></li>
-<li><code>PREFIX UP</code>, <code>PREFIX DOWN</code>, <code>PREFIX LEFT</code>, or <code>PREFIX RIGHT</code></li>
-</ul>
+<li>使用列表初始化来初始化聚合类，列表中元素数量少于类的成员数量时，后续成员被值初始化。<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Aggre &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> i;</span><br><span class="line">  <span class="keyword">double</span> d;</span><br><span class="line">  <span class="keyword">char</span> c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Aggre aggre = &#123;<span class="number">1</span>&#125; <span class="comment">// d和c都是0</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="Pane_Layouts"><a href="#Pane_Layouts" class="headerlink" title="Pane Layouts"></a>Pane Layouts</h3><p>types:</p>
-<ul>
-<li>even-horizontal</li>
-<li>even-vertical</li>
-<li>main-horizontal</li>
-<li>main-vertical</li>
-<li>tiled</li>
-</ul>
-<p>cycle through these types by pressing <code>PREFIX SPACEBAR</code>.</p>
-<h3 id="Closing_Panes"><a href="#Closing_Panes" class="headerlink" title="Closing Panes"></a>Closing Panes</h3><ul>
-<li><code>exit</code></li>
-<li><code>PREFIX X</code>. If there is only one pane in current window, it will close this window at the same time.</li>
-</ul>
-<h3 id="Command_Mode"><a href="#Command_Mode" class="headerlink" title="Command Mode"></a>Command Mode</h3><p>press <code>PREFIX :</code> to enter command mode.</p>
-<ul>
-<li>create new window with a name,</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new-window -n console</span><br></pre></td></tr></table></figure>
-<ul>
-<li>create new window with a name and a command,</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new-window -n processes <span class="string">"top"</span></span><br></pre></td></tr></table></figure>
-<p><code>top</code> will execute immediately after new window created. What’s really cool is that <strong>this window close instantly when you press <code>q</code> to close top.</strong></p>
-<h3 id="Quick_Reference"><a href="#Quick_Reference" class="headerlink" title="Quick Reference"></a>Quick Reference</h3><p><strong>创建会话</strong></p>
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>tmux new-session</code></td>
-<td>创建一个未命名的会话。可以简写为 <code>tmux new</code> 或者就一个简单的 <code>tmux</code></td>
-</tr>
-<tr>
-<td><code>tmux new -s development</code></td>
-<td>创建一个名为“development”的会话</td>
-</tr>
-<tr>
-<td><code>tmux new -s development -n editor</code></td>
-<td>创建一个名为“development”的会话并把该会话的第一个窗口命名为“editor”</td>
-</tr>
-<tr>
-<td><code>tmux attach -t development</code></td>
-<td>连接到一个名为“development”的会话</td>
-</tr>
-</tbody>
-</table>
-<p><strong>会话、窗口和面板的默认快捷键</strong></p>
-<table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>PREFIX d</code></td>
-<td>从一个会话中分离，让该会话在后台运行。</td>
-</tr>
-<tr>
-<td><code>PREFIX :</code></td>
-<td>进入命令模式</td>
-</tr>
-<tr>
-<td><code>PREFIX c</code></td>
-<td>在当前tmux会话创建一个新的窗口，是 new-window 命令的简写</td>
-</tr>
-<tr>
-<td><code>PREFIX 0...9</code></td>
-<td>根据窗口的编号选择窗口</td>
-</tr>
-<tr>
-<td><code>PREFIX w</code></td>
-<td>显示当前会话中所有窗口的可选择列表</td>
-</tr>
-<tr>
-<td><code>PREFIX ,</code></td>
-<td>显示一个提示符来重命名一个窗口</td>
-</tr>
-<tr>
-<td><code>PREFIX &amp;</code></td>
-<td>关闭当前窗口，带有确认提示</td>
-</tr>
-<tr>
-<td><code>PREFIX %</code></td>
-<td>把当前窗口垂直地一分为二，分割后的两个面板各占50%大小</td>
-</tr>
-<tr>
-<td><code>PREFIX &quot;</code></td>
-<td>把当前窗口水平地一分为二，分割后的两个面板各占50%大小</td>
-</tr>
-<tr>
-<td><code>PREFIX o</code></td>
-<td>在已打开的面板之间循环移动当前焦点</td>
-</tr>
-<tr>
-<td><code>PREFIX q</code></td>
-<td>短暂地显示每个面板的编号</td>
-</tr>
-<tr>
-<td><code>PREFIX x</code></td>
-<td>关闭当前面板，带有确认提示</td>
-</tr>
-<tr>
-<td><code>PREFIX SPACE</code></td>
-<td>循环地使用tmux的几个默认面板布局</td>
-</tr>
-</tbody>
-</table>
-<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
-<li>[tmux-Productive-Mouse-Free-Development_zh(<a href="https://github.com/aqua7regia/tmux-Productive-Mouse-Free-Development_zh" target="_blank" rel="external">https://github.com/aqua7regia/tmux-Productive-Mouse-Free-Development_zh</a>)</li>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
+<li><a href="https://www.zhihu.com/question/36735960" target="_blank" rel="external">C++值初始化，默认初始化，以及其他初始化类型的区别</a></li>
 </ol>
 
       
@@ -472,9 +333,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/linux/" rel="tag">#linux</a>
-          
-            <a href="/tags/tmux/" rel="tag">#tmux</a>
+            <a href="/tags/c/" rel="tag">#c++</a>
           
         </div>
       
@@ -483,16 +342,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/06/16/2015-2015-06-16-apt-get-hold-version/" rel="next" title="Apt-Get Hold Version">
-                <i class="fa fa-chevron-left"></i> Apt-Get Hold Version
+              <a href="/2014/02/16/2014-2014-02-16-cpp-io-library/" rel="next" title="C++IO库">
+                <i class="fa fa-chevron-left"></i> C++IO库
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/06/26/2015-2015-06-26-notes-of-cs100-1x-introduction-to-big-data-with-apache-spark-1/" rel="prev" title="Notes of CS100.1x Introduction to Big Data With Apache Spark (1)">
-                Notes of CS100.1x Introduction to Big Data With Apache Spark (1) <i class="fa fa-chevron-right"></i>
+              <a href="/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/" rel="prev" title="入手KBC Poker 2">
+                入手KBC Poker 2 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -673,7 +532,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic"><span class="nav-number">1.</span> <span class="nav-text">Basic</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Creating_Named_Sessions"><span class="nav-number">1.1.</span> <span class="nav-text">Creating Named Sessions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Detaching_Sessions"><span class="nav-number">1.2.</span> <span class="nav-text">Detaching Sessions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reattaching_to_Existing_Sessions"><span class="nav-number">1.3.</span> <span class="nav-text">Reattaching to Existing Sessions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Killing_Sessions"><span class="nav-number">1.4.</span> <span class="nav-text">Killing Sessions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Creating_and_Naming_Windows"><span class="nav-number">1.5.</span> <span class="nav-text">Creating and Naming Windows</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Moving_Between_Windows"><span class="nav-number">1.6.</span> <span class="nav-text">Moving Between Windows</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Close_a_Window"><span class="nav-number">1.7.</span> <span class="nav-text">Close a Window</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Panes"><span class="nav-number">1.8.</span> <span class="nav-text">Panes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pane_Layouts"><span class="nav-number">1.9.</span> <span class="nav-text">Pane Layouts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Closing_Panes"><span class="nav-number">1.10.</span> <span class="nav-text">Closing Panes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Command_Mode"><span class="nav-number">1.11.</span> <span class="nav-text">Command Mode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Quick_Reference"><span class="nav-number">1.12.</span> <span class="nav-text">Quick Reference</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">2.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u5217_u8868_u521D_u59CB_u5316_uFF08list_initialization_uFF09"><span class="nav-number">1.</span> <span class="nav-text">列表初始化（list initialization）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u9ED8_u8BA4_u521D_u59CB_u5316_uFF08default_initialization_uFF09"><span class="nav-number">2.</span> <span class="nav-text">默认初始化（default initialization）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u4F55_u65F6_u53D1_u751F"><span class="nav-number">2.1.</span> <span class="nav-text">何时发生</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u503C_u521D_u59CB_u5316"><span class="nav-number">3.</span> <span class="nav-text">值初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u4F55_u65F6_u53D1_u751F-1"><span class="nav-number">3.1.</span> <span class="nav-text">何时发生</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">4.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -931,9 +790,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'chaomaisblog';
-      var disqus_identifier = '2015/06/22/2015-2015-06-22-tmux/';
-      var disqus_title = 'Tmux';
-      var disqus_url = 'http://chaomai.github.io/2015/06/22/2015-2015-06-22-tmux/';
+      var disqus_identifier = '2014/02/17/2014-2014-02-17-cpp-initialization/';
+      var disqus_title = 'C++ 初始化';
+      var disqus_url = 'http://chaomai.github.io/2014/02/17/2014-2014-02-17-cpp-initialization/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
