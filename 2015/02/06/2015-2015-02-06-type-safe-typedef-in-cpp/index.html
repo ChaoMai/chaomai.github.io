@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="c++," />
+  <meta name="keywords" content="cpp," />
 
 
 
@@ -61,13 +61,13 @@
 
 <meta name="description" content="传统的`typedef`机制允许对已存在的type提供synonym或者alias，被定义为新引入的alias的类型与被定义为原来类型的变量，完全一样，不会有一丁点行为上的差别，但是这种特性在某些场景下会有缺陷。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++中typedef的使用意图，以及类型安全">
+<meta property="og:title" content="C++中typedef的使用和类型安全">
 <meta property="og:url" content="http://chaomai.github.io/2015/02/06/2015-2015-02-06-type-safe-typedef-in-cpp/index.html">
 <meta property="og:site_name" content="Building Things">
 <meta property="og:description" content="传统的`typedef`机制允许对已存在的type提供synonym或者alias，被定义为新引入的alias的类型与被定义为原来类型的变量，完全一样，不会有一丁点行为上的差别，但是这种特性在某些场景下会有缺陷。">
-<meta property="og:updated_time" content="2015-07-14T14:28:08.000Z">
+<meta property="og:updated_time" content="2016-02-23T06:18:43.353Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++中typedef的使用意图，以及类型安全">
+<meta name="twitter:title" content="C++中typedef的使用和类型安全">
 <meta name="twitter:description" content="传统的`typedef`机制允许对已存在的type提供synonym或者alias，被定义为新引入的alias的类型与被定义为原来类型的变量，完全一样，不会有一丁点行为上的差别，但是这种特性在某些场景下会有缺陷。">
 
 
@@ -86,7 +86,7 @@
   };
 </script>
 
-  <title> C++中typedef的使用意图，以及类型安全 | Building Things </title>
+  <title> C++中typedef的使用和类型安全 | Building Things </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -188,6 +188,8 @@
       
 
       
+
+
       
       
     </ul>
@@ -226,7 +228,7 @@
             
             
               
-                C++中typedef的使用意图，以及类型安全
+                C++中typedef的使用和类型安全
               
             
           </h1>
@@ -279,6 +281,7 @@
 
           
           
+
         </div>
       </header>
     
@@ -320,11 +323,17 @@
       
     </div>
 
+    <div>
+      
+        
+      
+    </div>
+
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag">#c++</a>
+            <a href="/tags/cpp/" rel="tag">#cpp</a>
           
         </div>
       
@@ -418,7 +427,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -755,7 +764,7 @@
     NexT.motion.middleWares.sidebar = function () {
       var $tocContent = $('.post-toc-content');
 
-      if (CONFIG.sidebar === 'post') {
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
         if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
           NexT.utils.displaySidebar();
         }
@@ -782,7 +791,7 @@
     <script type="text/javascript">
       var disqus_shortname = 'chaomaisblog';
       var disqus_identifier = '2015/02/06/2015-2015-02-06-type-safe-typedef-in-cpp/';
-      var disqus_title = 'C++中typedef的使用意图，以及类型安全';
+      var disqus_title = 'C++中typedef的使用和类型安全';
       var disqus_url = 'http://chaomai.github.io/2015/02/06/2015-2015-02-06-type-safe-typedef-in-cpp/';
 
       function run_disqus_script(disqus_script){
@@ -802,6 +811,7 @@
 
 
 
+  
   
   
   <script type="text/x-mathjax-config">

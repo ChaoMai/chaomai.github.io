@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="c++," />
+  <meta name="keywords" content="cpp," />
 
 
 
@@ -69,7 +69,7 @@
 <meta property="og:description" content="列表初始化（list initialization）注：对于内置类型的变量，如果使用列表初始化且初始化存在丢失信息的风险，则编译器将报错。12double d = 3.14;int i&amp;#123;d&amp;#125;; // 错误
 默认初始化（default initialization）如果定义变量时没有指定初值，则变量被默认初始化，具体值由变量类型决定。对象被默认初始化时自动执行默认构造函数。
 何时">
-<meta property="og:updated_time" content="2016-02-15T17:38:45.475Z">
+<meta property="og:updated_time" content="2016-02-23T06:17:08.753Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++ 初始化">
 <meta name="twitter:description" content="列表初始化（list initialization）注：对于内置类型的变量，如果使用列表初始化且初始化存在丢失信息的风险，则编译器将报错。12double d = 3.14;int i&amp;#123;d&amp;#125;; // 错误
@@ -194,6 +194,8 @@
       
 
       
+
+
       
       
     </ul>
@@ -285,6 +287,7 @@
 
           
           
+
         </div>
       </header>
     
@@ -329,11 +332,17 @@
       
     </div>
 
+    <div>
+      
+        
+      
+    </div>
+
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag">#c++</a>
+            <a href="/tags/cpp/" rel="tag">#cpp</a>
           
         </div>
       
@@ -350,8 +359,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/" rel="prev" title="入手KBC Poker 2">
-                入手KBC Poker 2 <i class="fa fa-chevron-right"></i>
+              <a href="/2014/02/23/2014-2014-02-23-cpp-generic-algorithm/" rel="prev" title="C++泛型算法">
+                C++泛型算法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -427,7 +436,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -764,7 +773,7 @@
     NexT.motion.middleWares.sidebar = function () {
       var $tocContent = $('.post-toc-content');
 
-      if (CONFIG.sidebar === 'post') {
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
         if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
           NexT.utils.displaySidebar();
         }
@@ -811,6 +820,7 @@
 
 
 
+  
   
   
   <script type="text/x-mathjax-config">

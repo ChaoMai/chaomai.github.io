@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="c++,c++11,concurrency,reading," />
+  <meta name="keywords" content="concurrency,cpp,cpp11,reading," />
 
 
 
@@ -65,7 +65,7 @@
 <meta property="og:url" content="http://chaomai.github.io/2015/05/18/2015-2015-05-18-cpp-concurrency-in-action-2/index.html">
 <meta property="og:site_name" content="Building Things">
 <meta property="og:description" content="Managing threads的笔记。">
-<meta property="og:updated_time" content="2015-07-14T14:28:08.000Z">
+<meta property="og:updated_time" content="2016-02-23T06:17:37.483Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++ Concurrency in Action (2) - Managing Threads">
 <meta name="twitter:description" content="Managing threads的笔记。">
@@ -188,6 +188,8 @@
       
 
       
+
+
       
       
     </ul>
@@ -279,6 +281,7 @@
 
           
           
+
         </div>
       </header>
     
@@ -375,15 +378,21 @@
       
     </div>
 
+    <div>
+      
+        
+      
+    </div>
+
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag">#c++</a>
-          
-            <a href="/tags/c-11/" rel="tag">#c++11</a>
-          
             <a href="/tags/concurrency/" rel="tag">#concurrency</a>
+          
+            <a href="/tags/cpp/" rel="tag">#cpp</a>
+          
+            <a href="/tags/cpp11/" rel="tag">#cpp11</a>
           
             <a href="/tags/reading/" rel="tag">#reading</a>
           
@@ -479,7 +488,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -816,7 +825,7 @@
     NexT.motion.middleWares.sidebar = function () {
       var $tocContent = $('.post-toc-content');
 
-      if (CONFIG.sidebar === 'post') {
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
         if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
           NexT.utils.displaySidebar();
         }
@@ -863,6 +872,7 @@
 
 
 
+  
   
   
   <script type="text/x-mathjax-config">

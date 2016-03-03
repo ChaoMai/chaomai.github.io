@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="c++," />
+  <meta name="keywords" content="cpp," />
 
 
 
@@ -67,7 +67,7 @@
 <meta property="og:site_name" content="Building Things">
 <meta property="og:description" content="iostream条件状态strm::iostate是机器相关的位类型，用来标识流错误状态，有4个值，strm::badbit，strm::failbit，strm::eofbit和strm::goodbit。可用ios::bad()，ios::fail()，ios::eof()和ios::good()来得知各个flag是否置位；用ios::rdstate()来获取流的当前状态。
 1234badbi">
-<meta property="og:updated_time" content="2016-02-15T17:38:25.285Z">
+<meta property="og:updated_time" content="2016-02-23T06:17:07.433Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++IO库">
 <meta name="twitter:description" content="iostream条件状态strm::iostate是机器相关的位类型，用来标识流错误状态，有4个值，strm::badbit，strm::failbit，strm::eofbit和strm::goodbit。可用ios::bad()，ios::fail()，ios::eof()和ios::good()来得知各个flag是否置位；用ios::rdstate()来获取流的当前状态。
@@ -191,6 +191,8 @@
       
 
       
+
+
       
       
     </ul>
@@ -282,6 +284,7 @@
 
           
           
+
         </div>
       </header>
     
@@ -359,11 +362,17 @@
       
     </div>
 
+    <div>
+      
+        
+      
+    </div>
+
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag">#c++</a>
+            <a href="/tags/cpp/" rel="tag">#cpp</a>
           
         </div>
       
@@ -457,7 +466,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -794,7 +803,7 @@
     NexT.motion.middleWares.sidebar = function () {
       var $tocContent = $('.post-toc-content');
 
-      if (CONFIG.sidebar === 'post') {
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
         if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
           NexT.utils.displaySidebar();
         }
@@ -841,6 +850,7 @@
 
 
 
+  
   
   
   <script type="text/x-mathjax-config">

@@ -188,6 +188,8 @@
       
 
       
+
+
       
       
     </ul>
@@ -279,6 +281,7 @@
 
           
           
+
         </div>
       </header>
     
@@ -311,6 +314,12 @@
 <li><a href="http://stackoverflow.com/questions/859634/c-pointer-to-array-array-of-pointers-disambiguation" target="_blank" rel="external">C pointer to array/array of pointers disambiguation</a></li>
 </ol>
 
+      
+    </div>
+
+    <div>
+      
+        
       
     </div>
 
@@ -412,7 +421,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -749,7 +758,7 @@
     NexT.motion.middleWares.sidebar = function () {
       var $tocContent = $('.post-toc-content');
 
-      if (CONFIG.sidebar === 'post') {
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
         if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
           NexT.utils.displaySidebar();
         }
@@ -796,6 +805,7 @@
 
 
 
+  
   
   
   <script type="text/x-mathjax-config">

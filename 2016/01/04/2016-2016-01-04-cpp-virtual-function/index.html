@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="c++," />
+  <meta name="keywords" content="cpp," />
 
 
 
@@ -69,7 +69,7 @@
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/cpp_virtual_function_derived_bd.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/cpp_virtual_function_derived_bd_mem.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/cpp_virtual_function_multi_derived_bd.png">
-<meta property="og:updated_time" content="2016-01-05T13:38:40.935Z">
+<meta property="og:updated_time" content="2016-02-23T06:18:51.330Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++虚函数">
 <meta name="twitter:description" content="C++中有编译时多态和运行时多态，运行时多态是由虚函数实现的。虚函数是用过虚函数表（vftable，virtual function table）来实现的，这个表包含了这个类的虚函数地址，解决了继承、覆盖。当使用父类指针来操作一个子类对象的时候，通过子类对象的虚函数表指针（vfptr，virtual function table pointer）找到子类的vftable，进而找到应该调用的函数。">
@@ -192,6 +192,8 @@
       
 
       
+
+
       
       
     </ul>
@@ -283,6 +285,7 @@
 
           
           
+
         </div>
       </header>
     
@@ -336,11 +339,17 @@
       
     </div>
 
+    <div>
+      
+        
+      
+    </div>
+
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag">#c++</a>
+            <a href="/tags/cpp/" rel="tag">#cpp</a>
           
         </div>
       
@@ -434,7 +443,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -771,7 +780,7 @@
     NexT.motion.middleWares.sidebar = function () {
       var $tocContent = $('.post-toc-content');
 
-      if (CONFIG.sidebar === 'post') {
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
         if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
           NexT.utils.displaySidebar();
         }
@@ -818,6 +827,7 @@
 
 
 
+  
   
   
   <script type="text/x-mathjax-config">

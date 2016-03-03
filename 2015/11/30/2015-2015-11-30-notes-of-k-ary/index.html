@@ -191,6 +191,8 @@
       
 
       
+
+
       
       
     </ul>
@@ -294,6 +296,7 @@
 
           
           
+
         </div>
       </header>
     
@@ -378,6 +381,12 @@
 <li>Non-blocking Binary Search Trees, Faith Ellen, Panagiota Fatourou, Eric Ruppert, Franck van Breugel</li>
 </ol>
 
+      
+    </div>
+
+    <div>
+      
+        
       
     </div>
 
@@ -481,7 +490,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -818,7 +827,7 @@
     NexT.motion.middleWares.sidebar = function () {
       var $tocContent = $('.post-toc-content');
 
-      if (CONFIG.sidebar === 'post') {
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
         if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
           NexT.utils.displaySidebar();
         }
@@ -865,6 +874,7 @@
 
 
 
+  
   
   
   <script type="text/x-mathjax-config">

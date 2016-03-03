@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="c++,c++11,clang," />
+  <meta name="keywords" content="clang,cpp,cpp11," />
 
 
 
@@ -65,7 +65,7 @@
 <meta property="og:url" content="http://chaomai.github.io/2015/05/15/2015-2015-05-15-compile-c-11-thread-with-clang/index.html">
 <meta property="og:site_name" content="Building Things">
 <meta property="og:description" content="在Linux下编译C++11的多线程代码时，提示pthread_create为定义。最后发现clang++在Linux在使用的是posix来实现C++11的线程，编译的时候需要加上-pthread。">
-<meta property="og:updated_time" content="2015-07-14T14:28:08.000Z">
+<meta property="og:updated_time" content="2016-02-23T06:17:20.656Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Clang++中C++11 Thread的支持">
 <meta name="twitter:description" content="在Linux下编译C++11的多线程代码时，提示pthread_create为定义。最后发现clang++在Linux在使用的是posix来实现C++11的线程，编译的时候需要加上-pthread。">
@@ -188,6 +188,8 @@
       
 
       
+
+
       
       
     </ul>
@@ -279,6 +281,7 @@
 
           
           
+
         </div>
       </header>
     
@@ -308,15 +311,21 @@
       
     </div>
 
+    <div>
+      
+        
+      
+    </div>
+
     <footer class="post-footer">
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag">#c++</a>
-          
-            <a href="/tags/c-11/" rel="tag">#c++11</a>
-          
             <a href="/tags/clang/" rel="tag">#clang</a>
+          
+            <a href="/tags/cpp/" rel="tag">#cpp</a>
+          
+            <a href="/tags/cpp11/" rel="tag">#cpp11</a>
           
         </div>
       
@@ -410,7 +419,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">41</span>
+              <span class="site-state-item-count">45</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -747,7 +756,7 @@
     NexT.motion.middleWares.sidebar = function () {
       var $tocContent = $('.post-toc-content');
 
-      if (CONFIG.sidebar === 'post') {
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
         if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
           NexT.utils.displaySidebar();
         }
@@ -794,6 +803,7 @@
 
 
 
+  
   
   
   <script type="text/x-mathjax-config">
