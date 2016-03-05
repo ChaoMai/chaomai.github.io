@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://chaomai.github.io/"/>
-  <updated>2016-03-05T05:07:58.305Z</updated>
+  <updated>2016-03-05T06:45:40.225Z</updated>
   <id>http://chaomai.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://chaomai.github.io/2016/03/05/2016-2016-03-05-cpp-copy-elision/"/>
     <id>http://chaomai.github.io/2016/03/05/2016-2016-03-05-cpp-copy-elision/</id>
     <published>2016-03-05T05:03:30.000Z</published>
-    <updated>2016-03-05T05:07:58.305Z</updated>
+    <updated>2016-03-05T06:45:40.225Z</updated>
     
     <content type="html">&lt;p&gt;在写代码是发现拷贝构造函数有时候没有调用，想起C++ Primer中提到过&lt;/p&gt;
 &lt;blockquote&gt;
@@ -36,7 +36,7 @@
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;c1: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;copy from c1, c10000: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;c10001: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;copy assign from c10000, c10001: operator=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-----&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;c2: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;c10002: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;copy assign from c2, c10002: operator=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-----&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;c10003: C&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;第一个没什么好说的，首先用&lt;code&gt;c1&lt;/code&gt;对形参&lt;code&gt;c&lt;/code&gt;做拷贝初始化，接着&lt;code&gt;tmp&lt;/code&gt;进行默认初始化，然后用拷贝赋值，将&lt;code&gt;c&lt;/code&gt;赋值给&lt;code&gt;tmp&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;第二个的结果就有点怪了，为什么&lt;code&gt;C(2)&lt;/code&gt;得到的临时对象直接进行了赋值，而不首先初始化形参&lt;code&gt;c&lt;/code&gt;？而第三个，为什么返回的临时对象一次拷贝都没发生？&lt;/p&gt;
-&lt;p&gt;因为在这两种情况中发生了copy elision（&lt;a href=&quot;http://stackoverflow.com/questions/12953127/what-are-copy-elision-and-return-value-optimization&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;1&lt;/a&gt;，&lt;a href=&quot;http://stackoverflow.com/questions/8451212/passing-temporary-object-as-parameter-by-value-is-copy-constructor-called&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;2&lt;/a&gt;，&lt;a href=&quot;https://en.wikipedia.org/wiki/Copy_elision&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;3&lt;/a&gt;）（&lt;a href=&quot;http://cstdlib.com/tech/2014/07/12/nrvo-and-copy-elision/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;1&lt;/a&gt;，&lt;a href=&quot;https://en.wikipedia.org/wiki/Return_value_optimization&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;2&lt;/a&gt;）。&lt;strong&gt;Copy elision&lt;/strong&gt;是一种优化手段，满足特定条件时会发生，当传入的参数是rvalue的时候，无需进行额外的拷贝，直接使用源对象。&lt;strong&gt;RVO&lt;/strong&gt;，全称叫return value optimization，编译器会让调用函数在其栈上分配空间，被调函数返回值处的临时对象会在这块内存上构造，进而避免了return时临时对象的拷贝，是copy elision常见形式。根据返回的对象是否是临时的，有&lt;strong&gt;named return value optimization&lt;/strong&gt;和&lt;strong&gt;return value optimization,&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;因为在这两种情况中发生了copy elision（&lt;a href=&quot;http://stackoverflow.com/questions/12953127/what-are-copy-elision-and-return-value-optimization&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;1&lt;/a&gt;，&lt;a href=&quot;http://stackoverflow.com/questions/8451212/passing-temporary-object-as-parameter-by-value-is-copy-constructor-called&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;2&lt;/a&gt;，&lt;a href=&quot;https://en.wikipedia.org/wiki/Copy_elision&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;3&lt;/a&gt;，&lt;a href=&quot;http://cstdlib.com/tech/2014/07/12/nrvo-and-copy-elision/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;4&lt;/a&gt;）。&lt;strong&gt;Copy elision&lt;/strong&gt;是一种优化手段，满足特定条件时会发生，当传入的参数是rvalue的时候，无需进行额外的拷贝，直接使用源对象。&lt;strong&gt;RVO&lt;/strong&gt;，全称叫&lt;a href=&quot;https://en.wikipedia.org/wiki/Return_value_optimization&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;return value optimization&lt;/a&gt;，编译器会让调用函数在其栈上分配空间，被调函数返回值处的临时对象会在这块内存上构造，进而避免了return时临时对象的拷贝，是copy elision常见形式。根据返回的对象是否是临时的，有&lt;strong&gt;named return value optimization&lt;/strong&gt;和&lt;strong&gt;return value optimization&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;Copy elision和rvo即使在有可观察的到的side-effects时，也会发生，是&lt;a href=&quot;https://en.wikipedia.org/wiki/As-if_rule&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;As-if rule&lt;/a&gt;的例外中的一种。Dave Abrahams写过pass by value的一系列&lt;a href=&quot;https://web.archive.org/web/20140205194657/http://cpp-next.com/archive/2009/08/want-speed-pass-by-value/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;文章&lt;/a&gt;。Ayman B. Shoukry在&lt;a href=&quot;https://msdn.microsoft.com/en-us/library/ms364057(v=vs.80&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;.aspx#nrvo_cpp05_topic3)讨论了nrvo的局限（multiple return points和conditional initialization）。&lt;/p&gt;
 &lt;p&gt;clang++和g++可以用&lt;code&gt;-fno-elide-constructors&lt;/code&gt;控制是否开启优化。关闭优化后，输出的结果就和期待的一致了，&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;c1: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;copy from c1, c10000: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;c10001: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;copy assign from c10000, c10001: operator=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-----&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;c2: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;copy from c2, c10002: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;c10003: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;copy assign from c10002, c10003: operator=&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-----&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;c10004: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;copy from c10004, c10005: C&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;copy from c10005, c10006: C&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -406,9 +406,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -504,9 +504,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -665,9 +665,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="dcas" scheme="http://chaomai.github.io/tags/dcas/"/>
     
@@ -736,9 +736,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="snapshot" scheme="http://chaomai.github.io/tags/snapshot/"/>
     
@@ -801,9 +801,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -891,9 +891,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -980,9 +980,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -1134,9 +1134,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -1330,9 +1330,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -1499,9 +1499,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -1829,11 +1829,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -2148,9 +2148,9 @@
       <category term="programming" scheme="http://chaomai.github.io/categories/programming/"/>
     
     
-      <category term="linux" scheme="http://chaomai.github.io/tags/linux/"/>
-    
       <category term="tmux" scheme="http://chaomai.github.io/tags/tmux/"/>
+    
+      <category term="linux" scheme="http://chaomai.github.io/tags/linux/"/>
     
   </entry>
   
@@ -2253,11 +2253,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="cas" scheme="http://chaomai.github.io/tags/cas/"/>
     
@@ -2733,11 +2733,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -2957,11 +2957,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -3369,11 +3369,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -3425,11 +3425,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
