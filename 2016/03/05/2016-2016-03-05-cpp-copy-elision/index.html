@@ -39,7 +39,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="running," />
+  <meta name="keywords" content="cpp," />
 
 
 
@@ -57,16 +57,34 @@
 
 
 
-<meta name="description" content="近期跑步的时候遇到的问题，以及一些注意事项的记录。">
+<meta name="description" content="在写代码是发现拷贝构造函数有时候没有调用，想起C++ Primer中提到过
+
+the compiler can omit calls to the copy constructor.
+
+后来查到是发生了copy elision。
+首先有那么一个类定义，其中静态成员c是对象编号。
+12345678910111213141516171819202122232425class C &amp;#123; publ">
 <meta property="og:type" content="article">
-<meta property="og:title" content="慢跑总结">
-<meta property="og:url" content="http://chaomai.github.io/2015/09/05/2015-2015-09-05-running-summary/index.html">
+<meta property="og:title" content="C++ Copy Elision">
+<meta property="og:url" content="http://chaomai.github.io/2016/03/05/2016-2016-03-05-cpp-copy-elision/index.html">
 <meta property="og:site_name" content="Building Things">
-<meta property="og:description" content="近期跑步的时候遇到的问题，以及一些注意事项的记录。">
-<meta property="og:updated_time" content="2015-09-25T11:07:50.000Z">
+<meta property="og:description" content="在写代码是发现拷贝构造函数有时候没有调用，想起C++ Primer中提到过
+
+the compiler can omit calls to the copy constructor.
+
+后来查到是发生了copy elision。
+首先有那么一个类定义，其中静态成员c是对象编号。
+12345678910111213141516171819202122232425class C &amp;#123; publ">
+<meta property="og:updated_time" content="2016-03-05T05:07:58.305Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="慢跑总结">
-<meta name="twitter:description" content="近期跑步的时候遇到的问题，以及一些注意事项的记录。">
+<meta name="twitter:title" content="C++ Copy Elision">
+<meta name="twitter:description" content="在写代码是发现拷贝构造函数有时候没有调用，想起C++ Primer中提到过
+
+the compiler can omit calls to the copy constructor.
+
+后来查到是发生了copy elision。
+首先有那么一个类定义，其中静态成员c是对象编号。
+12345678910111213141516171819202122232425class C &amp;#123; publ">
 
 
 
@@ -84,7 +102,7 @@
   };
 </script>
 
-  <title> 慢跑总结 | Building Things </title>
+  <title> C++ Copy Elision | Building Things </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -216,7 +234,7 @@
             
             
               
-                慢跑总结
+                C++ Copy Elision
               
             
           </h1>
@@ -228,8 +246,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-09-05T11:21:11+08:00" content="2015-09-05">
-              2015-09-05
+            <time itemprop="dateCreated" datetime="2016-03-05T13:03:30+08:00" content="2016-03-05">
+              2016-03-05
             </time>
           </span>
 
@@ -242,8 +260,8 @@
               <span class="post-meta-item-text">In</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/life/" itemprop="url" rel="index">
-                    <span itemprop="name">life</span>
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
                   </a>
                 </span>
 
@@ -258,8 +276,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/09/05/2015-2015-09-05-running-summary/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/05/2015-2015-09-05-running-summary/" itemprop="commentsCount"></span>
+                <a href="/2016/03/05/2016-2016-03-05-cpp-copy-elision/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/05/2016-2016-03-05-cpp-copy-elision/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -281,52 +299,41 @@
       
 
       
-        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><ul>
-<li>摆臂方向不对，导致身体也左右转动，浪费能量</li>
-<li>长时间跑以后，腰部不能保证挺直</li>
-<li>推蹬时间点过早，导致身体腾空，浪费能量</li>
-<li>呼吸有问题，导致腹部痛</li>
-</ul>
-<h1 id="跑步注意"><a href="#跑步注意" class="headerlink" title="跑步注意"></a>跑步注意</h1><ul>
-<li><p>轻松直立微前倾</p>
-</li>
-<li><p>两眼注视前下方</p>
-</li>
-</ul>
-<ol>
-<li>10m左右；</li>
-</ol>
+        <p>在写代码是发现拷贝构造函数有时候没有调用，想起C++ Primer中提到过</p>
+<blockquote>
+<p>the compiler can omit calls to the copy constructor.</p>
+</blockquote>
+<p>后来查到是发生了copy elision。</p>
+<p>首先有那么一个类定义，其中静态成员c是对象编号。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> C &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  C() &#123;</span><br><span class="line">    name_ = c;</span><br><span class="line">    ++c;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"c"</span> &lt;&lt; name_ &lt;&lt; <span class="string">": "</span> &lt;&lt; __func__ &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  C(<span class="keyword">const</span> <span class="keyword">int</span> name) : name_(name) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"c"</span> &lt;&lt; name_ &lt;&lt; <span class="string">": "</span> &lt;&lt; __func__ &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  C(<span class="keyword">const</span> C &amp;rhs) : name_(c++) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"copy from c"</span> &lt;&lt; rhs.name_ &lt;&lt; <span class="string">", c"</span> &lt;&lt; name_ &lt;&lt; <span class="string">": "</span> &lt;&lt; __func__</span><br><span class="line">         &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  C &amp;<span class="keyword">operator</span>=(<span class="keyword">const</span> C &amp;rhs) &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"copy assign from c"</span> &lt;&lt; rhs.name_ &lt;&lt; <span class="string">", c"</span> &lt;&lt; name_ &lt;&lt; <span class="string">": "</span></span><br><span class="line">         &lt;&lt; __func__ &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> name_ = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">int</span> c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> C::c = <span class="number">10000</span>;</span><br></pre></td></tr></table></figure>
+<p>然后是有下面的几个函数定义和调用，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(C c)</span> </span>&#123;</span><br><span class="line">  <span class="function">C <span class="title">tmp</span><span class="params">()</span></span>;</span><br><span class="line">  tmp = c;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">C <span class="title">f</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> C(); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function">C <span class="title">c1</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line">f(c1);</span><br><span class="line">f(C(<span class="number">2</span>));</span><br><span class="line">C c = f();</span><br></pre></td></tr></table></figure>
+<p>以上三个f的调用分别输出什么？</p>
+<p>下面是结果，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">c1: C</span><br><span class="line">copy from c1, c10000: C</span><br><span class="line">c10001: C</span><br><span class="line">copy assign from c10000, c10001: operator=</span><br><span class="line">-----</span><br><span class="line">c2: C</span><br><span class="line">c10002: C</span><br><span class="line">copy assign from c2, c10002: operator=</span><br><span class="line">-----</span><br><span class="line">c10003: C</span><br></pre></td></tr></table></figure>
+<p>第一个没什么好说的，首先用<code>c1</code>对形参<code>c</code>做拷贝初始化，接着<code>tmp</code>进行默认初始化，然后用拷贝赋值，将<code>c</code>赋值给<code>tmp</code>。</p>
+<p>第二个的结果就有点怪了，为什么<code>C(2)</code>得到的临时对象直接进行了赋值，而不首先初始化形参<code>c</code>？而第三个，为什么返回的临时对象一次拷贝都没发生？</p>
+<p>因为在这两种情况中发生了copy elision（<a href="http://stackoverflow.com/questions/12953127/what-are-copy-elision-and-return-value-optimization" target="_blank" rel="external">1</a>，<a href="http://stackoverflow.com/questions/8451212/passing-temporary-object-as-parameter-by-value-is-copy-constructor-called" target="_blank" rel="external">2</a>，<a href="https://en.wikipedia.org/wiki/Copy_elision" target="_blank" rel="external">3</a>）（<a href="http://cstdlib.com/tech/2014/07/12/nrvo-and-copy-elision/" target="_blank" rel="external">1</a>，<a href="https://en.wikipedia.org/wiki/Return_value_optimization" target="_blank" rel="external">2</a>）。<strong>Copy elision</strong>是一种优化手段，满足特定条件时会发生，当传入的参数是rvalue的时候，无需进行额外的拷贝，直接使用源对象。<strong>RVO</strong>，全称叫return value optimization，编译器会让调用函数在其栈上分配空间，被调函数返回值处的临时对象会在这块内存上构造，进而避免了return时临时对象的拷贝，是copy elision常见形式。根据返回的对象是否是临时的，有<strong>named return value optimization</strong>和<strong>return value optimization,</strong>。</p>
+<p>Copy elision和rvo即使在有可观察的到的side-effects时，也会发生，是<a href="https://en.wikipedia.org/wiki/As-if_rule" target="_blank" rel="external">As-if rule</a>的例外中的一种。Dave Abrahams写过pass by value的一系列<a href="https://web.archive.org/web/20140205194657/http://cpp-next.com/archive/2009/08/want-speed-pass-by-value/" target="_blank" rel="external">文章</a>。Ayman B. Shoukry在<a href="https://msdn.microsoft.com/en-us/library/ms364057(v=vs.80" target="_blank" rel="external">这里</a>.aspx#nrvo_cpp05_topic3)讨论了nrvo的局限（multiple return points和conditional initialization）。</p>
+<p>clang++和g++可以用<code>-fno-elide-constructors</code>控制是否开启优化。关闭优化后，输出的结果就和期待的一致了，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">c1: C</span><br><span class="line">copy from c1, c10000: C</span><br><span class="line">c10001: C</span><br><span class="line">copy assign from c10000, c10001: operator=</span><br><span class="line">-----</span><br><span class="line">c2: C</span><br><span class="line">copy from c2, c10002: C</span><br><span class="line">c10003: C</span><br><span class="line">copy assign from c10002, c10003: operator=</span><br><span class="line">-----</span><br><span class="line">c10004: C</span><br><span class="line">copy from c10004, c10005: C</span><br><span class="line">copy from c10005, c10006: C</span><br></pre></td></tr></table></figure>
+<p>stackoverflow的这个<a href="http://stackoverflow.com/questions/12953127/what-are-copy-elision-and-return-value-optimization" target="_blank" rel="external">答案</a>，给出了Standard reference和发生copy elision以及return value optimization常见的例子，下面是搬运例子，</p>
 <ul>
-<li><p>前摆至胸线，后摆至腰际</p>
-</li>
-<li><p>膝前提腿下摆向后下方推蹬</p>
-</li>
+<li>nrvo</li>
 </ul>
-<ol>
-<li>身体重心过了支撑点，再推蹬，否则身体会腾空；</li>
-<li>推蹬顺序：先大腿，后小腿，最后脚踝；</li>
-<li>避免脚尖落地，长时间跑小腿以及脚踝的负荷会太大；</li>
-</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Thing &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  Thing();</span><br><span class="line">  ~Thing();</span><br><span class="line">  Thing(<span class="keyword">const</span> Thing&amp;);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">Thing <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Thing t;</span><br><span class="line">  <span class="keyword">return</span> t; <span class="comment">// optimization</span></span><br><span class="line">&#125;</span><br><span class="line">Thing t2 = f();</span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>蹬踝前摆全脚掌落地</p>
-</li>
-<li><p>鼻为主口为辅自然顺畅为原则</p>
-</li>
+<li>rvo</li>
 </ul>
-<h1 id="核心肌群训练"><a href="#核心肌群训练" class="headerlink" title="核心肌群训练"></a>核心肌群训练</h1><ul>
-<li>抬头挺胸缩腹夹臀</li>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Thing &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  Thing();</span><br><span class="line">  ~Thing();</span><br><span class="line">  Thing(<span class="keyword">const</span> Thing&amp;);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">Thing <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> Thing(); <span class="comment">// optimization</span></span><br><span class="line">&#125;</span><br><span class="line">Thing t2 = f();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>pass a temporary object by value</li>
 </ul>
-<h2 id="训练方法"><a href="#训练方法" class="headerlink" title="训练方法"></a>训练方法</h2><ul>
-<li>Plank</li>
-<li>Side Plank</li>
-<li>Upward plank pose</li>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> Thing &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  Thing();</span><br><span class="line">  ~Thing();</span><br><span class="line">  Thing(<span class="keyword">const</span> Thing&amp;);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(Thing t)</span></span>; <span class="comment">// optimization</span></span><br><span class="line"></span><br><span class="line">foo(Thing());</span><br></pre></td></tr></table></figure>
+<ul>
+<li>exception is thrown and caught by value</li>
 </ul>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
-<li><a href="http://www.zhihu.com/question/20693323?rf=21469986" target="_blank" rel="external">正确的慢跑姿势是怎样的？</a></li>
-<li><a href="http://blog.sina.com.cn/s/blog_9bf935a90101l1id.html" target="_blank" rel="external">跑者入门01：跑步姿势与呼吸</a></li>
-<li><a href="http://tw.running.biji.co/index.php?q=news&amp;act=info&amp;id=443" target="_blank" rel="external">[長跑觀念] 第1講—運動前後伸展</a></li>
-<li><a href="http://post.smzdm.com/xilie/27/" target="_blank" rel="external">系列：跑步装备介绍</a></li>
-</ol>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> Thing&#123;</span><br><span class="line">  Thing();</span><br><span class="line">  Thing(<span class="keyword">const</span> Thing&amp;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  Thing c;</span><br><span class="line">  <span class="keyword">throw</span> c; <span class="comment">// optimization</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    foo();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">catch</span>(Thing c) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -341,7 +348,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/running/" rel="tag">#running</a>
+            <a href="/tags/cpp/" rel="tag">#cpp</a>
           
         </div>
       
@@ -350,17 +357,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/07/30/2015-2015-07-30-harris-non-blocking-linked-lists/" rel="next" title="Harris' Non-Blocking Linked-Lists">
-                <i class="fa fa-chevron-left"></i> Harris' Non-Blocking Linked-Lists
+              <a href="/2016/02/16/2016-2016-02-16-single-number/" rel="next" title="Single Number">
+                <i class="fa fa-chevron-left"></i> Single Number
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/09/05/2015-2015-09-05-notes-of-to-lock-swap-or-elide-on-the-interplay-of-hardware-transactional-memory-and-lock-free-indexing/" rel="prev" title="Notes of to Lock, Swap, or Elide: On the Interplay of Hardware Transactional Memory and Lock Free Indexing">
-                Notes of to Lock, Swap, or Elide: On the Interplay of Hardware Transactional Memory and Lock Free Indexing <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -540,7 +543,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#跑步注意"><span class="nav-number">2.</span> <span class="nav-text">跑步注意</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#核心肌群训练"><span class="nav-number">3.</span> <span class="nav-text">核心肌群训练</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#训练方法"><span class="nav-number">3.1.</span> <span class="nav-text">训练方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -806,9 +809,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'chaomaisblog';
-      var disqus_identifier = '2015/09/05/2015-2015-09-05-running-summary/';
-      var disqus_title = '慢跑总结';
-      var disqus_url = 'http://chaomai.github.io/2015/09/05/2015-2015-09-05-running-summary/';
+      var disqus_identifier = '2016/03/05/2016-2016-03-05-cpp-copy-elision/';
+      var disqus_title = 'C++ Copy Elision';
+      var disqus_url = 'http://chaomai.github.io/2016/03/05/2016-2016-03-05-cpp-copy-elision/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');

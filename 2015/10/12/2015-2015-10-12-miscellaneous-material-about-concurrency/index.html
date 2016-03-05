@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next mist use-motion">
+<html class="theme-next mist">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -41,7 +39,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="concurrency,reading," />
+  <meta name="keywords" content="reading,concurrency," />
 
 
 
@@ -78,7 +76,7 @@
     scheme: 'Mist',
     sidebar: {"position":"right","display":"post"},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: 0,
       author: 'Author'
@@ -143,16 +141,6 @@
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            Categories
           </a>
         </li>
       
@@ -305,7 +293,7 @@
       
 
       
-        <h1 id="Cuckoo_hashing"><a href="#Cuckoo_hashing" class="headerlink" title="Cuckoo hashing"></a>Cuckoo hashing</h1><p>Cuckoo hashing是Rasmus Pagh, Flemming Friche Rodler在2001年提出的，在hash table中用于解决hash collision的一种方法，是一种开放寻址法的hash table。</p>
+        <h1 id="Cuckoo-hashing"><a href="#Cuckoo-hashing" class="headerlink" title="Cuckoo hashing"></a>Cuckoo hashing</h1><p>Cuckoo hashing是Rasmus Pagh, Flemming Friche Rodler在2001年提出的，在hash table中用于解决hash collision的一种方法，是一种开放寻址法的hash table。</p>
 <p>Cuckoo hashing维护了两个hash table，$T_1$和$T_2$，使用两个hash function，$h_1$和$h_2$。每个key存储在$T_1$的$h_1(x)$或者$T_2$的$h_2(x)$，但不会同时存储在两个地方。</p>
 <p>由于使用了两个hash table，Cuckoo hashing保证了在最坏情况下，lookup和delete也能有$O(1)$的时间，insert的期望时间是$O(1)$。</p>
 <p>原始的cuckoo hashing并不支持并发读写，同时对于每个inset和lookup需要多个内存引用。Bin Fan, David G. Andersen, Michael Kaminsky在2013年提出了Concurrent Cuckoo hashing，用optimistic version，使得cuckoo hashing在保证原有空间高效性的情况下，支持多个reader和一个writer的并发访问；同时使用了针对每个key的short summary，提高了hash table操作中cache的局部性；还优化了insert操作，提高了吞吐率。</p>
@@ -314,7 +302,7 @@
 <li>Bin Fan, David G. Andersen, Michael Kaminsky. MemC3: Compact and Concurrent MemCache with Dumber Caching and Smarter Hashing[C]. Networked Systems Design and Implementation, 2013: 371-384.</li>
 <li>Xiaozhou Li, David G. Andersen, Michael Kaminsky, Michael J. Freedman. Algorithmic improvements for fast concurrent Cuckoo hashing[C]. Proceedings of the Ninth European Conference on Computer Systems, 2014, 27.</li>
 </ol>
-<h1 id="Hopscotch_hashing"><a href="#Hopscotch_hashing" class="headerlink" title="Hopscotch hashing"></a>Hopscotch hashing</h1><p>Hopscotch hashing是Maurice Herlihy, Nir Shavit, Moran Tzafrir在2008年提出的，在hash table中用于解决hash collision的一种方法，是一种开放寻址法的hash table，结合了linear探测、链式hash和cuckoo hash的优点。</p>
+<h1 id="Hopscotch-hashing"><a href="#Hopscotch-hashing" class="headerlink" title="Hopscotch hashing"></a>Hopscotch hashing</h1><p>Hopscotch hashing是Maurice Herlihy, Nir Shavit, Moran Tzafrir在2008年提出的，在hash table中用于解决hash collision的一种方法，是一种开放寻址法的hash table，结合了linear探测、链式hash和cuckoo hash的优点。</p>
 <p>它使用了一个hash function，$h$和hopscotch方法。hash table的每个项都包含一个hop-information，一个$H$-bit的一个bitmap（$H$是常数，通常是一个word），被hash到table里的每个item，x总会在$h(x)$或者下$H-1$个位置被找到。</p>
 <p>它的insert，remove和contains的期望时间都是常数时间。</p>
 <p>Hopscotch hashing在设计之初就考虑到了并发，使用了lock和time stamp的方式来保证了并发安全性。</p>
@@ -338,10 +326,10 @@
 <li>Paul E. McKenney, John D. Slingwine. Read-Copy Update: Using Execution History to Solve Concurrency Problems[C]. Parallel and Distributed Computing and Systems, 1998: 509–518.</li>
 <li>Paul E. McKenney, Jonathan Walpole. Introducing technology into the Linux kernel: a case study[C]. Special Interest Group on Operating Systems, 2008, 42(5): 4–17.</li>
 </ol>
-<h1 id="CPU_with_HTM_from_Intel_and_IBM"><a href="#CPU_with_HTM_from_Intel_and_IBM" class="headerlink" title="CPU with HTM from Intel and IBM"></a>CPU with HTM from Intel and IBM</h1><h2 id="Intel"><a href="#Intel" class="headerlink" title="Intel"></a>Intel</h2><p>Transactional Synchronization Extensions（TSX）是x86架构指令集的扩展，这个扩展加入了Hardware Transactional Memory（HTM）的支持。</p>
+<h1 id="CPU-with-HTM-from-Intel-and-IBM"><a href="#CPU-with-HTM-from-Intel-and-IBM" class="headerlink" title="CPU with HTM from Intel and IBM"></a>CPU with HTM from Intel and IBM</h1><h2 id="Intel"><a href="#Intel" class="headerlink" title="Intel"></a>Intel</h2><p>Transactional Synchronization Extensions（TSX）是x86架构指令集的扩展，这个扩展加入了Hardware Transactional Memory（HTM）的支持。</p>
 <p>在2013年6月，Intel推出了基于Haswell微架构的处理器。Haswell处理器成为了主流处理器中首次引入Transactional Memory的处理器，在这一系列的处理器中，型号低于45xx，R系列和K系列的不支持TSX。</p>
 <h2 id="IBM"><a href="#IBM" class="headerlink" title="IBM"></a>IBM</h2><h3 id="Power8"><a href="#Power8" class="headerlink" title="Power8"></a>Power8</h3><p>IBM在2013年8月的Hot Chips会议上推出了Power8。Power8是基于Power架构的超标量体系结构对称多处理器家族。Power8加入了Hardware Transactional Memory的支持。</p>
-<h3 id="Blue_Gene"><a href="#Blue_Gene" class="headerlink" title="Blue Gene"></a>Blue Gene</h3><p>Blue Gene是IBM的一个项目，目标是设计计算速度能够达到PFLOPS级别的，同时低能耗的超级计算机。这个项目产生了3代的超级计算机，Blue Gene/L，Blue Gene/P和Blue Gene/Q。其中Blue Gene/Q支持Transactional Memory。</p>
+<h3 id="Blue-Gene"><a href="#Blue-Gene" class="headerlink" title="Blue Gene"></a>Blue Gene</h3><p>Blue Gene是IBM的一个项目，目标是设计计算速度能够达到PFLOPS级别的，同时低能耗的超级计算机。这个项目产生了3代的超级计算机，Blue Gene/L，Blue Gene/P和Blue Gene/Q。其中Blue Gene/Q支持Transactional Memory。</p>
 
       
     </div>
@@ -356,9 +344,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
-          
             <a href="/tags/reading/" rel="tag">#reading</a>
+          
+            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
           
         </div>
       
@@ -452,17 +440,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
           
           
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              
                 <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">categories</span>
-              </a>
+              
             </div>
           
 
@@ -557,7 +545,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cuckoo_hashing"><span class="nav-number">1.</span> <span class="nav-text">Cuckoo hashing</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.1.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hopscotch_hashing"><span class="nav-number">2.</span> <span class="nav-text">Hopscotch hashing</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference-1"><span class="nav-number">2.1.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#spinlock"><span class="nav-number">3.</span> <span class="nav-text">spinlock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference-2"><span class="nav-number">3.1.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rwlock"><span class="nav-number">4.</span> <span class="nav-text">rwlock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference-3"><span class="nav-number">4.1.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RCU"><span class="nav-number">5.</span> <span class="nav-text">RCU</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference-4"><span class="nav-number">5.1.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU_with_HTM_from_Intel_and_IBM"><span class="nav-number">6.</span> <span class="nav-text">CPU with HTM from Intel and IBM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Intel"><span class="nav-number">6.1.</span> <span class="nav-text">Intel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IBM"><span class="nav-number">6.2.</span> <span class="nav-text">IBM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Power8"><span class="nav-number">6.2.1.</span> <span class="nav-text">Power8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blue_Gene"><span class="nav-number">6.2.2.</span> <span class="nav-text">Blue Gene</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cuckoo-hashing"><span class="nav-number">1.</span> <span class="nav-text">Cuckoo hashing</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.1.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hopscotch-hashing"><span class="nav-number">2.</span> <span class="nav-text">Hopscotch hashing</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference-1"><span class="nav-number">2.1.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#spinlock"><span class="nav-number">3.</span> <span class="nav-text">spinlock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference-2"><span class="nav-number">3.1.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rwlock"><span class="nav-number">4.</span> <span class="nav-text">rwlock</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference-3"><span class="nav-number">4.1.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RCU"><span class="nav-number">5.</span> <span class="nav-text">RCU</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference-4"><span class="nav-number">5.1.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CPU-with-HTM-from-Intel-and-IBM"><span class="nav-number">6.</span> <span class="nav-text">CPU with HTM from Intel and IBM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Intel"><span class="nav-number">6.1.</span> <span class="nav-text">Intel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IBM"><span class="nav-number">6.2.</span> <span class="nav-text">IBM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Power8"><span class="nav-number">6.2.1.</span> <span class="nav-text">Power8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blue-Gene"><span class="nav-number">6.2.2.</span> <span class="nav-text">Blue Gene</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -610,6 +598,14 @@
 
   
 
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
 
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>

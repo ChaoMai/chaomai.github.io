@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next mist use-motion">
+<html class="theme-next mist">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -78,7 +76,7 @@
     scheme: 'Mist',
     sidebar: {"position":"right","display":"post"},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: 0,
       author: 'Author'
@@ -143,16 +141,6 @@
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            Categories
           </a>
         </li>
       
@@ -295,7 +283,7 @@
       
         <p>-pthread告诉编译器，要链接到pthread库，同时配置线程的编译。</p>
 <p>下面的例子就显示了在使用-pthread时，定义了不同的宏。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -pthread -E <span class="operator">-d</span>M test.c &gt; dm.pthread.txt</span><br><span class="line">$ gcc          -E <span class="operator">-d</span>M test.c &gt; dm.nopthread.txt</span><br><span class="line">$ diff dm.pthread.txt dm.nopthread.txt</span><br><span class="line"><span class="number">152</span>d151</span><br><span class="line">&lt; <span class="comment">#define _REENTRANT 1</span></span><br><span class="line"><span class="number">208</span>d206</span><br><span class="line">&lt; <span class="comment">#define __USE_REENTRANT 1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -pthread -E <span class="_">-d</span>M test.c &gt; dm.pthread.txt</span><br><span class="line">$ gcc          -E <span class="_">-d</span>M test.c &gt; dm.nopthread.txt</span><br><span class="line">$ diff dm.pthread.txt dm.nopthread.txt</span><br><span class="line">152d151</span><br><span class="line">&lt; <span class="comment">#define _REENTRANT 1</span></span><br><span class="line">208d206</span><br><span class="line">&lt; <span class="comment">#define __USE_REENTRANT 1</span></span><br></pre></td></tr></table></figure>
 <p>-lpthread只会告诉编译器，要链接到pthread库，但是这些宏不会被定义。</p>
 <p>编译时，应该使用-pthread。</p>
 <h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><ol>
@@ -409,17 +397,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
           
           
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              
                 <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">categories</span>
-              </a>
+              
             </div>
           
 
@@ -567,6 +555,14 @@
 
   
 
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
 
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>

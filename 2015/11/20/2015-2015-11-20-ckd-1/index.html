@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next mist use-motion">
+<html class="theme-next mist">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -71,6 +69,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CKDTree (1)">
 <meta name="twitter:description" content="Concurrent KDTree with Snapshots, implemented in Java. This article is about some details in implementation.">
+<meta name="twitter:image" content="http://7vilyb.com1.z0.glb.clouddn.com/ckd1_2015%2011%2018%2016%2042%20Office%20Lens.jpg">
 
 
 
@@ -80,7 +79,7 @@
     scheme: 'Mist',
     sidebar: {"position":"right","display":"post"},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: 0,
       author: 'Author'
@@ -145,16 +144,6 @@
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            Categories
           </a>
         </li>
       
@@ -308,15 +297,15 @@
 
       
         <p>Concurrent KDTree with Snapshots, implemented in Java. This article is about some details in implementation.</p>
-<h1 id="Basic_Idea"><a href="#Basic_Idea" class="headerlink" title="Basic Idea"></a>Basic Idea</h1><p>The methods used in this structure is heavily based on ideas in CTrie (snapshot) and Non-blocking Binary Search Trees (search, insert and delete).</p>
+<h1 id="Basic-Idea"><a href="#Basic-Idea" class="headerlink" title="Basic Idea"></a>Basic Idea</h1><p>The methods used in this structure is heavily based on ideas in CTrie (snapshot) and Non-blocking Binary Search Trees (search, insert and delete).</p>
 <ul>
 <li>RDCSS</li>
 <li>GCAS</li>
 <li>Mark and Flag</li>
 <li>Leaf-oriented tree</li>
 </ul>
-<h1 id="Problems_and_Solutions_in_Implementation"><a href="#Problems_and_Solutions_in_Implementation" class="headerlink" title="Problems and Solutions in Implementation"></a>Problems and Solutions in Implementation</h1><p>下面是实现的时候遇到的问题和自己对一些细节的思考，有的已经在两篇论文里面有所记录，但是自己没注意，又踩坑了，还有的是这个结构的设计隐含的问题。</p>
-<h2 id="Dummy_Nodes"><a href="#Dummy_Nodes" class="headerlink" title="Dummy Nodes"></a>Dummy Nodes</h2><p>由于Non-blocking Binary Search Trees中的insert操作是需要mark parent的，因此，对于一棵空的tree（有一个root），parent并不存在，insert无法适用于这样的情况。delete也有类似的问题。</p>
+<h1 id="Problems-and-Solutions-in-Implementation"><a href="#Problems-and-Solutions-in-Implementation" class="headerlink" title="Problems and Solutions in Implementation"></a>Problems and Solutions in Implementation</h1><p>下面是实现的时候遇到的问题和自己对一些细节的思考，有的已经在两篇论文里面有所记录，但是自己没注意，又踩坑了，还有的是这个结构的设计隐含的问题。</p>
+<h2 id="Dummy-Nodes"><a href="#Dummy-Nodes" class="headerlink" title="Dummy Nodes"></a>Dummy Nodes</h2><p>由于Non-blocking Binary Search Trees中的insert操作是需要mark parent的，因此，对于一棵空的tree（有一个root），parent并不存在，insert无法适用于这样的情况。delete也有类似的问题。</p>
 <p>为了避免结点数目很少的时候需要考虑很多复杂的情况，Non-blocking Binary Search Trees里提到了使用两个key为$\infty_1$，$\infty_2$（其中$\infty_1 &lt; \infty_2$）的Dummy nodes，$\infty_1 &lt; \infty_2$这样的关系是为了保证Binary Search Trees的性质。</p>
 <p>由于Java中，无法使用<code>Double.POSITIVE_INFINITY</code>来得到两个key，使得$\infty_1 &lt; \infty_2$，所以就干脆不管他们的关系，root的左右child都使用<code>Double.POSITIVE_INFINITY</code>作为key。</p>
 <p><img src="http://7vilyb.com1.z0.glb.clouddn.com/ckd1_2015%2011%2018%2016%2042%20Office%20Lens.jpg" alt=""></p>
@@ -325,28 +314,28 @@
 <li>只有在insert第一个key或者delete最后一个key的时候需要操作leaf dummy node。</li>
 <li>除（1）以外，所有update都发生在上图三角形的sub tree里面。</li>
 </ol>
-<h2 id="Right_Child_of_Root"><a href="#Right_Child_of_Root" class="headerlink" title="Right Child of Root"></a>Right Child of Root</h2><p>既然没有key会进入root的right child，那么为什么不把root的right child设置为<code>null</code>。</p>
+<h2 id="Right-Child-of-Root"><a href="#Right-Child-of-Root" class="headerlink" title="Right Child of Root"></a>Right Child of Root</h2><p>既然没有key会进入root的right child，那么为什么不把root的right child设置为<code>null</code>。</p>
 <p>不行，这个也是在写后续代码的时候发现的。进行<code>helpMark1</code>和<code>helpMark2</code>的时候，需要判断<code>GCAS</code>处理grand parent哪边的child，</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (info.p == info.gp.GCAS_READ_LEFT_CHILD(<span class="keyword">this</span>)) &#123;</span><br><span class="line">  direction = Direction.LEFT;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  direction = Direction.RIGHT;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果要delete的leaf是children of the left child of root，也就是说此时tree里面只有一个key。存在这么一种可能性，同时有多个thread来进行delete，其中一个thread已经成功进行了delete，其他某些的thread还没有执行上述代码。当开始执行以后，就会发现<code>p</code>不等于<code>gp</code>（即root）的left child，此时如果root的right为<code>null</code>，那么就会出错。</p>
 <p><code>helpMark1</code>和<code>helpMark2</code>都包含上述操作，只是仅仅<code>helpMark1</code>才会触发问题。</p>
-<h2 id="Type_Test_in_helpMarked1"><a href="#Type_Test_in_helpMarked1" class="headerlink" title="Type Test in helpMarked1"></a>Type Test in <code>helpMarked1</code></h2><p>当要delete的leaf，它的sibling是leaf时，<code>helpMarked1</code>来处理这种的情况。</p>
+<h2 id="Type-Test-in-helpMarked1"><a href="#Type-Test-in-helpMarked1" class="headerlink" title="Type Test in helpMarked1"></a>Type Test in <code>helpMarked1</code></h2><p>当要delete的leaf，它的sibling是leaf时，<code>helpMarked1</code>来处理这种的情况。</p>
 <p>在single thread的情况下，<code>helpDelete</code>在判断sibling的类型以后，如果是leaf，那么<code>helpMarked1</code>就会执行。</p>
 <p>在multithread的情况下，某个thread看到update信息以后就直接执行<code>helpMarked1</code>，但是此时sibling的类型是不知道的。因为从update信息被发布，到<code>helpMarked1</code>被执行，sibling可能早就被其他thread改变了，如果变为internal node，</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Leaf&lt;V&gt; ns = <span class="keyword">new</span> Leaf&lt;&gt;(sibling.key, ((Leaf&lt;V&gt;) sibling).value);</span><br></pre></td></tr></table></figure>
 <p>那么上述代码就会报错。</p>
-<h2 id="Mark_in_helpDelete"><a href="#Mark_in_helpDelete" class="headerlink" title="Mark in helpDelete"></a>Mark in <code>helpDelete</code></h2><p>Non-blocking Binary Search Trees提到marked的结点是不可更改的，实现的时候没有很在意，测试的时候就遇到了麻烦。</p>
+<h2 id="Mark-in-helpDelete"><a href="#Mark-in-helpDelete" class="headerlink" title="Mark in helpDelete"></a>Mark in <code>helpDelete</code></h2><p>Non-blocking Binary Search Trees提到marked的结点是不可更改的，实现的时候没有很在意，测试的时候就遇到了麻烦。</p>
 <p><code>helpDelete</code>（1）首先mark parent，（2）read leaf的sibling，（3）根据sibling的类型来进行后续的操作。</p>
 <p>（1）和（2）的顺序是不能改的，这也是mark的意义所在。mark以后，<code>helpMarked1</code>和<code>helpMarked2</code>中还会再次读取sibling，并用于构造新的node，然后<code>GCAS</code> grand parent的child。如果不能保证<code>helpDelete</code>中leaf的sibling在后续的操作中不变，那么构造出的新node很可能就是错的。</p>
-<h2 id="startGen_in_searchKey"><a href="#startGen_in_searchKey" class="headerlink" title="startGen in searchKey"></a><code>startGen</code> in <code>searchKey</code></h2><p>这个结构使用了Ctrie里GCAS的idea，在search的时候来update从root到leaf的path。search使用的version number是在开始进行search前从root里read的。为什么不到每个node的时候就read一次version number？</p>
+<h2 id="startGen-in-searchKey"><a href="#startGen-in-searchKey" class="headerlink" title="startGen in searchKey"></a><code>startGen</code> in <code>searchKey</code></h2><p>这个结构使用了Ctrie里GCAS的idea，在search的时候来update从root到leaf的path。search使用的version number是在开始进行search前从root里read的。为什么不到每个node的时候就read一次version number？</p>
 <p>因为如果在search到某个内部的结点的时候，执行了snapshot操作，那么root的version number就变了。此时search中read root的version number，就会造成path的错误更新，上半部分是老的version number，下面有一条新的version number的分支。</p>
-<h2 id="Retry_after_GCAS_in_searchKey"><a href="#Retry_after_GCAS_in_searchKey" class="headerlink" title="Retry after GCAS in searchKey"></a>Retry after <code>GCAS</code> in <code>searchKey</code></h2><p><code>searchKey</code>中，如果发现要前往的branch是internal node，并且version低于<code>startGen</code>，那么就需要创建那个internal node新版本的copy，然后把cur node的branch设置为那个新版的node。</p>
+<h2 id="Retry-after-GCAS-in-searchKey"><a href="#Retry-after-GCAS-in-searchKey" class="headerlink" title="Retry after GCAS in searchKey"></a>Retry after <code>GCAS</code> in <code>searchKey</code></h2><p><code>searchKey</code>中，如果发现要前往的branch是internal node，并且version低于<code>startGen</code>，那么就需要创建那个internal node新版本的copy，然后把cur node的branch设置为那个新版的node。</p>
 <p>接下来，首先想到的是在cur node处重试（即下面代码里的<code>continue;</code>），但是如果<code>continue</code>了，那么<code>gp</code>，<code>gpupdate</code>和<code>depth</code>就会被“提前”更新（cur没有往下走，它们却被更新了），尤其是<code>depth</code>，可能被重复的加上了<code>p</code>的<code>skippedDepth</code>。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (cur <span class="keyword">instanceof</span> InternalNode) &#123;</span><br><span class="line">  gp = p;</span><br><span class="line">  gpupdate = pupdate;</span><br><span class="line">  ...</span><br><span class="line">  depth += p.skippedDepth;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (keyCompare(key, cur.key, depth++) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">if</span> (left <span class="keyword">instanceof</span> InternalNode) &#123;</span><br><span class="line">      <span class="keyword">if</span> (left.gen != startGen) &#123;</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">return</span> SearchRes.RESTART;</span><br><span class="line">        <span class="comment">// continue;</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
 <p>效率低些，但是更为稳妥的办法就是完全重新开始，<code>return SearchRes.RESTART;</code>。</p>
 <h2 id="RDCSS"><a href="#RDCSS" class="headerlink" title="RDCSS"></a>RDCSS</h2><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/ckd1_2015%2011%2019%2016%2026%20Office%20Lens.jpg" alt=""></p>
-<h2 id="size_in_Snapshot"><a href="#size_in_Snapshot" class="headerlink" title="size in Snapshot"></a><code>size</code> in Snapshot</h2><p>未解决。</p>
-<h2 id="Readonly_Iterator"><a href="#Readonly_Iterator" class="headerlink" title="Readonly Iterator"></a>Readonly Iterator</h2><h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
+<h2 id="size-in-Snapshot"><a href="#size-in-Snapshot" class="headerlink" title="size in Snapshot"></a><code>size</code> in Snapshot</h2><p>未解决。</p>
+<h2 id="Readonly-Iterator"><a href="#Readonly-Iterator" class="headerlink" title="Readonly Iterator"></a>Readonly Iterator</h2><h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
 <li>Concurrent Tries with Efficient Non-Blocking Snapshots, Aleksandar Prokopec, Nathan G. Bronson, Phil Bagwell, Martin Odersky</li>
 <li>Non-blocking Binary Search Trees, Faith Ellen, Panagiota Fatourou, Eric Ruppert, Franck van Breugel</li>
 <li>A Practical Multi-Word Compare-and-Swap Operation, Timothy L. Harris, Keir Fraser, Ian A. Pratt</li>
@@ -461,17 +450,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
           
           
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              
                 <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">categories</span>
-              </a>
+              
             </div>
           
 
@@ -566,7 +555,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic_Idea"><span class="nav-number">1.</span> <span class="nav-text">Basic Idea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Problems_and_Solutions_in_Implementation"><span class="nav-number">2.</span> <span class="nav-text">Problems and Solutions in Implementation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dummy_Nodes"><span class="nav-number">2.1.</span> <span class="nav-text">Dummy Nodes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Right_Child_of_Root"><span class="nav-number">2.2.</span> <span class="nav-text">Right Child of Root</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Type_Test_in_helpMarked1"><span class="nav-number">2.3.</span> <span class="nav-text">Type Test in helpMarked1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mark_in_helpDelete"><span class="nav-number">2.4.</span> <span class="nav-text">Mark in helpDelete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#startGen_in_searchKey"><span class="nav-number">2.5.</span> <span class="nav-text">startGen in searchKey</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Retry_after_GCAS_in_searchKey"><span class="nav-number">2.6.</span> <span class="nav-text">Retry after GCAS in searchKey</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDCSS"><span class="nav-number">2.7.</span> <span class="nav-text">RDCSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#size_in_Snapshot"><span class="nav-number">2.8.</span> <span class="nav-text">size in Snapshot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Readonly_Iterator"><span class="nav-number">2.9.</span> <span class="nav-text">Readonly Iterator</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">3.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic-Idea"><span class="nav-number">1.</span> <span class="nav-text">Basic Idea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Problems-and-Solutions-in-Implementation"><span class="nav-number">2.</span> <span class="nav-text">Problems and Solutions in Implementation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dummy-Nodes"><span class="nav-number">2.1.</span> <span class="nav-text">Dummy Nodes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Right-Child-of-Root"><span class="nav-number">2.2.</span> <span class="nav-text">Right Child of Root</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Type-Test-in-helpMarked1"><span class="nav-number">2.3.</span> <span class="nav-text">Type Test in helpMarked1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mark-in-helpDelete"><span class="nav-number">2.4.</span> <span class="nav-text">Mark in helpDelete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#startGen-in-searchKey"><span class="nav-number">2.5.</span> <span class="nav-text">startGen in searchKey</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Retry-after-GCAS-in-searchKey"><span class="nav-number">2.6.</span> <span class="nav-text">Retry after GCAS in searchKey</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDCSS"><span class="nav-number">2.7.</span> <span class="nav-text">RDCSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#size-in-Snapshot"><span class="nav-number">2.8.</span> <span class="nav-text">size in Snapshot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Readonly-Iterator"><span class="nav-number">2.9.</span> <span class="nav-text">Readonly Iterator</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">3.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -619,6 +608,14 @@
 
   
 
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
 
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>

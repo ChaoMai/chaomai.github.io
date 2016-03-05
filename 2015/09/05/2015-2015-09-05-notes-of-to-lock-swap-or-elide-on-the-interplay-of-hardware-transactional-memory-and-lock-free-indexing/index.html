@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next mist use-motion">
+<html class="theme-next mist">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -41,7 +39,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="concurrency,reading," />
+  <meta name="keywords" content="reading,concurrency," />
 
 
 
@@ -71,6 +69,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Notes of to Lock, Swap, or Elide: On the Interplay of Hardware Transactional Memory and Lock Free Indexing">
 <meta name="twitter:description" content="主要研究了HTM and lock-free indexing的相互影响。">
+<meta name="twitter:image" content="http://7vilyb.com1.z0.glb.clouddn.com/stm_lock%20coupling.png">
 
 
 
@@ -80,7 +79,7 @@
     scheme: 'Mist',
     sidebar: {"position":"right","display":"post"},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: 0,
       author: 'Author'
@@ -145,16 +144,6 @@
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            Categories
           </a>
         </li>
       
@@ -307,7 +296,7 @@
       
 
       
-        <h1 id="u89E3_u51B3_u4E86_u8FD9_u4E48_u51E0_u4E2A_u95EE_u9898"><a href="#u89E3_u51B3_u4E86_u8FD9_u4E48_u51E0_u4E2A_u95EE_u9898" class="headerlink" title="解决了这么几个问题"></a>解决了这么几个问题</h1><ul>
+        <h1 id="解决了这么几个问题"><a href="#解决了这么几个问题" class="headerlink" title="解决了这么几个问题"></a>解决了这么几个问题</h1><ul>
 <li><p>Does HTM obviate the need for crafty lock-free index designs?<br>No.</p>
 </li>
 <li><p>How does HTM differ from lock-free index designs?</p>
@@ -315,9 +304,9 @@
 <li><p>Given that lock-free designs are still relevant, can HTM help simplify lock-free design techniques while maintaining good performance?<br>Yes.</p>
 </li>
 </ul>
-<h1 id="HTM"><a href="#HTM" class="headerlink" title="HTM"></a>HTM</h1><h2 id="Transactional_memory"><a href="#Transactional_memory" class="headerlink" title="Transactional memory"></a>Transactional memory</h2><p>ease the burden (<em>a tedious and error prone task leading to deadlocks and race conditions</em>) by delegating conflict detection and resolution from the developer to the system.</p>
-<h2 id="Hardware_Transactional_Memory"><a href="#Hardware_Transactional_Memory" class="headerlink" title="Hardware Transactional Memory"></a>Hardware Transactional Memory</h2><p>a best-effort model, optimistic concurrency.</p>
-<h3 id="Based_on_existing_features_in_CPU"><a href="#Based_on_existing_features_in_CPU" class="headerlink" title="Based on existing features in CPU"></a>Based on existing features in CPU</h3><ul>
+<h1 id="HTM"><a href="#HTM" class="headerlink" title="HTM"></a>HTM</h1><h2 id="Transactional-memory"><a href="#Transactional-memory" class="headerlink" title="Transactional memory"></a>Transactional memory</h2><p>ease the burden (<em>a tedious and error prone task leading to deadlocks and race conditions</em>) by delegating conflict detection and resolution from the developer to the system.</p>
+<h2 id="Hardware-Transactional-Memory"><a href="#Hardware-Transactional-Memory" class="headerlink" title="Hardware Transactional Memory"></a>Hardware Transactional Memory</h2><p>a best-effort model, optimistic concurrency.</p>
+<h3 id="Based-on-existing-features-in-CPU"><a href="#Based-on-existing-features-in-CPU" class="headerlink" title="Based on existing features in CPU"></a>Based on existing features in CPU</h3><ul>
 <li><p>caches<br>store transaction buffers and provide isolation.</p>
 </li>
 <li><p>cache coherence protocol<br>detect conflicting transactional accesses.</p>
@@ -331,11 +320,11 @@
 <li><p>the work of conflict detection<br>it is usually done at the granularity of a cache line. This may lead to cases of false sharing where aborts occur due to threads accessing and modifying separate items on the same cache line.</p>
 </li>
 </ul>
-<h3 id="Solutions_-_lock_elision"><a href="#Solutions_-_lock_elision" class="headerlink" title="Solutions - lock elision"></a>Solutions - lock elision</h3><p>因为HTM是best-effort的，由于上述constraints的存在，transaction需要fallback path。</p>
+<h3 id="Solutions-lock-elision"><a href="#Solutions-lock-elision" class="headerlink" title="Solutions - lock elision"></a>Solutions - lock elision</h3><p>因为HTM是best-effort的，由于上述constraints的存在，transaction需要fallback path。</p>
 <p>最简单的一种，是transaction不成功的时候，就改用lock，这个技术叫做lock elision；它将一个lock保护的区域作为transaction来执行，仅当transaction 没有成功commit的时候，它才falls back为block on the lock。</p>
 <p>lock elision将MT作为一个fast path，slow path就是lock (a simple coarse grain locks).</p>
 <p>In lock elision, the lock word needs to be included in the read set of a transaction, so that the transaction aborts when another thread acquires the lock (thus causing a conflict). Hence, once a thread resorts to non-transactional execution by taking the lock, <strong>all other concurrently executing transactions will abort, stalling overall progress.</strong></p>
-<h2 id="Intel_TSX"><a href="#Intel_TSX" class="headerlink" title="Intel TSX"></a>Intel TSX</h2><p>the support of transactional memory in Intel starts from Haswell.</p>
+<h2 id="Intel-TSX"><a href="#Intel-TSX" class="headerlink" title="Intel TSX"></a>Intel TSX</h2><p>the support of transactional memory in Intel starts from Haswell.</p>
 <p>According to Intel, there is no guarantee that a transaction<br>will eventually succeed even if it is infinitely retried.</p>
 <ul>
 <li><p>HLE<br>Hardware Lock Elision (HLE)</p>
@@ -343,7 +332,7 @@
 <li><p>RTM<br>Restricted Transactional Memory (RTM)</p>
 </li>
 </ul>
-<h2 id="cpp-btree_and_Bw-tree"><a href="#cpp-btree_and_Bw-tree" class="headerlink" title="cpp-btree and Bw-tree"></a>cpp-btree and Bw-tree</h2><p>cpp-btree</p>
+<h2 id="cpp-btree-and-Bw-tree"><a href="#cpp-btree-and-Bw-tree" class="headerlink" title="cpp-btree and Bw-tree"></a>cpp-btree and Bw-tree</h2><p>cpp-btree</p>
 <ul>
 <li>does not contain the fine-grained locking techniques and concurrency protocols</li>
 </ul>
@@ -363,8 +352,8 @@
 </ul>
 </li>
 </ul>
-<h1 id="A_study_of_fundamental_differences_between_HTM-based_and_lock-free_index_designs"><a href="#A_study_of_fundamental_differences_between_HTM-based_and_lock-free_index_designs" class="headerlink" title="A study of fundamental differences between HTM-based and lock-free index designs"></a>A study of fundamental differences between HTM-based and lock-free index designs</h1><h2 id="Experiment_1_-_Throughput"><a href="#Experiment_1_-_Throughput" class="headerlink" title="Experiment 1 - Throughput"></a>Experiment 1 - Throughput</h2><h3 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h3><p>for read operation, HTM provides high throughput with little effort.</p>
-<h2 id="Experiment_2_-_Effect_of_Key_and_Payload_Sizes"><a href="#Experiment_2_-_Effect_of_Key_and_Payload_Sizes" class="headerlink" title="Experiment 2 - Effect of Key and Payload Sizes"></a>Experiment 2 - Effect of Key and Payload Sizes</h2><h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>such a workload in experiment 1 <strong>do not hold in general</strong>.</p>
+<h1 id="A-study-of-fundamental-differences-between-HTM-based-and-lock-free-index-designs"><a href="#A-study-of-fundamental-differences-between-HTM-based-and-lock-free-index-designs" class="headerlink" title="A study of fundamental differences between HTM-based and lock-free index designs"></a>A study of fundamental differences between HTM-based and lock-free index designs</h1><h2 id="Experiment-1-Throughput"><a href="#Experiment-1-Throughput" class="headerlink" title="Experiment 1 - Throughput"></a>Experiment 1 - Throughput</h2><h3 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h3><p>for read operation, HTM provides high throughput with little effort.</p>
+<h2 id="Experiment-2-Effect-of-Key-and-Payload-Sizes"><a href="#Experiment-2-Effect-of-Key-and-Payload-Sizes" class="headerlink" title="Experiment 2 - Effect of Key and Payload Sizes"></a>Experiment 2 - Effect of Key and Payload Sizes</h2><h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>such a workload in experiment 1 <strong>do not hold in general</strong>.</p>
 <ul>
 <li><p>capacity limits <em>(for Haswell’s CPU)</em><br>L1 cache is 32KB. no transaction can write more than can fit in L1.</p>
 </li>
@@ -377,7 +366,7 @@
 <p>many of the properties that determine the HTM abort rate for a given tree may not be known until runtime. A tree’s key size, payload size, total size, and address access patterns all affect performance.</p>
 </blockquote>
 <h3 id="Results-1"><a href="#Results-1" class="headerlink" title="Results"></a>Results</h3><p>even trees with relatively small keys and payloads cannot always parallelize. With Haswell’s HTM almost all transactions abort with payloads larger than a few kilobytes.</p>
-<h2 id="Experiment_3_-_Highcontention_Performance"><a href="#Experiment_3_-_Highcontention_Performance" class="headerlink" title="Experiment 3 - Highcontention Performance"></a>Experiment 3 - Highcontention Performance</h2><h3 id="Analysis-1"><a href="#Analysis-1" class="headerlink" title="Analysis"></a>Analysis</h3><ul>
+<h2 id="Experiment-3-Highcontention-Performance"><a href="#Experiment-3-Highcontention-Performance" class="headerlink" title="Experiment 3 - Highcontention Performance"></a>Experiment 3 - Highcontention Performance</h2><h3 id="Analysis-1"><a href="#Analysis-1" class="headerlink" title="Analysis"></a>Analysis</h3><ul>
 <li><p>two other problematic ways</p>
 <ul>
 <li><p>speculation is not free</p>
@@ -392,15 +381,15 @@
 </ul>
 <h3 id="Results-2"><a href="#Results-2" class="headerlink" title="Results"></a>Results</h3><p><em>the workload skew: for the payload, the bigger the skew is, the latter it is updated at the end of a tree traversal operation, and the latter it is within the transaction.</em></p>
 <p>The results show that as workload skew increases <strong>the performance of lock-elision drops sharply</strong>. At some point lock-elision performs even <strong>worse than spin-locks</strong>. Increasing the number of transactional attempts delays the performance cliff, and leads to a more graceful degradation of performance as skew increases.</p>
-<h3 id="Optimal_Number_of_Transactional_Attempts"><a href="#Optimal_Number_of_Transactional_Attempts" class="headerlink" title="Optimal Number of Transactional Attempts"></a>Optimal Number of Transactional Attempts</h3><p>for a set of concurrent transactions, it may be possible that none of them commit: a situation worse than using a spinlock.</p>
+<h3 id="Optimal-Number-of-Transactional-Attempts"><a href="#Optimal-Number-of-Transactional-Attempts" class="headerlink" title="Optimal Number of Transactional Attempts"></a>Optimal Number of Transactional Attempts</h3><p>for a set of concurrent transactions, it may be possible that none of them commit: a situation worse than using a spinlock.</p>
 <p>The optimal number of transactional attempts depends on workloads and varies highly. chooses the number of transactional attempts dynamically depending on the workload.</p>
 <h2 id="Lock-coupling"><a href="#Lock-coupling" class="headerlink" title="Lock-coupling"></a>Lock-coupling</h2><p>lock-coupling is one of the most widely used approaches to achieve efficient fine-grained locking on B-Trees.</p>
 <p>In lock-coupling a pair of locks are held as a worker traverses pages: one on a “source” page and another on a “target” page.</p>
 <p><img src="http://7vilyb.com1.z0.glb.clouddn.com/stm_lock%20coupling.png" alt=""></p>
 <p>Because of restrictive support of lock-coupling in Haswell’s HTM interface, it is not possible on Haswell’s CPU.</p>
-<h1 id="A_study_of_fundamental_differences_between_HTM-based_and_lock-free_index_designs-1"><a href="#A_study_of_fundamental_differences_between_HTM-based_and_lock-free_index_designs-1" class="headerlink" title="A study of fundamental differences between HTM-based and lock-free index designs"></a>A study of fundamental differences between HTM-based and lock-free index designs</h1><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/stm_compare.png" alt=""></p>
-<h2 id="Experiment_1_-_Impact_of_concurrent_writers_on_readers"><a href="#Experiment_1_-_Impact_of_concurrent_writers_on_readers" class="headerlink" title="Experiment 1 - Impact of concurrent writers on readers"></a>Experiment 1 - Impact of concurrent writers on readers</h2><h3 id="Results-3"><a href="#Results-3" class="headerlink" title="Results"></a>Results</h3><p>for high contention workloads the reader throughput that the cpp-btree can sustain begins to drop.</p>
-<h2 id="The_Overheads_of_LockFreedom"><a href="#The_Overheads_of_LockFreedom" class="headerlink" title="The Overheads of LockFreedom"></a>The Overheads of LockFreedom</h2><ul>
+<h1 id="A-study-of-fundamental-differences-between-HTM-based-and-lock-free-index-designs-1"><a href="#A-study-of-fundamental-differences-between-HTM-based-and-lock-free-index-designs-1" class="headerlink" title="A study of fundamental differences between HTM-based and lock-free index designs"></a>A study of fundamental differences between HTM-based and lock-free index designs</h1><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/stm_compare.png" alt=""></p>
+<h2 id="Experiment-1-Impact-of-concurrent-writers-on-readers"><a href="#Experiment-1-Impact-of-concurrent-writers-on-readers" class="headerlink" title="Experiment 1 - Impact of concurrent writers on readers"></a>Experiment 1 - Impact of concurrent writers on readers</h2><h3 id="Results-3"><a href="#Results-3" class="headerlink" title="Results"></a>Results</h3><p>for high contention workloads the reader throughput that the cpp-btree can sustain begins to drop.</p>
+<h2 id="The-Overheads-of-LockFreedom"><a href="#The-Overheads-of-LockFreedom" class="headerlink" title="The Overheads of LockFreedom"></a>The Overheads of LockFreedom</h2><ul>
 <li><p>a garbage-collection mechanism for memory safety</p>
 <ul>
 <li>epoch mechanism used in Bw-tree，类似引用计数。</li>
@@ -422,8 +411,8 @@
 </li>
 </ul>
 <p>These costs are highly intertwined: tradeoffs for each influence the cost of the others</p>
-<h1 id="A_study_of_how_HTM_can_help_lock-free_designs"><a href="#A_study_of_how_HTM_can_help_lock-free_designs" class="headerlink" title="A study of how HTM can help lock-free designs"></a>A study of how HTM can help lock-free designs</h1><p>it is very difficult to architect and build complex lock-free<br>data structures.</p>
-<h2 id="MultiWord_CAS_using_HTM"><a href="#MultiWord_CAS_using_HTM" class="headerlink" title="MultiWord CAS using HTM"></a>MultiWord CAS using HTM</h2><ul>
+<h1 id="A-study-of-how-HTM-can-help-lock-free-designs"><a href="#A-study-of-how-HTM-can-help-lock-free-designs" class="headerlink" title="A study of how HTM can help lock-free designs"></a>A study of how HTM can help lock-free designs</h1><p>it is very difficult to architect and build complex lock-free<br>data structures.</p>
+<h2 id="MultiWord-CAS-using-HTM"><a href="#MultiWord-CAS-using-HTM" class="headerlink" title="MultiWord CAS using HTM"></a>MultiWord CAS using HTM</h2><ul>
 <li>MW-CAS同时操作的word数受限于L1 cache的大小。过多的word，则无法用HTM来实现MW-CAS。Bw-tree可以。</li>
 <li>MW-CAS是短时的transactions，也就是说不那么容易被interrupted。</li>
 </ul>
@@ -449,9 +438,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
-          
             <a href="/tags/reading/" rel="tag">#reading</a>
+          
+            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
           
         </div>
       
@@ -545,17 +534,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
           
           
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              
                 <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">categories</span>
-              </a>
+              
             </div>
           
 
@@ -650,7 +639,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u89E3_u51B3_u4E86_u8FD9_u4E48_u51E0_u4E2A_u95EE_u9898"><span class="nav-number">1.</span> <span class="nav-text">解决了这么几个问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTM"><span class="nav-number">2.</span> <span class="nav-text">HTM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Transactional_memory"><span class="nav-number">2.1.</span> <span class="nav-text">Transactional memory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hardware_Transactional_Memory"><span class="nav-number">2.2.</span> <span class="nav-text">Hardware Transactional Memory</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Based_on_existing_features_in_CPU"><span class="nav-number">2.2.1.</span> <span class="nav-text">Based on existing features in CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Constraints"><span class="nav-number">2.2.2.</span> <span class="nav-text">Constraints</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solutions_-_lock_elision"><span class="nav-number">2.2.3.</span> <span class="nav-text">Solutions - lock elision</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Intel_TSX"><span class="nav-number">2.3.</span> <span class="nav-text">Intel TSX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cpp-btree_and_Bw-tree"><span class="nav-number">2.4.</span> <span class="nav-text">cpp-btree and Bw-tree</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#A_study_of_fundamental_differences_between_HTM-based_and_lock-free_index_designs"><span class="nav-number">3.</span> <span class="nav-text">A study of fundamental differences between HTM-based and lock-free index designs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment_1_-_Throughput"><span class="nav-number">3.1.</span> <span class="nav-text">Experiment 1 - Throughput</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Results"><span class="nav-number">3.1.1.</span> <span class="nav-text">Results</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment_2_-_Effect_of_Key_and_Payload_Sizes"><span class="nav-number">3.2.</span> <span class="nav-text">Experiment 2 - Effect of Key and Payload Sizes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Analysis"><span class="nav-number">3.2.1.</span> <span class="nav-text">Analysis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Results-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">Results</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment_3_-_Highcontention_Performance"><span class="nav-number">3.3.</span> <span class="nav-text">Experiment 3 - Highcontention Performance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Analysis-1"><span class="nav-number">3.3.1.</span> <span class="nav-text">Analysis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Results-2"><span class="nav-number">3.3.2.</span> <span class="nav-text">Results</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Optimal_Number_of_Transactional_Attempts"><span class="nav-number">3.3.3.</span> <span class="nav-text">Optimal Number of Transactional Attempts</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lock-coupling"><span class="nav-number">3.4.</span> <span class="nav-text">Lock-coupling</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#A_study_of_fundamental_differences_between_HTM-based_and_lock-free_index_designs-1"><span class="nav-number">4.</span> <span class="nav-text">A study of fundamental differences between HTM-based and lock-free index designs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment_1_-_Impact_of_concurrent_writers_on_readers"><span class="nav-number">4.1.</span> <span class="nav-text">Experiment 1 - Impact of concurrent writers on readers</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Results-3"><span class="nav-number">4.1.1.</span> <span class="nav-text">Results</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The_Overheads_of_LockFreedom"><span class="nav-number">4.2.</span> <span class="nav-text">The Overheads of LockFreedom</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#A_study_of_how_HTM_can_help_lock-free_designs"><span class="nav-number">5.</span> <span class="nav-text">A study of how HTM can help lock-free designs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MultiWord_CAS_using_HTM"><span class="nav-number">5.1.</span> <span class="nav-text">MultiWord CAS using HTM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">6.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#解决了这么几个问题"><span class="nav-number">1.</span> <span class="nav-text">解决了这么几个问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTM"><span class="nav-number">2.</span> <span class="nav-text">HTM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Transactional-memory"><span class="nav-number">2.1.</span> <span class="nav-text">Transactional memory</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hardware-Transactional-Memory"><span class="nav-number">2.2.</span> <span class="nav-text">Hardware Transactional Memory</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Based-on-existing-features-in-CPU"><span class="nav-number">2.2.1.</span> <span class="nav-text">Based on existing features in CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Constraints"><span class="nav-number">2.2.2.</span> <span class="nav-text">Constraints</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solutions-lock-elision"><span class="nav-number">2.2.3.</span> <span class="nav-text">Solutions - lock elision</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Intel-TSX"><span class="nav-number">2.3.</span> <span class="nav-text">Intel TSX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cpp-btree-and-Bw-tree"><span class="nav-number">2.4.</span> <span class="nav-text">cpp-btree and Bw-tree</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#A-study-of-fundamental-differences-between-HTM-based-and-lock-free-index-designs"><span class="nav-number">3.</span> <span class="nav-text">A study of fundamental differences between HTM-based and lock-free index designs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment-1-Throughput"><span class="nav-number">3.1.</span> <span class="nav-text">Experiment 1 - Throughput</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Results"><span class="nav-number">3.1.1.</span> <span class="nav-text">Results</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment-2-Effect-of-Key-and-Payload-Sizes"><span class="nav-number">3.2.</span> <span class="nav-text">Experiment 2 - Effect of Key and Payload Sizes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Analysis"><span class="nav-number">3.2.1.</span> <span class="nav-text">Analysis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Results-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">Results</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment-3-Highcontention-Performance"><span class="nav-number">3.3.</span> <span class="nav-text">Experiment 3 - Highcontention Performance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Analysis-1"><span class="nav-number">3.3.1.</span> <span class="nav-text">Analysis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Results-2"><span class="nav-number">3.3.2.</span> <span class="nav-text">Results</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Optimal-Number-of-Transactional-Attempts"><span class="nav-number">3.3.3.</span> <span class="nav-text">Optimal Number of Transactional Attempts</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lock-coupling"><span class="nav-number">3.4.</span> <span class="nav-text">Lock-coupling</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#A-study-of-fundamental-differences-between-HTM-based-and-lock-free-index-designs-1"><span class="nav-number">4.</span> <span class="nav-text">A study of fundamental differences between HTM-based and lock-free index designs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiment-1-Impact-of-concurrent-writers-on-readers"><span class="nav-number">4.1.</span> <span class="nav-text">Experiment 1 - Impact of concurrent writers on readers</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Results-3"><span class="nav-number">4.1.1.</span> <span class="nav-text">Results</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Overheads-of-LockFreedom"><span class="nav-number">4.2.</span> <span class="nav-text">The Overheads of LockFreedom</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#A-study-of-how-HTM-can-help-lock-free-designs"><span class="nav-number">5.</span> <span class="nav-text">A study of how HTM can help lock-free designs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MultiWord-CAS-using-HTM"><span class="nav-number">5.1.</span> <span class="nav-text">MultiWord CAS using HTM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">6.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -703,6 +692,14 @@
 
   
 
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
 
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>

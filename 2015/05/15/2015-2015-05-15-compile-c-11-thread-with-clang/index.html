@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next mist use-motion">
+<html class="theme-next mist">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -41,7 +39,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="clang,cpp,cpp11," />
+  <meta name="keywords" content="cpp,clang,cpp11," />
 
 
 
@@ -78,7 +76,7 @@
     scheme: 'Mist',
     sidebar: {"position":"right","display":"post"},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: 0,
       author: 'Author'
@@ -143,16 +141,6 @@
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            Categories
           </a>
         </li>
       
@@ -293,20 +281,20 @@
       
 
       
-        <h1 id="u95EE_u9898"><a href="#u95EE_u9898" class="headerlink" title="问题"></a>问题</h1><p>在Ubuntu中使用Clang++，</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang++-<span class="number">3.7</span> -std=c++<span class="number">11</span> test.cpp</span><br></pre></td></tr></table></figure>
+        <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在Ubuntu中使用Clang++，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang++-3.7 -std=c++11 test.cpp</span><br></pre></td></tr></table></figure>
 <p>编译C++11编写的多线程代码时，</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello World\n"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="function">thread <span class="title">t</span><span class="params">(f)</span></span>;</span><br><span class="line">  t.join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Hello World\n"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="built_in">std</span>::<span class="function">thread <span class="title">t</span><span class="params">(f)</span></span>;</span><br><span class="line">  t.join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>发现如下问题：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/tmp/<span class="built_in">test</span>-<span class="number">9606</span>ba.o: In <span class="keyword">function</span> `std::thread::thread&lt;void (&amp;)()&gt;(void (&amp;)())<span class="string">':</span><br><span class="line">test.cpp:(.text[_ZNSt6threadC2IRFvvEJEEEOT_DpOT0_]+0x21): undefined reference to `pthread_create'</span></span><br><span class="line">clang: error: linker <span class="built_in">command</span> failed with <span class="built_in">exit</span> code <span class="number">1</span> (use -v to see invocation)</span><br></pre></td></tr></table></figure>
-<h1 id="u5206_u6790"><a href="#u5206_u6790" class="headerlink" title="分析"></a>分析</h1><ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/tmp/<span class="built_in">test</span>-9606ba.o: In <span class="keyword">function</span> `std::thread::thread&lt;void (&amp;)()&gt;(void (&amp;)())<span class="string">':</span><br><span class="line">test.cpp:(.text[_ZNSt6threadC2IRFvvEJEEEOT_DpOT0_]+0x21): undefined reference to `pthread_create'</span></span><br><span class="line">clang: error: linker <span class="built_in">command</span> failed with <span class="built_in">exit</span> code 1 (use -v to see invocation)</span><br></pre></td></tr></table></figure>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><ol>
 <li><p>在Linux中，Standard C++ library的默认实现是libstdc++。虽然安装了clang，但是编译时使用的仍然是GNU的libstdc++。</p>
 </li>
 <li><p>执行clang++ -v以后，可以知道使用的线程模型是posix。</p>
 </li>
 </ol>
-<h1 id="u89E3_u51B3"><a href="#u89E3_u51B3" class="headerlink" title="解决"></a>解决</h1><p>既然底层使用了posix来实现C++11的线程，那么编译的时候必然要有-pthread</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang++-<span class="number">3.7</span> -std=c++<span class="number">11</span> -pthread test.cpp</span><br></pre></td></tr></table></figure>
+<h1 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h1><p>既然底层使用了posix来实现C++11的线程，那么编译的时候必然要有-pthread</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clang++-3.7 -std=c++11 -pthread test.cpp</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -321,9 +309,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/clang/" rel="tag">#clang</a>
-          
             <a href="/tags/cpp/" rel="tag">#cpp</a>
+          
+            <a href="/tags/clang/" rel="tag">#clang</a>
           
             <a href="/tags/cpp11/" rel="tag">#cpp11</a>
           
@@ -419,17 +407,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
           
           
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              
                 <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">categories</span>
-              </a>
+              
             </div>
           
 
@@ -524,7 +512,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u95EE_u9898"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u5206_u6790"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u89E3_u51B3"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决"><span class="nav-number">3.</span> <span class="nav-text">解决</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -577,6 +565,14 @@
 
   
 
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
 
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>

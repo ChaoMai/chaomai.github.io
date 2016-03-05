@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next mist use-motion">
+<html class="theme-next mist">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -41,7 +39,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="concurrency,reading," />
+  <meta name="keywords" content="reading,concurrency," />
 
 
 
@@ -75,6 +73,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Notes of Non-Blocking Binary Search Trees">
 <meta name="twitter:description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目，还有就是Excellent tutorial about helping mechanism!">
+<meta name="twitter:image" content="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_problems.png">
 
 
 
@@ -84,7 +83,7 @@
     scheme: 'Mist',
     sidebar: {"position":"right","display":"post"},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: 0,
       author: 'Author'
@@ -149,16 +148,6 @@
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            Categories
           </a>
         </li>
       
@@ -332,7 +321,7 @@
 </blockquote>
 </li>
 </ul>
-<h1 id="basic_idea"><a href="#basic_idea" class="headerlink" title="basic idea"></a>basic idea</h1><p>类似Harris’ Linked List里面的做法，这里是mark the parent of the leaf before<br>splicing that parent out of the tree。一旦被标记，那么其指向子结点的指针将不能被改变。</p>
+<h1 id="basic-idea"><a href="#basic-idea" class="headerlink" title="basic idea"></a>basic idea</h1><p>类似Harris’ Linked List里面的做法，这里是mark the parent of the leaf before<br>splicing that parent out of the tree。一旦被标记，那么其指向子结点的指针将不能被改变。</p>
 <h1 id="problems"><a href="#problems" class="headerlink" title="problems"></a>problems</h1><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_problems.png" alt=""></p>
 <p>上图中，两个线程分别delete C和E，两个concurrent operation同时看到了BST以后，接下来的操作是，<em>基于各自看到的的BST来进行的</em>，它们彼此并不知道对方进行了什么操作，最后导致E并没有被deleted，其中一个操作丢失了。</p>
 <p>解决这个需要对parent的child pointer进行mark，但是要mark的pointer是存在两个不同的word（left and right child pointer）里面的，不能够用一个cas来同时mark。</p>
@@ -342,7 +331,7 @@
 <li>flag: indicate that an update is trying to change a child pointer of the node.</li>
 </ul>
 <p>mark和flag类似于加锁。</p>
-<h2 id="insert_u548Cdelete"><a href="#insert_u548Cdelete" class="headerlink" title="insert和delete"></a>insert和delete</h2><h3 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h3><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_insert.png" alt=""></p>
+<h2 id="insert和delete"><a href="#insert和delete" class="headerlink" title="insert和delete"></a>insert和delete</h2><h3 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h3><p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_insert.png" alt=""></p>
 <p>Insert (C):</p>
 <ol>
 <li>ﬂag node D’s parent, node B,</li>
@@ -362,10 +351,10 @@
 <p>但是delete在完成第一步以后，第二步mark有可能失败，比如insert把将要删除的node换为新的三个node。in which case the ﬂag is no longer on the node whose child pointer must be changed to accomplish the deletion.</p>
 <p>如果mark失败，delete会remove flag，重新开始。</p>
 <p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_state.PNG" alt=""></p>
-<h1 id="some_details_in_implementation"><a href="#some_details_in_implementation" class="headerlink" title="some details in implementation"></a>some details in implementation</h1><h2 id="helping_mechanism"><a href="#helping_mechanism" class="headerlink" title="helping mechanism"></a>helping mechanism</h2><h3 id="method"><a href="#method" class="headerlink" title="method"></a>method</h3><p>类似Barnes的方法，将线程拥有lock换成操作拥有lock（marked or flagged）。一个操作在处理tree的同时，还保存了它在holding lock的时候要进行的操作，其他线程遇到lock，就帮助它完成，使得lock最终release。</p>
+<h1 id="some-details-in-implementation"><a href="#some-details-in-implementation" class="headerlink" title="some details in implementation"></a>some details in implementation</h1><h2 id="helping-mechanism"><a href="#helping-mechanism" class="headerlink" title="helping mechanism"></a>helping mechanism</h2><h3 id="method"><a href="#method" class="headerlink" title="method"></a>method</h3><p>类似Barnes的方法，将线程拥有lock换成操作拥有lock（marked or flagged）。一个操作在处理tree的同时，还保存了它在holding lock的时候要进行的操作，其他线程遇到lock，就帮助它完成，使得lock最终release。</p>
 <p>为了避免helping mechanism带来的性能下降（多个线程会尝试进行同一个操作），这里用了保守的策略： a process P helps another process’s operation <strong>only if the other operation is preventing P’s own progress</strong>.</p>
 <h3 id="implementation"><a href="#implementation" class="headerlink" title="implementation"></a>implementation</h3><p>线程之间是无法自动感知对方的存在的，也就是说实现helping mechanism，需要a data structure that is shared between threads holds the operating information。</p>
-<h2 id="dummy_keys"><a href="#dummy_keys" class="headerlink" title="dummy keys"></a>dummy keys</h2><p>在delete时，需要flag grandparent和mark parent，如果BST的key少于4个，必然就会有一个leaf没有grandparent，那么在delete就需要考虑很多例外的情况（insert类似）。</p>
+<h2 id="dummy-keys"><a href="#dummy-keys" class="headerlink" title="dummy keys"></a>dummy keys</h2><p>在delete时，需要flag grandparent和mark parent，如果BST的key少于4个，必然就会有一个leaf没有grandparent，那么在delete就需要考虑很多例外的情况（insert类似）。</p>
 <p>为了避免这些特殊情况，下面引入两个特殊值$\infty_1$和$\infty_2$，使得BST在没有key的时候，也存在3个node。这两个dummy keys是不允许删除的。</p>
 <p><img src="http://7vilyb.com1.z0.glb.clouddn.com/non-block-bst_dummy_keys.png" alt=""></p>
 <h1 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h1><ol>
@@ -389,9 +378,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
-          
             <a href="/tags/reading/" rel="tag">#reading</a>
+          
+            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
           
         </div>
       
@@ -485,17 +474,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
           
           
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              
                 <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">categories</span>
-              </a>
+              
             </div>
           
 
@@ -590,7 +579,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#specification"><span class="nav-number">1.</span> <span class="nav-text">specification</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#features"><span class="nav-number">2.</span> <span class="nav-text">features</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#basic_idea"><span class="nav-number">3.</span> <span class="nav-text">basic idea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#problems"><span class="nav-number">4.</span> <span class="nav-text">problems</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#solutions"><span class="nav-number">5.</span> <span class="nav-text">solutions</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#insert_u548Cdelete"><span class="nav-number">5.1.</span> <span class="nav-text">insert和delete</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#insert"><span class="nav-number">5.1.1.</span> <span class="nav-text">insert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete"><span class="nav-number">5.1.2.</span> <span class="nav-text">delete</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#some_details_in_implementation"><span class="nav-number">6.</span> <span class="nav-text">some details in implementation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#helping_mechanism"><span class="nav-number">6.1.</span> <span class="nav-text">helping mechanism</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#method"><span class="nav-number">6.1.1.</span> <span class="nav-text">method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#implementation"><span class="nav-number">6.1.2.</span> <span class="nav-text">implementation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dummy_keys"><span class="nav-number">6.2.</span> <span class="nav-text">dummy keys</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#summary"><span class="nav-number">7.</span> <span class="nav-text">summary</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#references"><span class="nav-number">8.</span> <span class="nav-text">references</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#specification"><span class="nav-number">1.</span> <span class="nav-text">specification</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#features"><span class="nav-number">2.</span> <span class="nav-text">features</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#basic-idea"><span class="nav-number">3.</span> <span class="nav-text">basic idea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#problems"><span class="nav-number">4.</span> <span class="nav-text">problems</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#solutions"><span class="nav-number">5.</span> <span class="nav-text">solutions</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#insert和delete"><span class="nav-number">5.1.</span> <span class="nav-text">insert和delete</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#insert"><span class="nav-number">5.1.1.</span> <span class="nav-text">insert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete"><span class="nav-number">5.1.2.</span> <span class="nav-text">delete</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#some-details-in-implementation"><span class="nav-number">6.</span> <span class="nav-text">some details in implementation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#helping-mechanism"><span class="nav-number">6.1.</span> <span class="nav-text">helping mechanism</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#method"><span class="nav-number">6.1.1.</span> <span class="nav-text">method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#implementation"><span class="nav-number">6.1.2.</span> <span class="nav-text">implementation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dummy-keys"><span class="nav-number">6.2.</span> <span class="nav-text">dummy keys</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#summary"><span class="nav-number">7.</span> <span class="nav-text">summary</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#references"><span class="nav-number">8.</span> <span class="nav-text">references</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -643,6 +632,14 @@
 
   
 
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
 
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>

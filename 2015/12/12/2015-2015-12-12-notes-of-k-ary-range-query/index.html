@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next mist use-motion">
+<html class="theme-next mist">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -41,7 +39,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="concurrency,reading," />
+  <meta name="keywords" content="reading,concurrency," />
 
 
 
@@ -78,7 +76,7 @@
     scheme: 'Mist',
     sidebar: {"position":"right","display":"post"},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: 0,
       author: 'Author'
@@ -143,16 +141,6 @@
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            Categories
           </a>
         </li>
       
@@ -305,7 +293,7 @@
       
 
       
-        <h1 id="Approaches_to_Range_Queries"><a href="#Approaches_to_Range_Queries" class="headerlink" title="Approaches to Range Queries"></a>Approaches to Range Queries</h1><ul>
+        <h1 id="Approaches-to-Range-Queries"><a href="#Approaches-to-Range-Queries" class="headerlink" title="Approaches to Range Queries"></a>Approaches to Range Queries</h1><ul>
 <li>STM</li>
 <li>Lock</li>
 <li>Persistent data structures</li>
@@ -315,15 +303,15 @@
 </ul>
 </li>
 </ul>
-<h1 id="Range_Query_in_k-ary_Search_Trees"><a href="#Range_Query_in_k-ary_Search_Trees" class="headerlink" title="Range Query in k-ary Search Trees"></a>Range Query in k-ary Search Trees</h1><h2 id="dirty_field"><a href="#dirty_field" class="headerlink" title="dirty field"></a><code>dirty</code> field</h2><p>The <code>dirty</code> field is set to dirty when the leaf is affected by some update operations (<code>helpInsert</code> and <code>helpMark</code>).</p>
+<h1 id="Range-Query-in-k-ary-Search-Trees"><a href="#Range-Query-in-k-ary-Search-Trees" class="headerlink" title="Range Query in k-ary Search Trees"></a>Range Query in k-ary Search Trees</h1><h2 id="dirty-field"><a href="#dirty-field" class="headerlink" title="dirty field"></a><code>dirty</code> field</h2><p>The <code>dirty</code> field is set to dirty when the leaf is affected by some update operations (<code>helpInsert</code> and <code>helpMark</code>).</p>
 <h2 id="Validate"><a href="#Validate" class="headerlink" title="Validate"></a><code>Validate</code></h2><p>The <code>Validate</code> check all leaves stored in <code>snap</code>. If any <code>dirty</code> field is true, than <code>Validate</code> returns false.</p>
-<h2 id="Range_Query"><a href="#Range_Query" class="headerlink" title="Range Query"></a>Range Query</h2><p>The abridged <code>RangeQuery</code> follows few steps,</p>
+<h2 id="Range-Query"><a href="#Range-Query" class="headerlink" title="Range Query"></a>Range Query</h2><p>The abridged <code>RangeQuery</code> follows few steps,</p>
 <ol>
 <li>Use DFS to populate <code>snap</code> with all leaves that may contain a key in range.</li>
 <li>Invoke <code>Validate</code> to check all the leaves stored in <code>snap</code>. If <code>Validate</code> returns false, than retry.</li>
 <li>Extract all keys in range from <code>snap</code> and return.</li>
 </ol>
-<h1 id="Differences_between_snaphots_in_BST_and_range_query_in_k-ary_search_trees"><a href="#Differences_between_snaphots_in_BST_and_range_query_in_k-ary_search_trees" class="headerlink" title="Differences between snaphots in BST and range query in k-ary search trees"></a>Differences between snaphots in BST and range query in k-ary search trees</h1><table>
+<h1 id="Differences-between-snaphots-in-BST-and-range-query-in-k-ary-search-trees"><a href="#Differences-between-snaphots-in-BST-and-range-query-in-k-ary-search-trees" class="headerlink" title="Differences between snaphots in BST and range query in k-ary search trees"></a>Differences between snaphots in BST and range query in k-ary search trees</h1><table>
 <thead>
 <tr>
 <th>-</th>
@@ -345,7 +333,7 @@
 </tbody>
 </table>
 <p><em>Just personal opinion, may contain errors.</em></p>
-<h1 id="Some_Doubts"><a href="#Some_Doubts" class="headerlink" title="Some Doubts"></a>Some Doubts</h1><h2 id="Theorem_3_in_Proof"><a href="#Theorem_3_in_Proof" class="headerlink" title="Theorem 3 in Proof"></a>Theorem 3 in Proof</h2><p>In the paper,</p>
+<h1 id="Some-Doubts"><a href="#Some-Doubts" class="headerlink" title="Some Doubts"></a>Some Doubts</h1><h2 id="Theorem-3-in-Proof"><a href="#Theorem-3-in-Proof" class="headerlink" title="Theorem 3 in Proof"></a>Theorem 3 in Proof</h2><p>In the paper,</p>
 <blockquote>
 <p>Theorem 3. All operations are non-blocking.</p>
 </blockquote>
@@ -373,9 +361,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
-          
             <a href="/tags/reading/" rel="tag">#reading</a>
+          
+            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
           
         </div>
       
@@ -469,17 +457,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
           
           
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              
                 <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">categories</span>
-              </a>
+              
             </div>
           
 
@@ -574,7 +562,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Approaches_to_Range_Queries"><span class="nav-number">1.</span> <span class="nav-text">Approaches to Range Queries</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Range_Query_in_k-ary_Search_Trees"><span class="nav-number">2.</span> <span class="nav-text">Range Query in k-ary Search Trees</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dirty_field"><span class="nav-number">2.1.</span> <span class="nav-text">dirty field</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Validate"><span class="nav-number">2.2.</span> <span class="nav-text">Validate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Range_Query"><span class="nav-number">2.3.</span> <span class="nav-text">Range Query</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Differences_between_snaphots_in_BST_and_range_query_in_k-ary_search_trees"><span class="nav-number">3.</span> <span class="nav-text">Differences between snaphots in BST and range query in k-ary search trees</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Some_Doubts"><span class="nav-number">4.</span> <span class="nav-text">Some Doubts</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Theorem_3_in_Proof"><span class="nav-number">4.1.</span> <span class="nav-text">Theorem 3 in Proof</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">5.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Approaches-to-Range-Queries"><span class="nav-number">1.</span> <span class="nav-text">Approaches to Range Queries</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Range-Query-in-k-ary-Search-Trees"><span class="nav-number">2.</span> <span class="nav-text">Range Query in k-ary Search Trees</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dirty-field"><span class="nav-number">2.1.</span> <span class="nav-text">dirty field</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Validate"><span class="nav-number">2.2.</span> <span class="nav-text">Validate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Range-Query"><span class="nav-number">2.3.</span> <span class="nav-text">Range Query</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Differences-between-snaphots-in-BST-and-range-query-in-k-ary-search-trees"><span class="nav-number">3.</span> <span class="nav-text">Differences between snaphots in BST and range query in k-ary search trees</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Some-Doubts"><span class="nav-number">4.</span> <span class="nav-text">Some Doubts</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Theorem-3-in-Proof"><span class="nav-number">4.1.</span> <span class="nav-text">Theorem 3 in Proof</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">5.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -627,6 +615,14 @@
 
   
 
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
 
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>

@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next mist use-motion">
+<html class="theme-next mist">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -84,7 +82,7 @@
     scheme: 'Mist',
     sidebar: {"position":"right","display":"post"},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: 0,
       author: 'Author'
@@ -149,16 +147,6 @@
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            Categories
           </a>
         </li>
       
@@ -299,9 +287,9 @@
       
 
       
-        <h1 id="u5217_u8868_u521D_u59CB_u5316_uFF08list_initialization_uFF09"><a href="#u5217_u8868_u521D_u59CB_u5316_uFF08list_initialization_uFF09" class="headerlink" title="列表初始化（list initialization）"></a>列表初始化（list initialization）</h1><p>注：对于内置类型的变量，如果使用列表初始化且初始化存在丢失信息的风险，则编译器将报错。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> d = <span class="number">3.14</span>;</span><br><span class="line"><span class="keyword">int</span> i&#123;d&#125;; <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure></p>
-<h1 id="u9ED8_u8BA4_u521D_u59CB_u5316_uFF08default_initialization_uFF09"><a href="#u9ED8_u8BA4_u521D_u59CB_u5316_uFF08default_initialization_uFF09" class="headerlink" title="默认初始化（default initialization）"></a>默认初始化（default initialization）</h1><p>如果定义变量时没有指定初值，则变量被默认初始化，具体值由变量类型决定。对象被默认初始化时自动执行默认构造函数。</p>
-<h2 id="u4F55_u65F6_u53D1_u751F"><a href="#u4F55_u65F6_u53D1_u751F" class="headerlink" title="何时发生"></a>何时发生</h2><ul>
+        <h1 id="列表初始化（list-initialization）"><a href="#列表初始化（list-initialization）" class="headerlink" title="列表初始化（list initialization）"></a>列表初始化（list initialization）</h1><p>注：对于内置类型的变量，如果使用列表初始化且初始化存在丢失信息的风险，则编译器将报错。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> d = <span class="number">3.14</span>;</span><br><span class="line"><span class="keyword">int</span> i&#123;d&#125;; <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="默认初始化（default-initialization）"><a href="#默认初始化（default-initialization）" class="headerlink" title="默认初始化（default initialization）"></a>默认初始化（default initialization）</h1><p>如果定义变量时没有指定初值，则变量被默认初始化，具体值由变量类型决定。对象被默认初始化时自动执行默认构造函数。</p>
+<h2 id="何时发生"><a href="#何时发生" class="headerlink" title="何时发生"></a>何时发生</h2><ul>
 <li><p>当在块作用域中不使用任何初始值定义一个非静态变量或者数组时；</p>
   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a;</span><br><span class="line">  <span class="keyword">double</span> b[<span class="number">10</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
@@ -312,8 +300,8 @@
   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> A &#123;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line">  A(<span class="keyword">int</span> a) : a_(a) &#123;&#125;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">int</span> a_;</span><br><span class="line">  <span class="keyword">int</span> b_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h1 id="u503C_u521D_u59CB_u5316"><a href="#u503C_u521D_u59CB_u5316" class="headerlink" title="值初始化"></a>值初始化</h1><p>对于内置类型，则元素初始值自动设为0；如果是类类型，则由类来默认初始化。</p>
-<h2 id="u4F55_u65F6_u53D1_u751F-1"><a href="#u4F55_u65F6_u53D1_u751F-1" class="headerlink" title="何时发生"></a>何时发生</h2><ul>
+<h1 id="值初始化"><a href="#值初始化" class="headerlink" title="值初始化"></a>值初始化</h1><p>对于内置类型，则元素初始值自动设为0；如果是类类型，则由类来默认初始化。</p>
+<h2 id="何时发生-1"><a href="#何时发生-1" class="headerlink" title="何时发生"></a>何时发生</h2><ul>
 <li><p>在数组初始化时，提供的初始值的数量少于数组的大小；</p>
   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> arr[<span class="number">5</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;; <span class="comment">// a[] = &#123;1, 2, 3, 0, 0&#125;</span></span><br></pre></td></tr></table></figure>
 </li>
@@ -436,17 +424,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
           
           
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              
                 <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">categories</span>
-              </a>
+              
             </div>
           
 
@@ -541,7 +529,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u5217_u8868_u521D_u59CB_u5316_uFF08list_initialization_uFF09"><span class="nav-number">1.</span> <span class="nav-text">列表初始化（list initialization）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u9ED8_u8BA4_u521D_u59CB_u5316_uFF08default_initialization_uFF09"><span class="nav-number">2.</span> <span class="nav-text">默认初始化（default initialization）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u4F55_u65F6_u53D1_u751F"><span class="nav-number">2.1.</span> <span class="nav-text">何时发生</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u503C_u521D_u59CB_u5316"><span class="nav-number">3.</span> <span class="nav-text">值初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u4F55_u65F6_u53D1_u751F-1"><span class="nav-number">3.1.</span> <span class="nav-text">何时发生</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">4.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#列表初始化（list-initialization）"><span class="nav-number">1.</span> <span class="nav-text">列表初始化（list initialization）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#默认初始化（default-initialization）"><span class="nav-number">2.</span> <span class="nav-text">默认初始化（default initialization）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#何时发生"><span class="nav-number">2.1.</span> <span class="nav-text">何时发生</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#值初始化"><span class="nav-number">3.</span> <span class="nav-text">值初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#何时发生-1"><span class="nav-number">3.1.</span> <span class="nav-text">何时发生</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">4.</span> <span class="nav-text">References</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -594,6 +582,14 @@
 
   
 
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
 
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>

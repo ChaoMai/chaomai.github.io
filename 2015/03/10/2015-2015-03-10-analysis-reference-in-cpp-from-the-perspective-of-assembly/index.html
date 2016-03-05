@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next mist use-motion">
+<html class="theme-next mist">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -78,7 +76,7 @@
     scheme: 'Mist',
     sidebar: {"position":"right","display":"post"},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: 0,
       author: 'Author'
@@ -143,16 +141,6 @@
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            Categories
           </a>
         </li>
       
@@ -293,25 +281,25 @@
       
 
       
-        <h1 id="u5F15_u7528"><a href="#u5F15_u7528" class="headerlink" title="引用"></a>引用</h1><p>C++中，引用为对象起了另外一个名字，引用类型refers to另外一种类型。定义引用时，把引用和初始值绑定在一起，而不是将初始值拷贝给引用。定义了引用之后，对其进行的所有操作都是在与之绑定的对象上进行的。但是引用本身不是一个对象。</p>
+        <h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>C++中，引用为对象起了另外一个名字，引用类型refers to另外一种类型。定义引用时，把引用和初始值绑定在一起，而不是将初始值拷贝给引用。定义了引用之后，对其进行的所有操作都是在与之绑定的对象上进行的。但是引用本身不是一个对象。</p>
 <p>说到这里，其实会发现引用和指针有点像，但实际上它们是不同的。首先引用在绑定到对象以后，就不能再绑定到另外一个对象；其次，引用本身不是一个对象，但是指针是一个对象。</p>
-<h1 id="u6C47_u7F16_u7684_u89D2_u5EA6"><a href="#u6C47_u7F16_u7684_u89D2_u5EA6" class="headerlink" title="汇编的角度"></a>汇编的角度</h1><p>更深入到底层，可以汇编的角度来看引用。</p>
+<h1 id="汇编的角度"><a href="#汇编的角度" class="headerlink" title="汇编的角度"></a>汇编的角度</h1><p>更深入到底层，可以汇编的角度来看引用。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">int</span> &amp;ra = a;</span><br><span class="line">ra++;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> b = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">int</span> *pa = &amp;b;</span><br><span class="line">pa++;</span><br><span class="line">(*pa)++;</span><br></pre></td></tr></table></figure>
 <p>以上代码的反汇编如下：</p>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">3</span><span class="comment">;</span></span><br><span class="line">012E33F8  <span class="keyword">mov</span>         <span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [a],<span class="number">3</span></span><br><span class="line"><span class="keyword">int</span> &amp;ra = a<span class="comment">;</span></span><br><span class="line">012E33FF  <span class="keyword">lea</span>         <span class="literal">eax</span>,[a]</span><br><span class="line">012E3402  <span class="keyword">mov</span>         <span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [ra],<span class="literal">eax</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> b = <span class="number">4</span><span class="comment">;</span></span><br><span class="line">012E3405  <span class="keyword">mov</span>         <span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [b],<span class="number">4</span></span><br><span class="line"><span class="keyword">int</span> *pa = &amp;b<span class="comment">;</span></span><br><span class="line">012E340C  <span class="keyword">lea</span>         <span class="literal">eax</span>,[b]</span><br><span class="line">012E340F  <span class="keyword">mov</span>         <span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [pa],<span class="literal">eax</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ra++<span class="comment">;</span></span><br><span class="line">013F4475  <span class="keyword">mov</span>         <span class="literal">eax</span>,<span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [ra]</span><br><span class="line">013F4478  <span class="keyword">mov</span>         <span class="literal">ecx</span>,<span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [<span class="literal">eax</span>]</span><br><span class="line">013F447A  <span class="keyword">add</span>         <span class="literal">ecx</span>,<span class="number">1</span></span><br><span class="line">013F447D  <span class="keyword">mov</span>         <span class="literal">edx</span>,<span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [ra]</span><br><span class="line">013F4480  <span class="keyword">mov</span>         <span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [<span class="literal">edx</span>],<span class="literal">ecx</span></span><br><span class="line"></span><br><span class="line">pa++<span class="comment">;</span></span><br><span class="line">013F448F  <span class="keyword">mov</span>         <span class="literal">eax</span>,<span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [pa]</span><br><span class="line">013F4492  <span class="keyword">add</span>         <span class="literal">eax</span>,<span class="number">4</span></span><br><span class="line">013F4495  <span class="keyword">mov</span>         <span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [pa],<span class="literal">eax</span></span><br><span class="line">(*pa)++<span class="comment">;</span></span><br><span class="line">013F4498  <span class="keyword">mov</span>         <span class="literal">eax</span>,<span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [pa]</span><br><span class="line">013F449B  <span class="keyword">mov</span>         <span class="literal">ecx</span>,<span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [<span class="literal">eax</span>]</span><br><span class="line">013F449D  <span class="keyword">add</span>         <span class="literal">ecx</span>,<span class="number">1</span></span><br><span class="line">013F44A0  <span class="keyword">mov</span>         <span class="literal">edx</span>,<span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [pa]</span><br><span class="line">013F44A3  <span class="keyword">mov</span>         <span class="preprocessor">dword</span> <span class="preprocessor">ptr</span> [<span class="literal">edx</span>],<span class="literal">ecx</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">int a = 3;</span><br><span class="line">012E33F8  mov         dword ptr [a],3</span><br><span class="line">int &amp;ra = a;</span><br><span class="line">012E33FF  lea         eax,[a]</span><br><span class="line">012E3402  mov         dword ptr [ra],eax</span><br><span class="line"></span><br><span class="line">int b = 4;</span><br><span class="line">012E3405  mov         dword ptr [b],4</span><br><span class="line">int *pa = &amp;b;</span><br><span class="line">012E340C  lea         eax,[b]</span><br><span class="line">012E340F  mov         dword ptr [pa],eax</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ra++;</span><br><span class="line">013F4475  mov         eax,dword ptr [ra]</span><br><span class="line">013F4478  mov         ecx,dword ptr [eax]</span><br><span class="line">013F447A  add         ecx,1</span><br><span class="line">013F447D  mov         edx,dword ptr [ra]</span><br><span class="line">013F4480  mov         dword ptr [edx],ecx</span><br><span class="line"></span><br><span class="line">pa++;</span><br><span class="line">013F448F  mov         eax,dword ptr [pa]</span><br><span class="line">013F4492  add         eax,4</span><br><span class="line">013F4495  mov         dword ptr [pa],eax</span><br><span class="line">(*pa)++;</span><br><span class="line">013F4498  mov         eax,dword ptr [pa]</span><br><span class="line">013F449B  mov         ecx,dword ptr [eax]</span><br><span class="line">013F449D  add         ecx,1</span><br><span class="line">013F44A0  mov         edx,dword ptr [pa]</span><br><span class="line">013F44A3  mov         dword ptr [edx],ecx</span><br></pre></td></tr></table></figure>
 <p>可以看到，首先把3放入地址为[a]的内存，然后把a的地址放入eax，最后把eax的值放入地址为[ra]的内存。实际上，就是把a的地址放入了ra里。而b和pa也同样是这样步骤。</p>
 <p>然后再来看++操作的部分，在汇编的角度，引用和指针在内存中都是地址，在对指针指向的变量进行++时，需要手动的来进行解引用；但对于引用，解引用这个操作是编译器帮你完成了，只需要直接++即可。</p>
 <p>从汇编的角度来看，引用是通过指针来实现的。</p>
-<h1 id="u5B9E_u73B0_u5F15_u7528_u7C7B_u578B_u4E0E_u88AB_u5F15_u7528_u5BF9_u8C61_u5206_u79BB_3F"><a href="#u5B9E_u73B0_u5F15_u7528_u7C7B_u578B_u4E0E_u88AB_u5F15_u7528_u5BF9_u8C61_u5206_u79BB_3F" class="headerlink" title="实现引用类型与被引用对象分离?"></a>实现引用类型与被引用对象分离?</h1><p>C++中规定了引用在绑定到对象以后，就不能再绑定到另外一个对象，既然了解了C++中引用的底层的实现，能否通过底层的方法来绕过这个限制？答案是可以的。</p>
+<h1 id="实现引用类型与被引用对象分离"><a href="#实现引用类型与被引用对象分离" class="headerlink" title="实现引用类型与被引用对象分离?"></a>实现引用类型与被引用对象分离?</h1><p>C++中规定了引用在绑定到对象以后，就不能再绑定到另外一个对象，既然了解了C++中引用的底层的实现，能否通过底层的方法来绕过这个限制？答案是可以的。</p>
 <p>先来看这么几行代码，</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">4</span>;</span><br><span class="line"><span class="keyword">int</span> &amp;ra = a;</span><br></pre></td></tr></table></figure>
 <p>对ra进行的所有操作都是在与之绑定的变量a上进行的，因此直接操作ra来修改绑定是无法实现的。由于定义以上几个变量时，它们应该是处于相邻的内存空间中，因此可以通过ra相邻的内存，来更改ra，进而分离ra与被引用对象a。</p>
 <p>这是在执行以上3条语句之后的内存情况，</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0x0078F750  <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> 6c f7 78 00  ????<span class="keyword">l</span>?x.</span><br><span class="line">0x0078F758  <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span>  ????????</span><br><span class="line">0x0078F760  04 00 00 00 <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span>  ....????</span><br><span class="line">0x0078F768  <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> 03 00 00 00  ????....</span><br><span class="line">0x0078F770  <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> <span class="keyword">cc</span> 96 d1 e4 4e  ???????<span class="keyword">N</span></span><br><span class="line">0x0078F778  c8 f7 78 00 69 69 18 00  ??x.ii..</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0x0078F750  cc cc cc cc 6c f7 78 00  ????l?x.</span><br><span class="line">0x0078F758  cc cc cc cc cc cc cc cc  ????????</span><br><span class="line">0x0078F760  04 00 00 00 cc cc cc cc  ....????</span><br><span class="line">0x0078F768  cc cc cc cc 03 00 00 00  ????....</span><br><span class="line">0x0078F770  cc cc cc cc 96 d1 e4 4e  ???????N</span><br><span class="line">0x0078F778  c8 f7 78 00 69 69 18 00  ??x.ii..</span><br></pre></td></tr></table></figure>
 <p>其中EBP=其中EBP=0x007EFA7C，可以看到EBP之前的12byte的位置才是第一个变量，再往前12byte是第二个变量，继续往前12byte是引用。因此b的地址减3就是存储引用的内存，修改这个地方即可。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*(&amp;b - <span class="number">3</span>) = (<span class="keyword">int</span>)&amp;b;</span><br><span class="line">ra++;</span><br></pre></td></tr></table></figure>
 <p>继续执行下面代码以后，b被增加成5。</p>
-<h1 id="u53C2_u8003"><a href="#u53C2_u8003" class="headerlink" title="参考"></a>参考</h1><ol>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
 <li>C++ Primer 第5版</li>
 </ol>
 
@@ -422,17 +410,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
           
           
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              
                 <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">categories</span>
-              </a>
+              
             </div>
           
 
@@ -527,7 +515,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#u5F15_u7528"><span class="nav-number">1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u6C47_u7F16_u7684_u89D2_u5EA6"><span class="nav-number">2.</span> <span class="nav-text">汇编的角度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u5B9E_u73B0_u5F15_u7528_u7C7B_u578B_u4E0E_u88AB_u5F15_u7528_u5BF9_u8C61_u5206_u79BB_3F"><span class="nav-number">3.</span> <span class="nav-text">实现引用类型与被引用对象分离?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#u53C2_u8003"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#汇编的角度"><span class="nav-number">2.</span> <span class="nav-text">汇编的角度</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现引用类型与被引用对象分离"><span class="nav-number">3.</span> <span class="nav-text">实现引用类型与被引用对象分离?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -580,6 +568,14 @@
 
   
 
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
 
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>

@@ -2,10 +2,8 @@
 
 
 
-  
 
-
-<html class="theme-next mist use-motion">
+<html class="theme-next mist">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -81,7 +79,7 @@
     scheme: 'Mist',
     sidebar: {"position":"right","display":"post"},
     fancybox: true,
-    motion: true,
+    motion: false,
     duoshuo: {
       userId: 0,
       author: 'Author'
@@ -146,16 +144,6 @@
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
-            
-            Categories
           </a>
         </li>
       
@@ -296,8 +284,8 @@
       
 
       
-        <h1 id="iostream"><a href="#iostream" class="headerlink" title="iostream"></a><code>iostream</code></h1><h2 id="u6761_u4EF6_u72B6_u6001"><a href="#u6761_u4EF6_u72B6_u6001" class="headerlink" title="条件状态"></a>条件状态</h2><p><code>strm::iostate</code>是<strong>机器相关</strong>的位类型，用来标识流错误状态，有4个值，<code>strm::badbit</code>，<code>strm::failbit</code>，<code>strm::eofbit</code>和<code>strm::goodbit</code>。可用<code>ios::bad()</code>，<code>ios::fail()</code>，<code>ios::eof()</code>和<code>ios::good()</code>来得知各个flag是否置位；用<code>ios::rdstate()</code>来获取流的当前状态。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">badbit: <span class="number">0001</span></span><br><span class="line">failbit: <span class="number">0100</span></span><br><span class="line">eofbit: <span class="number">0010</span></span><br><span class="line">goodbit: <span class="number">0000</span></span><br></pre></td></tr></table></figure>
+        <h1 id="iostream"><a href="#iostream" class="headerlink" title="iostream"></a><code>iostream</code></h1><h2 id="条件状态"><a href="#条件状态" class="headerlink" title="条件状态"></a>条件状态</h2><p><code>strm::iostate</code>是<strong>机器相关</strong>的位类型，用来标识流错误状态，有4个值，<code>strm::badbit</code>，<code>strm::failbit</code>，<code>strm::eofbit</code>和<code>strm::goodbit</code>。可用<code>ios::bad()</code>，<code>ios::fail()</code>，<code>ios::eof()</code>和<code>ios::good()</code>来得知各个flag是否置位；用<code>ios::rdstate()</code>来获取流的当前状态。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">badbit: 0001</span><br><span class="line">failbit: 0100</span><br><span class="line">eofbit: 0010</span><br><span class="line">goodbit: 0000</span><br></pre></td></tr></table></figure>
 <p>不同的错误会导致不同的flag被置位，</p>
 <ul>
 <li>eof -&gt; eofbit，failbit</li>
@@ -306,8 +294,8 @@
 </ul>
 <p>用<code>ios::clear()</code>和<code>ios::setstate()</code>可以对flag进行置位，两者区别在于，<code>ios::clear()</code>会先将原先的所有flag先复位，而后者不会，</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> ios::setstate (iostate state) &#123;</span><br><span class="line">  clear(rdstate() | state);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="u8F93_u51FA_u7F13_u51B2"><a href="#u8F93_u51FA_u7F13_u51B2" class="headerlink" title="输出缓冲"></a>输出缓冲</h2><p>每个输出流都管理一个缓冲区。</p>
-<h3 id="u7F13_u51B2_u5237_u65B0"><a href="#u7F13_u51B2_u5237_u65B0" class="headerlink" title="缓冲刷新"></a>缓冲刷新</h3><p>即数据真正写到输出设备或文件，会有以下原因，</p>
+<h2 id="输出缓冲"><a href="#输出缓冲" class="headerlink" title="输出缓冲"></a>输出缓冲</h2><p>每个输出流都管理一个缓冲区。</p>
+<h3 id="缓冲刷新"><a href="#缓冲刷新" class="headerlink" title="缓冲刷新"></a>缓冲刷新</h3><p>即数据真正写到输出设备或文件，会有以下原因，</p>
 <ul>
 <li>程序正常结束，main函数return；</li>
 <li>缓冲区满，需要刷新才能写入后续数据；</li>
@@ -320,8 +308,8 @@
 <li><code>unitbuf</code>和<code>nounitbuf</code>；<br>  使用<code>unitbuf</code>后，接下来的每次写操作都进行一次flush；使用<code>nounitbuf</code>返回正常的缓冲方式。</li>
 <li>关联输入流和输出流。<br>  关联一个输入流到输出流时，从输入流读取数据，会先刷新关联的输出流，<code>cin</code>和<code>cout</code>是被关联的。使用<code>tie</code>进行关联。</li>
 </ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tie的两个重载版本</span></span><br><span class="line"><span class="comment">// 两个版本都返回已经tied ostream，如果没有，则返回nullptr</span></span><br><span class="line">ostream* os = <span class="built_in">cin</span>.tie();</span><br><span class="line">(*os) &lt;&lt; <span class="string">"tie version 1"</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">ostream* old_os = <span class="built_in">cin</span>.tie(<span class="literal">nullptr</span>);</span><br><span class="line">ostream* null_os = <span class="built_in">cin</span>.tie();</span><br><span class="line">(*old_os) &lt;&lt; <span class="string">"tie version 2"</span> &lt;&lt; endl;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; boolalpha &lt;&lt; (old_os == &amp;<span class="built_in">cout</span>) &lt;&lt; <span class="string">"\n"</span> &lt;&lt; (null_os == <span class="literal">nullptr</span>) &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">// true true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> ch;</span><br><span class="line"><span class="comment">// 此时上面的两个true并不会输出</span></span><br><span class="line"><span class="built_in">cin</span> &gt;&gt; ch;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; ch &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
-<h1 id="fstream"><a href="#fstream" class="headerlink" title="fstream"></a><code>fstream</code></h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">op1=&#62;operation: iostream&#10;op2=&#62;operation: fstream&#10;&#10;op2(right)-&#62;op1</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tie的两个重载版本</span></span><br><span class="line"><span class="comment">// 两个版本都返回已经tied ostream，如果没有，则返回nullptr</span></span><br><span class="line">ostream* os = <span class="built_in">cin</span>.tie();</span><br><span class="line">(*os) &lt;&lt; <span class="string">"tie version 1"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">ostream* old_os = <span class="built_in">cin</span>.tie(<span class="literal">nullptr</span>);</span><br><span class="line">ostream* null_os = <span class="built_in">cin</span>.tie();</span><br><span class="line">(*old_os) &lt;&lt; <span class="string">"tie version 2"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; boolalpha &lt;&lt; (old_os == &amp;<span class="built_in">cout</span>) &lt;&lt; <span class="string">"\n"</span> &lt;&lt; (null_os == <span class="literal">nullptr</span>) &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">// true true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> ch;</span><br><span class="line"><span class="comment">// 此时上面的两个true并不会输出</span></span><br><span class="line"><span class="built_in">cin</span> &gt;&gt; ch;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; ch &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<h1 id="fstream"><a href="#fstream" class="headerlink" title="fstream"></a><code>fstream</code></h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">op1=&gt;operation: iostream</span><br><span class="line">op2=&gt;operation: fstream</span><br><span class="line"></span><br><span class="line">op2(right)-&gt;op1</span><br></pre></td></tr></table></figure>
 <p>继承自<code>iostream</code>，</p>
 <ul>
 <li>接受一个<code>iostream</code>类型引用或指针参数的函数，可用一个对应的<code>fstream</code>类型来调用；</li>
@@ -340,7 +328,7 @@
 <li><p>当<code>fstream</code>对象被销毁，<code>close()</code>会被自动调用。</p>
 </li>
 </ul>
-<h2 id="u6587_u4EF6_u6A21_u5F0F"><a href="#u6587_u4EF6_u6A21_u5F0F" class="headerlink" title="文件模式"></a>文件模式</h2><p>对于<code>ofstream</code>，</p>
+<h2 id="文件模式"><a href="#文件模式" class="headerlink" title="文件模式"></a>文件模式</h2><p>对于<code>ofstream</code>，</p>
 <ul>
 <li>未指定打开模式时，以<code>out</code>打开；</li>
 <li>通常<code>out</code>意味着同时使用<code>trunc</code>；</li>
@@ -351,7 +339,7 @@
 </ul>
 </li>
 </ul>
-<h1 id="sstream"><a href="#sstream" class="headerlink" title="sstream"></a><code>sstream</code></h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">op1=&#62;operation: iostream&#10;op2=&#62;operation: sstream&#10;&#10;op2(right)-&#62;op1</span><br></pre></td></tr></table></figure>
+<h1 id="sstream"><a href="#sstream" class="headerlink" title="sstream"></a><code>sstream</code></h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">op1=&gt;operation: iostream</span><br><span class="line">op2=&gt;operation: sstream</span><br><span class="line"></span><br><span class="line">op2(right)-&gt;op1</span><br></pre></td></tr></table></figure>
 <p>类似<code>fstream</code>，<code>sstream</code>也包含特有的操作，</p>
 <ul>
 <li><code>sstream::sstream(s)</code>：创建对象，并保存<code>s</code>的copy；</li>
@@ -466,17 +454,17 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
           
           
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              
                 <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">categories</span>
-              </a>
+              
             </div>
           
 
@@ -571,7 +559,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#iostream"><span class="nav-number">1.</span> <span class="nav-text">iostream</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u6761_u4EF6_u72B6_u6001"><span class="nav-number">1.1.</span> <span class="nav-text">条件状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#u8F93_u51FA_u7F13_u51B2"><span class="nav-number">1.2.</span> <span class="nav-text">输出缓冲</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#u7F13_u51B2_u5237_u65B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">缓冲刷新</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fstream"><span class="nav-number">2.</span> <span class="nav-text">fstream</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#u6587_u4EF6_u6A21_u5F0F"><span class="nav-number">2.1.</span> <span class="nav-text">文件模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sstream"><span class="nav-number">3.</span> <span class="nav-text">sstream</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#iostream"><span class="nav-number">1.</span> <span class="nav-text">iostream</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#条件状态"><span class="nav-number">1.1.</span> <span class="nav-text">条件状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出缓冲"><span class="nav-number">1.2.</span> <span class="nav-text">输出缓冲</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓冲刷新"><span class="nav-number">1.2.1.</span> <span class="nav-text">缓冲刷新</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fstream"><span class="nav-number">2.</span> <span class="nav-text">fstream</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#文件模式"><span class="nav-number">2.1.</span> <span class="nav-text">文件模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sstream"><span class="nav-number">3.</span> <span class="nav-text">sstream</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -624,6 +612,14 @@
 
   
 
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
 
   <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
