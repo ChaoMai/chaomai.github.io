@@ -406,9 +406,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
-    
       <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+    
+      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
   </entry>
   
@@ -504,9 +504,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
-    
       <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+    
+      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
   </entry>
   
@@ -665,9 +665,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
-    
       <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+    
+      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
       <category term="dcas" scheme="http://chaomai.github.io/tags/dcas/"/>
     
@@ -736,9 +736,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
-    
       <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+    
+      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
       <category term="snapshot" scheme="http://chaomai.github.io/tags/snapshot/"/>
     
@@ -801,9 +801,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
-    
       <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+    
+      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
   </entry>
   
@@ -891,9 +891,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
-    
       <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+    
+      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
   </entry>
   
@@ -980,9 +980,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
-    
       <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+    
+      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
   </entry>
   
@@ -1134,9 +1134,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
-    
       <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+    
+      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
   </entry>
   
@@ -1330,9 +1330,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
-    
       <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+    
+      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
   </entry>
   
@@ -1499,9 +1499,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
-    
       <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+    
+      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
   </entry>
   
@@ -1829,11 +1829,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
   </entry>
   
@@ -2148,9 +2148,9 @@
       <category term="programming" scheme="http://chaomai.github.io/categories/programming/"/>
     
     
-      <category term="tmux" scheme="http://chaomai.github.io/tags/tmux/"/>
-    
       <category term="linux" scheme="http://chaomai.github.io/tags/linux/"/>
+    
+      <category term="tmux" scheme="http://chaomai.github.io/tags/tmux/"/>
     
   </entry>
   
@@ -2253,11 +2253,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="cas" scheme="http://chaomai.github.io/tags/cas/"/>
     
@@ -2733,11 +2733,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
   </entry>
   
@@ -2957,11 +2957,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
   </entry>
   
@@ -3260,9 +3260,9 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="translation" scheme="http://chaomai.github.io/tags/translation/"/>
     
@@ -3369,11 +3369,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
   </entry>
   
@@ -3425,11 +3425,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
+      <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
   </entry>
   
@@ -3467,9 +3467,9 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="clang" scheme="http://chaomai.github.io/tags/clang/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
+    
+      <category term="clang" scheme="http://chaomai.github.io/tags/clang/"/>
     
   </entry>
   
