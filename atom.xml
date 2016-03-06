@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://chaomai.github.io/"/>
-  <updated>2016-03-05T06:45:40.225Z</updated>
+  <updated>2016-03-06T14:35:41.563Z</updated>
   <id>http://chaomai.github.io/</id>
   
   <author>
@@ -14,6 +14,63 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Memory Ordering</title>
+    <link href="http://chaomai.github.io/2016/03/06/2016-2016-03-06-memory-ordering/"/>
+    <id>http://chaomai.github.io/2016/03/06/2016-2016-03-06-memory-ordering/</id>
+    <published>2016-03-06T14:34:28.000Z</published>
+    <updated>2016-03-06T14:35:41.563Z</updated>
+    
+    <content type="html">&lt;p&gt;Memory ordering描述了CPU访问系统内存，执行load和store的顺序。Memory ordering包括编译时编译器生成的和运行时CPU生成的。为了高效地执行指令，&lt;strong&gt;只要不影响单线程程序的行为&lt;/strong&gt;，编译器和CPU常常会对指令进行memory reordering，使得访问内存的操作不会按照程序代码中指定的顺序执行。&lt;/p&gt;
+&lt;p&gt;在单线程程序中，可以忽略reordering的存在；在多线程程序中，mutex，semaphores等互斥方法会保证在相关函数的调用周围没有reordering。在多核环境下（或对称多处理器架构）下，用C、C++等编写lock-free代码时，memory reordering是可观察到的，是重点要考虑的问题。&lt;/p&gt;
+&lt;h2 id=&quot;Compiler-Reordering&quot;&gt;&lt;a href=&quot;#Compiler-Reordering&quot; class=&quot;headerlink&quot; title=&quot;Compiler Reordering&quot;&gt;&lt;/a&gt;Compiler Reordering&lt;/h2&gt;&lt;p&gt;从源代码得到CPU指令的过程中，编译器会做很多事情，其中之一就是reordering。（例子摘自&lt;a href=&quot;http://preshing.com/20120625/memory-ordering-at-compile-time/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Preshing on Programming&lt;/a&gt;）&lt;/p&gt;
+&lt;figure class=&quot;highlight cpp&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; Value;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; IsPublished = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;sendValue&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; x)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  Value = x;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  IsPublished = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;如果&lt;code&gt;IsPublished = 1;&lt;/code&gt;被reordered到&lt;code&gt;Value = x;&lt;/code&gt;之前，那么&lt;code&gt;IsPublished&lt;/code&gt;作为flag的作用就丧失了。既是是在单线程中，也会有问题。如果该线程在两次store之间被抢占，那么其他使用&lt;code&gt;Value&lt;/code&gt;的线程就会访问到&lt;code&gt;Value&lt;/code&gt;的旧值，而不是新值。&lt;/p&gt;
+&lt;h3 id=&quot;Compiler-Barriers&quot;&gt;&lt;a href=&quot;#Compiler-Barriers&quot; class=&quot;headerlink&quot; title=&quot;Compiler Barriers&quot;&gt;&lt;/a&gt;Compiler Barriers&lt;/h3&gt;&lt;p&gt;防止编译器reordering最简单的办法莫过于使用compiler barriers，在不想被reordered的两个操作（load和store）之间加入compiler Barrier&lt;code&gt;asm volatile(&amp;quot;&amp;quot; ::: &amp;quot;memory&amp;quot;)&lt;/code&gt;，但在多核环境下，这并不足够。还需要下面的CPU fence来提供运行时memory barrier的保障。如果使用了CPU fence，那么fence也会作为compiler Barrier。&lt;/p&gt;
+&lt;p&gt;另一种compiler barrier是函数调用，&lt;strong&gt;无论函数是否包含&lt;/strong&gt;compiler barrier，除了inline函数、声明带有&lt;code&gt;pure&lt;/code&gt;&lt;a href=&quot;http://lwn.net/Articles/285332/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;属性&lt;/a&gt;的函数和使用了链接时代码生成的函数，大多数函数调用都可以作为compiler barrier。因为编译器根本不知道该函数调用是否会修改先前的值，也不知道这个值是否在函数调用返回后会被继续使用，如果进行了reordering，那么很可能会违反一开始提到的原则。而对于包含的函数，无论是不是inline的，都可以作为compiler barrier。&lt;/p&gt;
+&lt;p&gt;C/C++中，&lt;code&gt;volatie&lt;/code&gt;会阻止编译器的优化，编译器&lt;a href=&quot;http://hedengcheng.com/?p=725&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;不会&lt;/a&gt;对&lt;code&gt;volatie&lt;/code&gt;变量间的操作进行reordering，&lt;strong&gt;但是&lt;/strong&gt;&lt;code&gt;volatie&lt;/code&gt;对处理器的reordering是无能为力的，并没有happens-before语义。与此同时，&lt;code&gt;volatie&lt;/code&gt;也不能阻止多个线程的&lt;a href=&quot;https://www.kernel.org/doc/Documentation/volatile-considered-harmful.txt&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;并发访问&lt;/a&gt;。对于下面的代码，无论&lt;code&gt;shared_data&lt;/code&gt;是不是&lt;code&gt;volatie&lt;/code&gt;，&lt;code&gt;spin_lock&lt;/code&gt;都是必须的。&lt;/p&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;spin_lock(&amp;amp;the_lock);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;do_something_on(&amp;amp;shared_data);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;do_something_else_with(&amp;amp;shared_data);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;spin_unlock(&amp;amp;the_lock);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;代码里的&lt;code&gt;spin_lock&lt;/code&gt;也下面将说的memory barrier。&lt;/p&gt;
+&lt;h2 id=&quot;Processor-Reordering&quot;&gt;&lt;a href=&quot;#Processor-Reordering&quot; class=&quot;headerlink&quot; title=&quot;Processor Reordering&quot;&gt;&lt;/a&gt;Processor Reordering&lt;/h2&gt;&lt;p&gt;除了编译器会进行reordering，CPU同样会。CPU的reordering仅在多核或多处理器环境下才是可见的。（例子摘自&lt;a href=&quot;http://preshing.com/20120515/memory-reordering-caught-in-the-act/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Preshing on Programming&lt;/a&gt;）&lt;/p&gt;
+&lt;p&gt;考虑下面的一段代码，&lt;code&gt;thread1Func&lt;/code&gt;和&lt;code&gt;thread2Func&lt;/code&gt;分别在两个线程中运行，最后&lt;code&gt;r1&lt;/code&gt;和&lt;code&gt;r2&lt;/code&gt;的结果会是什么？为了阻止编译器的reordering，已经在store和load之间加入了compiler barrier。&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;int X, Y;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int r1, r2;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;void *thread1Func(void *param) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  X = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  asm volatile(&quot;&quot; ::: &quot;memory&quot;)；&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  r2 = Y;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  return NULL;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;void *thread2Func(void *param) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  Y = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  asm volatile(&quot;&quot; ::: &quot;memory&quot;)；&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  r2 = X;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  return NULL;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;由于是并发执行，两个线程的load和store会&lt;a href=&quot;http://www.yebangyu.org/blog/2016/01/09/memoryconsistencyandcachecoherence/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;交替执行&lt;/a&gt;，因此&lt;code&gt;r1&lt;/code&gt;和&lt;code&gt;r2&lt;/code&gt;的结果可能为，&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;r1=0 r2=1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;r1=1 r2=0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;r1=1 r2=1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;但&lt;code&gt;r1=0 r2=0&lt;/code&gt;也是完全可能的，如果重复的进行测试，那么这个结果会&lt;a href=&quot;https://gist.github.com/ChaoMai/f756356369fe0b1d4859&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;频繁的发生&lt;/a&gt;。Intel在64 and IA-32 Architectures Software Developer’s Manual中的8.2.3.4指出，&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;At each processor, the load and the store are to different locations and hence may be reordered.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;代码中每个线程的store和load是不同的内存位置，所以发生StoreLoad Reordering是完全可能的。&lt;/p&gt;
+&lt;h3 id=&quot;Memory-Barrier&quot;&gt;&lt;a href=&quot;#Memory-Barrier&quot; class=&quot;headerlink&quot; title=&quot;Memory Barrier&quot;&gt;&lt;/a&gt;Memory Barrier&lt;/h3&gt;&lt;p&gt;上述例子的reordering只是众多memory reordering中的一种，主要有&lt;a href=&quot;http://preshing.com/20120710/memory-barriers-are-like-source-control-operations/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;四种memory reordering&lt;/a&gt;，&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LoadLoad&lt;/li&gt;
+&lt;li&gt;StoreStore&lt;/li&gt;
+&lt;li&gt;LoadStore&lt;/li&gt;
+&lt;li&gt;StoreLoad&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;类似compiler reordering，需要compiler barrier来阻止CPU的reordering，这里是memory barriers，也叫fence指令。Fence保证了fence之前的load或store和之后的load或store是严格有序的。针对以上四种reordering，有对应的四种barrier，&lt;code&gt;#LoadLoad&lt;/code&gt;、&lt;code&gt;#StoreStore&lt;/code&gt;、&lt;code&gt;#LoadStore&lt;/code&gt;和&lt;code&gt;#StoreLoad&lt;/code&gt;。对于现实中CPU的fence指令的行为，通常是上述&lt;a href=&quot;http://g.oswego.edu/dl/jmm/cookbook.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;几种的融合&lt;/a&gt;，且还会有其他的效果。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Store1; #StoreLoad; Load2;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;需要特别说明的是&lt;code&gt;#StoreLoad&lt;/code&gt;，这个barrier是&lt;strong&gt;唯一&lt;/strong&gt;能够保证上述例子不出现&lt;code&gt;r1=0 r2=0&lt;/code&gt;的。&lt;code&gt;#StoreLoad&lt;/code&gt;保证了在barrier前执行&lt;code&gt;Store1&lt;/code&gt;对其他处理器是&lt;strong&gt;可见的&lt;/strong&gt;，在barrier后执行的&lt;code&gt;Load2&lt;/code&gt;能够得到&lt;strong&gt;在barrier之后最新的值&lt;/strong&gt;（不一定是&lt;code&gt;Store1&lt;/code&gt;的值）。&lt;code&gt;#StoreLoad&lt;/code&gt;&lt;a href=&quot;http://g.oswego.edu/dl/jmm/cookbook.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;防止&lt;/a&gt;了后续的load错误的使用&lt;code&gt;Store1&lt;/code&gt;的值，而不是其他处理器在同一内存位置store的更新的值。&lt;code&gt;#StoreLoad&lt;/code&gt;几乎在所有现代的多处理器上都是必须的，同时也是代价最高昂的一种barrier。&lt;/p&gt;
+&lt;p&gt;除了fence指令，memory barrier还有，&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;C++11中，很多原子类型的操作；&lt;/li&gt;
+&lt;li&gt;pthread中，mutex，spin_lock，semaphore的操作。&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Memory ordering描述了CPU访问系统内存，执行load和store的顺序。Memory ordering包括编译时编译器生成的和运行时CPU生成的。为了高效地执行指令，&lt;strong&gt;只要不影响单线程程序的行为&lt;/strong&gt;，编译器和CPU常常会对指令进行
+    
+    </summary>
+    
+      <category term="programming" scheme="http://chaomai.github.io/categories/programming/"/>
+    
+    
+      <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+  </entry>
   
   <entry>
     <title>C++ Copy Elision</title>
@@ -406,9 +463,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -504,9 +561,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -665,9 +722,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="dcas" scheme="http://chaomai.github.io/tags/dcas/"/>
     
@@ -736,9 +793,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="snapshot" scheme="http://chaomai.github.io/tags/snapshot/"/>
     
@@ -801,9 +858,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -891,9 +948,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -980,9 +1037,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -1134,9 +1191,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -1330,9 +1387,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -1499,9 +1556,9 @@
       <category term="data structures" scheme="http://chaomai.github.io/categories/programming/data-structures/"/>
     
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -1829,11 +1886,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -2253,11 +2310,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
       <category term="cas" scheme="http://chaomai.github.io/tags/cas/"/>
     
@@ -2733,11 +2790,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -2957,11 +3014,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -3369,11 +3426,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   
@@ -3425,11 +3482,11 @@
     
       <category term="cpp" scheme="http://chaomai.github.io/tags/cpp/"/>
     
-      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
-    
       <category term="cpp11" scheme="http://chaomai.github.io/tags/cpp11/"/>
     
       <category term="concurrency" scheme="http://chaomai.github.io/tags/concurrency/"/>
+    
+      <category term="reading" scheme="http://chaomai.github.io/tags/reading/"/>
     
   </entry>
   

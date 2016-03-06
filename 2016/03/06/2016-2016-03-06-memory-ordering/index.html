@@ -39,7 +39,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="pthread," />
+  <meta name="keywords" content="concurrency," />
 
 
 
@@ -57,16 +57,19 @@
 
 
 
-<meta name="description" content="gcc编译多线程代码时，参数不同导致结果的不同。">
+<meta name="description" content="Memory ordering描述了CPU访问系统内存，执行load和store的顺序。Memory ordering包括编译时编译器生成的和运行时CPU生成的。为了高效地执行指令，只要不影响单线程程序的行为，编译器和CPU常常会对指令进行memory reordering，使得访问内存的操作不会按照程序代码中指定的顺序执行。
+在单线程程序中，可以忽略reordering的存在；在多线程程序中，m">
 <meta property="og:type" content="article">
-<meta property="og:title" content="编译时，-Pthread and -Lpthread的区别">
-<meta property="og:url" content="http://chaomai.github.io/2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/index.html">
+<meta property="og:title" content="Memory Ordering">
+<meta property="og:url" content="http://chaomai.github.io/2016/03/06/2016-2016-03-06-memory-ordering/index.html">
 <meta property="og:site_name" content="Building Things">
-<meta property="og:description" content="gcc编译多线程代码时，参数不同导致结果的不同。">
-<meta property="og:updated_time" content="2015-07-14T14:28:08.000Z">
+<meta property="og:description" content="Memory ordering描述了CPU访问系统内存，执行load和store的顺序。Memory ordering包括编译时编译器生成的和运行时CPU生成的。为了高效地执行指令，只要不影响单线程程序的行为，编译器和CPU常常会对指令进行memory reordering，使得访问内存的操作不会按照程序代码中指定的顺序执行。
+在单线程程序中，可以忽略reordering的存在；在多线程程序中，m">
+<meta property="og:updated_time" content="2016-03-06T14:35:41.563Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="编译时，-Pthread and -Lpthread的区别">
-<meta name="twitter:description" content="gcc编译多线程代码时，参数不同导致结果的不同。">
+<meta name="twitter:title" content="Memory Ordering">
+<meta name="twitter:description" content="Memory ordering描述了CPU访问系统内存，执行load和store的顺序。Memory ordering包括编译时编译器生成的和运行时CPU生成的。为了高效地执行指令，只要不影响单线程程序的行为，编译器和CPU常常会对指令进行memory reordering，使得访问内存的操作不会按照程序代码中指定的顺序执行。
+在单线程程序中，可以忽略reordering的存在；在多线程程序中，m">
 
 
 
@@ -84,7 +87,7 @@
   };
 </script>
 
-  <title> 编译时，-Pthread and -Lpthread的区别 | Building Things </title>
+  <title> Memory Ordering | Building Things </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -216,7 +219,7 @@
             
             
               
-                编译时，-Pthread and -Lpthread的区别
+                Memory Ordering
               
             
           </h1>
@@ -228,8 +231,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-05-14T19:31:30+08:00" content="2015-05-14">
-              2015-05-14
+            <time itemprop="dateCreated" datetime="2016-03-06T22:34:28+08:00" content="2016-03-06">
+              2016-03-06
             </time>
           </span>
 
@@ -258,8 +261,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/" itemprop="commentsCount"></span>
+                <a href="/2016/03/06/2016-2016-03-06-memory-ordering/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/06/2016-2016-03-06-memory-ordering/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -281,14 +284,41 @@
       
 
       
-        <p>-pthread告诉编译器，要链接到pthread库，同时配置线程的编译。</p>
-<p>下面的例子就显示了在使用-pthread时，定义了不同的宏。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -pthread -E <span class="_">-d</span>M test.c &gt; dm.pthread.txt</span><br><span class="line">$ gcc          -E <span class="_">-d</span>M test.c &gt; dm.nopthread.txt</span><br><span class="line">$ diff dm.pthread.txt dm.nopthread.txt</span><br><span class="line">152d151</span><br><span class="line">&lt; <span class="comment">#define _REENTRANT 1</span></span><br><span class="line">208d206</span><br><span class="line">&lt; <span class="comment">#define __USE_REENTRANT 1</span></span><br></pre></td></tr></table></figure>
-<p>-lpthread只会告诉编译器，要链接到pthread库，但是这些宏不会被定义。</p>
-<p>编译时，应该使用-pthread。</p>
-<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><ol>
-<li><a href="http://stackoverflow.com/questions/23250863/difference-between-pthread-and-lpthread-while-compiling" target="_blank" rel="external">difference-between-pthread-and-lpthread-while-compiling</a></li>
-</ol>
+        <p>Memory ordering描述了CPU访问系统内存，执行load和store的顺序。Memory ordering包括编译时编译器生成的和运行时CPU生成的。为了高效地执行指令，<strong>只要不影响单线程程序的行为</strong>，编译器和CPU常常会对指令进行memory reordering，使得访问内存的操作不会按照程序代码中指定的顺序执行。</p>
+<p>在单线程程序中，可以忽略reordering的存在；在多线程程序中，mutex，semaphores等互斥方法会保证在相关函数的调用周围没有reordering。在多核环境下（或对称多处理器架构）下，用C、C++等编写lock-free代码时，memory reordering是可观察到的，是重点要考虑的问题。</p>
+<h2 id="Compiler-Reordering"><a href="#Compiler-Reordering" class="headerlink" title="Compiler Reordering"></a>Compiler Reordering</h2><p>从源代码得到CPU指令的过程中，编译器会做很多事情，其中之一就是reordering。（例子摘自<a href="http://preshing.com/20120625/memory-ordering-at-compile-time/" target="_blank" rel="external">Preshing on Programming</a>）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> Value;</span><br><span class="line"><span class="keyword">int</span> IsPublished = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sendValue</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">  Value = x;</span><br><span class="line">  IsPublished = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果<code>IsPublished = 1;</code>被reordered到<code>Value = x;</code>之前，那么<code>IsPublished</code>作为flag的作用就丧失了。既是是在单线程中，也会有问题。如果该线程在两次store之间被抢占，那么其他使用<code>Value</code>的线程就会访问到<code>Value</code>的旧值，而不是新值。</p>
+<h3 id="Compiler-Barriers"><a href="#Compiler-Barriers" class="headerlink" title="Compiler Barriers"></a>Compiler Barriers</h3><p>防止编译器reordering最简单的办法莫过于使用compiler barriers，在不想被reordered的两个操作（load和store）之间加入compiler Barrier<code>asm volatile(&quot;&quot; ::: &quot;memory&quot;)</code>，但在多核环境下，这并不足够。还需要下面的CPU fence来提供运行时memory barrier的保障。如果使用了CPU fence，那么fence也会作为compiler Barrier。</p>
+<p>另一种compiler barrier是函数调用，<strong>无论函数是否包含</strong>compiler barrier，除了inline函数、声明带有<code>pure</code><a href="http://lwn.net/Articles/285332/" target="_blank" rel="external">属性</a>的函数和使用了链接时代码生成的函数，大多数函数调用都可以作为compiler barrier。因为编译器根本不知道该函数调用是否会修改先前的值，也不知道这个值是否在函数调用返回后会被继续使用，如果进行了reordering，那么很可能会违反一开始提到的原则。而对于包含的函数，无论是不是inline的，都可以作为compiler barrier。</p>
+<p>C/C++中，<code>volatie</code>会阻止编译器的优化，编译器<a href="http://hedengcheng.com/?p=725" target="_blank" rel="external">不会</a>对<code>volatie</code>变量间的操作进行reordering，<strong>但是</strong><code>volatie</code>对处理器的reordering是无能为力的，并没有happens-before语义。与此同时，<code>volatie</code>也不能阻止多个线程的<a href="https://www.kernel.org/doc/Documentation/volatile-considered-harmful.txt" target="_blank" rel="external">并发访问</a>。对于下面的代码，无论<code>shared_data</code>是不是<code>volatie</code>，<code>spin_lock</code>都是必须的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spin_lock(&amp;the_lock);</span><br><span class="line">do_something_on(&amp;shared_data);</span><br><span class="line">do_something_else_with(&amp;shared_data);</span><br><span class="line">spin_unlock(&amp;the_lock);</span><br></pre></td></tr></table></figure>
+<p>代码里的<code>spin_lock</code>也下面将说的memory barrier。</p>
+<h2 id="Processor-Reordering"><a href="#Processor-Reordering" class="headerlink" title="Processor Reordering"></a>Processor Reordering</h2><p>除了编译器会进行reordering，CPU同样会。CPU的reordering仅在多核或多处理器环境下才是可见的。（例子摘自<a href="http://preshing.com/20120515/memory-reordering-caught-in-the-act/" target="_blank" rel="external">Preshing on Programming</a>）</p>
+<p>考虑下面的一段代码，<code>thread1Func</code>和<code>thread2Func</code>分别在两个线程中运行，最后<code>r1</code>和<code>r2</code>的结果会是什么？为了阻止编译器的reordering，已经在store和load之间加入了compiler barrier。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">int X, Y;</span><br><span class="line">int r1, r2;</span><br><span class="line">void *thread1Func(void *param) &#123;</span><br><span class="line">  X = 1;</span><br><span class="line">  asm volatile("" ::: "memory")；</span><br><span class="line">  r2 = Y;</span><br><span class="line">  return NULL;</span><br><span class="line">&#125;;</span><br><span class="line">void *thread2Func(void *param) &#123;</span><br><span class="line">  Y = 1;</span><br><span class="line">  asm volatile("" ::: "memory")；</span><br><span class="line">  r2 = X;</span><br><span class="line">  return NULL;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>由于是并发执行，两个线程的load和store会<a href="http://www.yebangyu.org/blog/2016/01/09/memoryconsistencyandcachecoherence/" target="_blank" rel="external">交替执行</a>，因此<code>r1</code>和<code>r2</code>的结果可能为，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">r1=0 r2=1</span><br><span class="line">r1=1 r2=0</span><br><span class="line">r1=1 r2=1</span><br></pre></td></tr></table></figure>
+<p>但<code>r1=0 r2=0</code>也是完全可能的，如果重复的进行测试，那么这个结果会<a href="https://gist.github.com/ChaoMai/f756356369fe0b1d4859" target="_blank" rel="external">频繁的发生</a>。Intel在64 and IA-32 Architectures Software Developer’s Manual中的8.2.3.4指出，</p>
+<blockquote>
+<p>At each processor, the load and the store are to different locations and hence may be reordered.</p>
+</blockquote>
+<p>代码中每个线程的store和load是不同的内存位置，所以发生StoreLoad Reordering是完全可能的。</p>
+<h3 id="Memory-Barrier"><a href="#Memory-Barrier" class="headerlink" title="Memory Barrier"></a>Memory Barrier</h3><p>上述例子的reordering只是众多memory reordering中的一种，主要有<a href="http://preshing.com/20120710/memory-barriers-are-like-source-control-operations/" target="_blank" rel="external">四种memory reordering</a>，</p>
+<ul>
+<li>LoadLoad</li>
+<li>StoreStore</li>
+<li>LoadStore</li>
+<li>StoreLoad</li>
+</ul>
+<p>类似compiler reordering，需要compiler barrier来阻止CPU的reordering，这里是memory barriers，也叫fence指令。Fence保证了fence之前的load或store和之后的load或store是严格有序的。针对以上四种reordering，有对应的四种barrier，<code>#LoadLoad</code>、<code>#StoreStore</code>、<code>#LoadStore</code>和<code>#StoreLoad</code>。对于现实中CPU的fence指令的行为，通常是上述<a href="http://g.oswego.edu/dl/jmm/cookbook.html" target="_blank" rel="external">几种的融合</a>，且还会有其他的效果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Store1; #StoreLoad; Load2;</span><br></pre></td></tr></table></figure>
+<p>需要特别说明的是<code>#StoreLoad</code>，这个barrier是<strong>唯一</strong>能够保证上述例子不出现<code>r1=0 r2=0</code>的。<code>#StoreLoad</code>保证了在barrier前执行<code>Store1</code>对其他处理器是<strong>可见的</strong>，在barrier后执行的<code>Load2</code>能够得到<strong>在barrier之后最新的值</strong>（不一定是<code>Store1</code>的值）。<code>#StoreLoad</code><a href="http://g.oswego.edu/dl/jmm/cookbook.html" target="_blank" rel="external">防止</a>了后续的load错误的使用<code>Store1</code>的值，而不是其他处理器在同一内存位置store的更新的值。<code>#StoreLoad</code>几乎在所有现代的多处理器上都是必须的，同时也是代价最高昂的一种barrier。</p>
+<p>除了fence指令，memory barrier还有，</p>
+<ul>
+<li>C++11中，很多原子类型的操作；</li>
+<li>pthread中，mutex，spin_lock，semaphore的操作。</li>
+</ul>
 
       
     </div>
@@ -303,7 +333,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/pthread/" rel="tag">#pthread</a>
+            <a href="/tags/concurrency/" rel="tag">#concurrency</a>
           
         </div>
       
@@ -312,17 +342,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/03/21/2015-2015-03-21-the-stranger/" rel="next" title="读加缪《局外人》">
-                <i class="fa fa-chevron-left"></i> 读加缪《局外人》
+              <a href="/2016/03/05/2016-2016-03-05-cpp-copy-elision/" rel="next" title="C++ Copy Elision">
+                <i class="fa fa-chevron-left"></i> C++ Copy Elision
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/05/15/2015-2015-05-15-compile-c-11-thread-with-clang/" rel="prev" title="Clang++中C++11 Thread的支持">
-                Clang++中C++11 Thread的支持 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -502,7 +528,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">1.</span> <span class="nav-text">reference</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Compiler-Reordering"><span class="nav-number">1.</span> <span class="nav-text">Compiler Reordering</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Compiler-Barriers"><span class="nav-number">1.1.</span> <span class="nav-text">Compiler Barriers</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Processor-Reordering"><span class="nav-number">2.</span> <span class="nav-text">Processor Reordering</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Memory-Barrier"><span class="nav-number">2.1.</span> <span class="nav-text">Memory Barrier</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -768,9 +794,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'chaomaisblog';
-      var disqus_identifier = '2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/';
-      var disqus_title = '编译时，-Pthread and -Lpthread的区别';
-      var disqus_url = 'http://chaomai.github.io/2015/05/14/2015-2015-05-14-difference-between-pthread-and-lpthread/';
+      var disqus_identifier = '2016/03/06/2016-2016-03-06-memory-ordering/';
+      var disqus_title = 'Memory Ordering';
+      var disqus_url = 'http://chaomai.github.io/2016/03/06/2016-2016-03-06-memory-ordering/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
