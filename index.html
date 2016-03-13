@@ -73,7 +73,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: {"position":"right","display":"post"},
+    sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: false,
     duoshuo: {
@@ -97,12 +97,14 @@
 
 
 
+
+
   
   
     
   
 
-  <div class="container one-collumn sidebar-position-right 
+  <div class="container one-collumn sidebar-position-left 
    page-home 
  ">
     <div class="headband"></div>
@@ -133,7 +135,7 @@
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
@@ -177,10 +179,6 @@
       
 
       
-
-
-      
-      
     </ul>
   
 
@@ -196,11 +194,125 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
 
     
+      <header class="post-header">
 
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/13/2016-2016-03-13-memory-ordering/" itemprop="url">
+                  Memory Ordering
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-03-13T22:34:28+08:00" content="2016-03-13">
+              2016-03-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/programming/" itemprop="url" rel="index">
+                    <span itemprop="name">programming</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/13/2016-2016-03-13-memory-ordering/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/13/2016-2016-03-13-memory-ordering/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
     
-    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Memory ordering描述了CPU访问系统内存，执行load和store的顺序。Memory ordering包括编译时编译器生成的和运行时CPU生成的。为了高效地执行指令，只要不影响单线程程序的行为，编译器和CPU常常会对指令进行memory reordering，使得访问内存的操作不会按
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/13/2016-2016-03-13-memory-ordering/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -224,8 +336,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/03/06/2016-2016-03-06-memory-ordering/" itemprop="url">
-                  Memory Ordering
+                <a class="post-title-link" href="/2016/03/06/2016-2016-03-06-happens-before/" itemprop="url">
+                  Happens-Before
                 </a>
               
             
@@ -238,7 +350,7 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-03-06T22:34:28+08:00" content="2016-03-06">
+            <time itemprop="dateCreated" datetime="2016-03-06T21:51:54+08:00" content="2016-03-06">
               2016-03-06
             </time>
           </span>
@@ -268,8 +380,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/06/2016-2016-03-06-memory-ordering/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/06/2016-2016-03-06-memory-ordering/" itemprop="commentsCount"></span>
+                <a href="/2016/03/06/2016-2016-03-06-happens-before/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/06/2016-2016-03-06-happens-before/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -292,12 +404,9 @@
 
       
         
-          
-          Memory ordering描述了CPU访问系统内存，执行load和store的顺序。Memory ordering包括编译时编译器生成的和运行时CPU生成的。为了高效地执行指令，只要不影响单线程程序的行为，编译器和CPU常常会对指令进行memory reordering，使得访问内存的操作不会按
-          ...
-
+          取自preshing博客上的几篇文章，除了部分翻译外，还有自己的理解。
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/03/06/2016-2016-03-06-memory-ordering/#more" rel="contents">
+            <a class="btn" href="/2016/03/06/2016-2016-03-06-happens-before/">
               Read more &raquo;
             </a>
           </div>
@@ -1344,136 +1453,6 @@ the compiler can omit calls to the copy constructor.
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/11/24/2015-2015-11-24-ckd-2/" itemprop="url">
-                  CKDTree (2)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2015-11-24T15:17:25+08:00" content="2015-11-24">
-              2015-11-24
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/programming/" itemprop="url" rel="index">
-                    <span itemprop="name">programming</span>
-                  </a>
-                </span>
-
-                
-                
-                  , 
-                
-
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/programming/data-structures/" itemprop="url" rel="index">
-                    <span itemprop="name">data structures</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/11/24/2015-2015-11-24-ckd-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/24/2015-2015-11-24-ckd-2/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          这篇记录了另一种简单的方法来实现concurrent KDTree snapshot，当然简单是有代价的，那就是在snapshot的时候不允许并发的update（inset，delete）。
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/11/24/2015-2015-11-24-ckd-2/">
-              Read more &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-
   </section>
 
   
@@ -1519,7 +1498,7 @@ the compiler can omit calls to the copy constructor.
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">47</span>
+              <span class="site-state-item-count">49</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -1652,7 +1631,9 @@ the compiler can omit calls to the copy constructor.
       </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
   </div>
 
   
@@ -1758,7 +1739,6 @@ the compiler can omit calls to the copy constructor.
   
 
 
-  
   
 
 

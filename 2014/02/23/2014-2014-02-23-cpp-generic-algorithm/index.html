@@ -79,7 +79,7 @@
 按使用元素的方式分类只读算法accumulateaccumulate的第三个参数类型决定了函数中使用那个加法运算符以及返回值的类型。
 
 如果这个类型不支持+">
-<meta property="og:updated_time" content="2016-02-23T06:17:02.466Z">
+<meta property="og:updated_time" content="2016-03-11T12:32:45.536Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++泛型算法">
 <meta name="twitter:description" content="泛型算法
@@ -98,7 +98,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     scheme: 'Mist',
-    sidebar: {"position":"right","display":"post"},
+    sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: false,
     duoshuo: {
@@ -122,12 +122,14 @@
 
 
 
+
+
   
   
     
   
 
-  <div class="container one-collumn sidebar-position-right page-post-detail ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -156,7 +158,7 @@
   
 
   
-    <ul id="menu" class="menu ">
+    <ul id="menu" class="menu">
       
         
         <li class="menu-item menu-item-home">
@@ -199,10 +201,6 @@
         </li>
       
 
-      
-
-
-      
       
     </ul>
   
@@ -417,7 +415,9 @@
 <h2 id="反向迭代器"><a href="#反向迭代器" class="headerlink" title="反向迭代器"></a>反向迭代器</h2><p>也是一种迭代器适配器。只能从一个支持++和–的迭代器来定义反向迭代器。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">    cbegin()                                     cend()</span><br><span class="line">     |                                            |</span><br><span class="line">    [], [], [], [], [], [], [], [], [], [], [], []</span><br><span class="line">   |                                             |</span><br><span class="line">crend()                                         crbegin()</span><br><span class="line"></span><br><span class="line">cbegin()                 rit.base()         cend()</span><br><span class="line"> |                           |                |</span><br><span class="line">[], [], [], [], [], [], [], [], [], [], [], []</span><br><span class="line">                         |                   |</span><br><span class="line">                        rit               crbegin()</span><br><span class="line"></span><br><span class="line"> [crbegin(), rit)和[rit.base(), cend())指向相同的范围。</span><br></pre></td></tr></table></figure>
 <p>可以对反向迭代器调用<code>base()</code>来得到普通的迭代器。<code>base()</code>得到的是相邻的位置。</p>
-<h2 id="移动迭代器"><a href="#移动迭代器" class="headerlink" title="移动迭代器"></a>移动迭代器</h2><p>p480</p>
+<h2 id="移动迭代器"><a href="#移动迭代器" class="headerlink" title="移动迭代器"></a>移动迭代器</h2><p>一个移动迭代器通过改变给定迭代器的解引用运算符的行为来<strong>适配</strong>此迭代器。对移动迭代器<strong>解引用</strong>生成的是一个<strong>右值</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> newe = uninitialized_copy(make_move_iterator(elements), make_move_iterator(cap), newb);</span><br></pre></td></tr></table></figure>
+<p>通过调用<code>make_move_iterator</code>可将一个普通迭代器转换为一个移动迭代器。上面的代码中，传递给<code>uninitialized_copy</code>的是一个移动迭代器，解引用后得到的是右值，因此<code>uninitialized_copy</code>将使用移动构造函数来构造元素。</p>
 <h1 id="泛型算法的结构"><a href="#泛型算法的结构" class="headerlink" title="泛型算法的结构"></a>泛型算法的结构</h1><h2 id="迭代器分类"><a href="#迭代器分类" class="headerlink" title="迭代器分类"></a>迭代器分类</h2><p>按算法所要求的迭代器操作，可将迭代器分为下面几类，<strong>除了输出迭代器外</strong>，高层类别的迭代器支持低层类别迭代器的所有操作。C++标准指明了泛型和数值算法的每个迭代器参数的<strong>最小类别</strong>。</p>
 <ol>
 <li><p>输入迭代器</p>
@@ -589,7 +589,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">47</span>
+              <span class="site-state-item-count">49</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -739,7 +739,9 @@
       </div>
     </footer>
 
-    <div class="back-to-top"></div>
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
   </div>
 
   
@@ -1008,7 +1010,6 @@
   
 
 
-  
   
 
 
