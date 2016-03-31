@@ -66,7 +66,7 @@
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/happens_before_two-cones.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/happens_before_no-cones.png">
 <meta property="og:image" content="http://7vilyb.com1.z0.glb.clouddn.com/happens_before_org-chart.png">
-<meta property="og:updated_time" content="2016-03-13T14:02:45.160Z">
+<meta property="og:updated_time" content="2016-03-16T14:13:25.243Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Happens-Before">
 <meta name="twitter:description" content="取自preshing博客上的几篇文章，除了部分翻译外，还有自己的理解。">
@@ -305,7 +305,7 @@
 <p>通过两个fence，可以保证当线程2发现<code>r1 == 1</code>时，<code>A</code>的值是1，进而保证<code>r2 == 1</code>。</p>
 <p>规范的来说就是，对<code>Ready</code>的write synchronizes-with对<code>Ready</code>的read。</p>
 <h2 id="Synchronizes-with关系"><a href="#Synchronizes-with关系" class="headerlink" title="Synchronizes-with关系"></a>Synchronizes-with关系</h2><p>Synchronizes-with用于描述源码级操作的内存影响（describe ways in which the memory effects of source-level operations），即使是非原子操作，也能够保证结果是对其他线程可见。一个较为常见的事情是，无论何时在两个线程间有<strong>synchronizes-with</strong>关系（一般是在不同的线程间）那么在这些操作之间都会有<strong>happens-before</strong>关系。</p>
-<h3 id="一个Write-Release能够Synchronize-with一个Read-Acquire的"><a href="#一个Write-Release能够Synchronize-with一个Read-Acquire的" class="headerlink" title="一个Write-Release能够Synchronize-with一个Read-Acquire的"></a>一个Write-Release能够Synchronize-with一个Read-Acquire的</h3><p>C++11标准规定了，一个对<strong>原子对象M</strong>执行<strong>release</strong>操作的<strong>原子操作A</strong> <em>synchronize-with</em>一个对<strong>M</strong>执行<strong>acquire</strong>操作的<strong>原子操作B</strong>，且能够得到A的release操作的所有副作用（takes its value from any side effect in the release sequence headed by A）。</p>
+<h3 id="一个Write-Release能够Synchronize-with一个Read-Acquire的"><a href="#一个Write-Release能够Synchronize-with一个Read-Acquire的" class="headerlink" title="一个Write-Release能够Synchronize-with一个Read-Acquire的"></a>一个Write-Release能够Synchronize-with一个Read-Acquire的</h3><p>C++11标准规定了，一个对<strong>原子对象M</strong>执行<strong>release</strong>操作的<strong>原子操作A</strong> <em>synchronize-with</em>一个对<strong>M</strong>执行<strong>acquire</strong>操作的<strong>原子操作B</strong>，且能够得到以A为起始的release sequence操作的所有副作用。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> Message &#123;</span><br><span class="line">  <span class="keyword">clock_t</span>     tick;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span>* str;</span><br><span class="line">  <span class="keyword">void</span>*       param;</span><br><span class="line">&#125;;</span><br><span class="line">Message g_payload;</span><br><span class="line"><span class="built_in">std</span>::atomic&lt;<span class="keyword">int</span>&gt; g_guard(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SendTestMessage</span><span class="params">(<span class="keyword">void</span>* param)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Copy to shared memory using non-atomic stores.</span></span><br><span class="line">  g_payload.tick  = clock();</span><br><span class="line">  g_payload.str   = <span class="string">"TestMessage"</span>;</span><br><span class="line">  g_payload.param = param;</span><br><span class="line">  <span class="comment">// Perform an atomic write-release to indicate that the message is ready.</span></span><br><span class="line">  g_guard.store(<span class="number">1</span>, <span class="built_in">std</span>::memory_order_release);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">TryReceiveMessage</span><span class="params">(Message&amp; result)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// Perform an atomic read-acquire to check whether the message is ready.</span></span><br><span class="line">  <span class="keyword">int</span> ready = g_guard.load(<span class="built_in">std</span>::memory_order_acquire);</span><br><span class="line">  <span class="keyword">if</span> (ready != <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// Yes. Copy from shared memory using non-atomic loads.</span></span><br><span class="line">    result.tick  = g_payload.tick;</span><br><span class="line">    result.str   = g_payload.str;</span><br><span class="line">    result.param = g_payload.param;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// No.</span></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上述代码中，为了能够把<code>g_payload</code>安全的在线程中传递，使用了acquire和release。当<code>TryReceiveMessage</code>中<code>g_guard</code>的read-acquire执行完后，<strong>如果<code>ready</code>是1</strong>，那么<code>g_payload</code>的三个成员一定被成功写入。</p>
 <p>与前面的标准对照，可以看到，</p>
@@ -429,11 +429,11 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-count">54</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
-          
+
           
             <div class="site-state-item site-state-categories">
               
@@ -518,7 +518,8 @@
           </div>
         
 
-        <div class="links-of-author motion-element">
+        
+        <div class="links-of-blogroll motion-element">
           
         </div>
 
@@ -526,9 +527,6 @@
 
       
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator">
-            <i class="fa fa-angle-double-up"></i>
-          </div>
           <div class="post-toc">
             
               
@@ -536,9 +534,6 @@
             
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Happens-before关系"><span class="nav-number">1.</span> <span class="nav-text">Happens-before关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Happens-before并不意味着happening-before"><span class="nav-number">1.1.</span> <span class="nav-text">Happens-before并不意味着happening before</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Happening-before并不意味着happens-before"><span class="nav-number">1.2.</span> <span class="nav-text">Happening before并不意味着happens-before</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#单线程中的happens-before关系"><span class="nav-number">2.</span> <span class="nav-text">单线程中的happens-before关系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程中的happens-before关系"><span class="nav-number">3.</span> <span class="nav-text">多线程中的happens-before关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Acquire和Release语义"><span class="nav-number">3.1.</span> <span class="nav-text">Acquire和Release语义</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过显式的CPU-fence指令实现acquire和release语义"><span class="nav-number">3.1.1.</span> <span class="nav-text">通过显式的CPU fence指令实现acquire和release语义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Synchronizes-with关系"><span class="nav-number">3.2.</span> <span class="nav-text">Synchronizes-with关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一个Write-Release能够Synchronize-with一个Read-Acquire的"><span class="nav-number">3.2.1.</span> <span class="nav-text">一个Write-Release能够Synchronize-with一个Read-Acquire的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时关系"><span class="nav-number">3.2.2.</span> <span class="nav-text">运行时关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他实现Synchronize-with的方法"><span class="nav-number">3.2.3.</span> <span class="nav-text">其他实现Synchronize-with的方法</span></a></li></ol></li></ol></li></ol></div>
             
-          </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator">
-            <i class="fa fa-angle-double-down"></i>
           </div>
         </section>
       
@@ -625,165 +620,9 @@
   
 
   
-  
-<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
-
-<script type="text/javascript" id="sidebar.toc.highlight">
-  $(document).ready(function () {
-    var tocSelector = '.post-toc';
-    var $tocSelector = $(tocSelector);
-    var activeCurrentSelector = '.active-current';
-
-    $tocSelector
-      .on('activate.bs.scrollspy', function () {
-        var $currentActiveElement = $(tocSelector + ' .active').last();
-
-        removeCurrentActiveClass();
-        $currentActiveElement.addClass('active-current');
-
-        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-      })
-      .on('clear.bs.scrollspy', function () {
-        removeCurrentActiveClass();
-      });
-
-    function removeCurrentActiveClass () {
-      $(tocSelector + ' ' + activeCurrentSelector)
-        .removeClass(activeCurrentSelector.substring(1));
-    }
-
-    function processTOC () {
-      getTOCMaxHeight();
-      toggleTOCOverflowIndicators();
-    }
-
-    function getTOCMaxHeight () {
-      var height = $('.sidebar').height() -
-                   $tocSelector.position().top -
-                   $('.post-toc-indicator-bottom').height();
-
-      $tocSelector.css('height', height);
-
-      return height;
-    }
-
-    function toggleTOCOverflowIndicators () {
-      tocOverflowIndicator(
-        '.post-toc-indicator-top',
-        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-      );
-
-      tocOverflowIndicator(
-        '.post-toc-indicator-bottom',
-        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-      )
-    }
-
-    $(document).on('sidebar.motion.complete', function () {
-      processTOC();
-    });
-
-    $('body').scrollspy({ target: tocSelector });
-    $(window).on('resize', function () {
-      if ( $('.sidebar').hasClass('sidebar-active') ) {
-        processTOC();
-      }
-    });
-
-    onScroll($tocSelector);
-
-    function onScroll (element) {
-      element.on('mousewheel DOMMouseScroll', function (event) {
-          var oe = event.originalEvent;
-          var delta = oe.wheelDelta || -oe.detail;
-
-          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-          event.preventDefault();
-
-          toggleTOCOverflowIndicators();
-      });
-    }
-
-    function tocOverflowIndicator (indicator, action) {
-      var $indicator = $(indicator);
-      var opacity = action === 'show' ? 1 : 0;
-      $indicator.velocity ?
-        $indicator.velocity('stop').velocity({
-          opacity: opacity
-        }, { duration: 100 }) :
-        $indicator.stop().animate({
-          opacity: opacity
-        }, 100);
-    }
-
-  });
-</script>
-
-<script type="text/javascript" id="sidebar.nav">
-  $(document).ready(function () {
-    var html = $('html');
-    var TAB_ANIMATE_DURATION = 200;
-    var hasVelocity = $.isFunction(html.velocity);
-
-    $('.sidebar-nav li').on('click', function () {
-      var item = $(this);
-      var activeTabClassName = 'sidebar-nav-active';
-      var activePanelClassName = 'sidebar-panel-active';
-      if (item.hasClass(activeTabClassName)) {
-        return;
-      }
-
-      var currentTarget = $('.' + activePanelClassName);
-      var target = $('.' + item.data('target'));
-
-      hasVelocity ?
-        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-          target
-            .velocity('stop')
-            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-            .addClass(activePanelClassName);
-        }) :
-        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-          currentTarget.hide();
-          target
-            .stop()
-            .css({'opacity': 0, 'display': 'block'})
-            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-              currentTarget.removeClass(activePanelClassName);
-              target.addClass(activePanelClassName);
-            });
-        });
-
-      item.siblings().removeClass(activeTabClassName);
-      item.addClass(activeTabClassName);
-    });
-
-    $('.post-toc a').on('click', function (e) {
-      e.preventDefault();
-      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
-      var offset = $(targetSelector).offset().top;
-      hasVelocity ?
-        html.velocity('stop').velocity('scroll', {
-          offset: offset  + 'px',
-          mobileHA: false
-        }) :
-        $('html, body').stop().animate({
-          scrollTop: offset
-        }, 500);
-    });
-
-    // Expand sidebar on post detail page by default, when post has a toc.
-    NexT.motion.middleWares.sidebar = function () {
-      var $tocContent = $('.post-toc-content');
-
-      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
-        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          NexT.utils.displaySidebar();
-        }
-      }
-    };
-  });
-</script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+<script type="text/javascript" src="/vendors/jquery-scrollintoview/jquery.scrollintoview.min.js?v=0.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=0.5.0"></script>
 
 
 
@@ -852,6 +691,7 @@
 
   
 
+  
 
 </body>
 </html>

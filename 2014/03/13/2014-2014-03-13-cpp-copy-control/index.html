@@ -67,7 +67,7 @@ F &amp;#123;1234 public:  Foo();  Foo(const Foo&amp;amp;);&amp;#125;
 <meta property="og:description" content="拷贝、赋值和销毁拷贝构造函数拷贝构造函数的第一个参数必须是一个引用类型，且几乎总是一个const引用。由于拷贝构造函数在多个情况下会被隐式使用，因此不能是explict的。
 F &amp;#123;1234 public:  Foo();  Foo(const Foo&amp;amp;);&amp;#125;
 合成拷贝构造函数如果没有定义拷贝构造函数，编译器会定义一个合成拷贝构造函数。不同于合成默认构造函数r，即使自己定">
-<meta property="og:updated_time" content="2016-03-13T12:41:58.073Z">
+<meta property="og:updated_time" content="2016-03-14T10:33:15.831Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++拷贝控制">
 <meta name="twitter:description" content="拷贝、赋值和销毁拷贝构造函数拷贝构造函数的第一个参数必须是一个引用类型，且几乎总是一个const引用。由于拷贝构造函数在多个情况下会被隐式使用，因此不能是explict的。
@@ -402,7 +402,7 @@ F &amp;#123;1234 public:  Foo();  Foo(const Foo&amp;amp;);&amp;#125;
 <p>只有当一个类<strong>没有定义任何自己版本的拷贝控制成员</strong>，且类的<strong>每个非static数据成员都可以移动构造或移动赋值</strong>时，编译器才会合成移动构造函数和移动赋值运算符。</p>
 <h2 id="何时删除"><a href="#何时删除" class="headerlink" title="何时删除"></a>何时删除</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> Y &#123;</span><br><span class="line">  Y(<span class="keyword">const</span> Y &amp;y) &#123;&#125;</span><br><span class="line">  <span class="keyword">int</span> i;</span><br><span class="line">  <span class="built_in">string</span> s;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> hasY &#123;</span><br><span class="line">  hasY() = <span class="keyword">default</span>;</span><br><span class="line">  hasY(hasY &amp;&amp;) = <span class="keyword">default</span>;</span><br><span class="line">  Y mem;</span><br><span class="line">&#125;;</span><br><span class="line">hasY hy, hy2 = <span class="built_in">std</span>::move(hy); <span class="comment">// call to implicitly-deleted default constructor of 'hasY'</span></span><br></pre></td></tr></table></figure>
 <p>移动操作永远<strong>不会隐式定义</strong>为delete。但如果<strong>显式地</strong>要求编译器生成=default的移动操作，且编译器<strong>不能移动所有成员</strong>时，移动操作会被定义为delete。</p>
-<p>定义了一个移动构造函数或移动赋值运算符的类<strong>必须也定义</strong>拷贝操作，其中一种未定义，另一种定义了，未定义的为被<strong>默认定义为delete</strong>。</p>
+<p>定义了一个移动构造函数或移动赋值运算符的类<strong>必须也定义</strong>拷贝操作，否则这些成员<strong>默认定义为delete</strong>。</p>
 <h2 id="如果未定义"><a href="#如果未定义" class="headerlink" title="如果未定义"></a>如果未定义</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Foo &#123;</span><br><span class="line"> public:</span><br><span class="line">  Foo() = default;</span><br><span class="line">  Foo(const Foo &amp;) &#123; cout &lt;&lt; "copied" &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Foo foo;</span><br><span class="line">Foo foo1(foo); // copied</span><br><span class="line">Foo foo2(std::move(foo1)); // copied</span><br></pre></td></tr></table></figure>
 <p>如果没有移动构造函数，就算试图调用move来移动，对象也会被拷贝。</p>
 <p>这里与上面的hasY不同，hasY的移动构造函数是delete的（由于显式地要求生成，但编译器无法生成）。而这里的仅仅是未定义，函数匹配保证该类型的对象会被copy。</p>
@@ -501,8 +501,8 @@ F &amp;#123;1234 public:  Foo();  Foo(const Foo&amp;amp;);&amp;#125;
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2014/12/11/2014-2014-12-11-kbc-poker-2-briefly-reivew/" rel="prev" title="入手KBC Poker 2">
-                入手KBC Poker 2 <i class="fa fa-chevron-right"></i>
+              <a href="/2014/03/20/2014-2014-03-20-cpp-overload-operator-and-type-conversion/" rel="prev" title="C++重载运算与类型转换">
+                C++重载运算与类型转换 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -578,11 +578,11 @@ F &amp;#123;1234 public:  Foo();  Foo(const Foo&amp;amp;);&amp;#125;
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-count">54</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
-          
+
           
             <div class="site-state-item site-state-categories">
               
@@ -667,7 +667,8 @@ F &amp;#123;1234 public:  Foo();  Foo(const Foo&amp;amp;);&amp;#125;
           </div>
         
 
-        <div class="links-of-author motion-element">
+        
+        <div class="links-of-blogroll motion-element">
           
         </div>
 
@@ -675,9 +676,6 @@ F &amp;#123;1234 public:  Foo();  Foo(const Foo&amp;amp;);&amp;#125;
 
       
         <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator">
-            <i class="fa fa-angle-double-up"></i>
-          </div>
           <div class="post-toc">
             
               
@@ -685,9 +683,6 @@ F &amp;#123;1234 public:  Foo();  Foo(const Foo&amp;amp;);&amp;#125;
             
               <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#拷贝、赋值和销毁"><span class="nav-number">1.</span> <span class="nav-text">拷贝、赋值和销毁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#拷贝构造函数"><span class="nav-number">1.1.</span> <span class="nav-text">拷贝构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#合成拷贝构造函数"><span class="nav-number">1.1.1.</span> <span class="nav-text">合成拷贝构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拷贝初始化"><span class="nav-number">1.1.2.</span> <span class="nav-text">拷贝初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拷贝赋值运算符"><span class="nav-number">1.2.</span> <span class="nav-text">拷贝赋值运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#重载赋值运算符"><span class="nav-number">1.2.1.</span> <span class="nav-text">重载赋值运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合成拷贝赋值运算符"><span class="nav-number">1.2.2.</span> <span class="nav-text">合成拷贝赋值运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#析构函数"><span class="nav-number">1.3.</span> <span class="nav-text">析构函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#合成析构函数"><span class="nav-number">1.3.1.</span> <span class="nav-text">合成析构函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-五法则"><span class="nav-number">1.4.</span> <span class="nav-text">三/五法则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻止拷贝"><span class="nav-number">1.5.</span> <span class="nav-text">阻止拷贝</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拷贝控制和资源管理"><span class="nav-number">2.</span> <span class="nav-text">拷贝控制和资源管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#行为像值的类"><span class="nav-number">2.1.</span> <span class="nav-text">行为像值的类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行为像指针的类"><span class="nav-number">2.2.</span> <span class="nav-text">行为像指针的类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#交换操作"><span class="nav-number">3.</span> <span class="nav-text">交换操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#copy-and-swap"><span class="nav-number">3.1.</span> <span class="nav-text">copy and swap</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#move"><span class="nav-number">4.</span> <span class="nav-text">move</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#lvalue和rvalue"><span class="nav-number">4.1.</span> <span class="nav-text">lvalue和rvalue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rvalue-reference"><span class="nav-number">4.2.</span> <span class="nav-text">rvalue reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#右值引用类型变量"><span class="nav-number">4.3.</span> <span class="nav-text">右值引用类型变量</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#移动构造函数和移动赋值运算符"><span class="nav-number">5.</span> <span class="nav-text">移动构造函数和移动赋值运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#移动构造函数"><span class="nav-number">5.1.</span> <span class="nav-text">移动构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#移动操作和异常"><span class="nav-number">5.1.1.</span> <span class="nav-text">移动操作和异常</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移动赋值运算符"><span class="nav-number">5.2.</span> <span class="nav-text">移动赋值运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移后源对象必须可析构"><span class="nav-number">5.3.</span> <span class="nav-text">移后源对象必须可析构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#合成移动操作"><span class="nav-number">6.</span> <span class="nav-text">合成移动操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#何时定义"><span class="nav-number">6.1.</span> <span class="nav-text">何时定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#何时删除"><span class="nav-number">6.2.</span> <span class="nav-text">何时删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如果未定义"><span class="nav-number">6.3.</span> <span class="nav-text">如果未定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#copy-and-swap-again"><span class="nav-number">6.4.</span> <span class="nav-text">copy and swap again</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#copy-and-swap-idiom"><span class="nav-number">6.5.</span> <span class="nav-text">copy and swap idiom</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#移动迭代器"><span class="nav-number">7.</span> <span class="nav-text">移动迭代器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#右值引用和成员函数"><span class="nav-number">8.</span> <span class="nav-text">右值引用和成员函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#右值和左值引用成员函数"><span class="nav-number">8.1.</span> <span class="nav-text">右值和左值引用成员函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重载和引用函数"><span class="nav-number">8.2.</span> <span class="nav-text">重载和引用函数</span></a></li></ol></li></ol></div>
             
-          </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator">
-            <i class="fa fa-angle-double-down"></i>
           </div>
         </section>
       
@@ -774,165 +769,9 @@ F &amp;#123;1234 public:  Foo();  Foo(const Foo&amp;amp;);&amp;#125;
   
 
   
-  
-<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
-
-<script type="text/javascript" id="sidebar.toc.highlight">
-  $(document).ready(function () {
-    var tocSelector = '.post-toc';
-    var $tocSelector = $(tocSelector);
-    var activeCurrentSelector = '.active-current';
-
-    $tocSelector
-      .on('activate.bs.scrollspy', function () {
-        var $currentActiveElement = $(tocSelector + ' .active').last();
-
-        removeCurrentActiveClass();
-        $currentActiveElement.addClass('active-current');
-
-        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-      })
-      .on('clear.bs.scrollspy', function () {
-        removeCurrentActiveClass();
-      });
-
-    function removeCurrentActiveClass () {
-      $(tocSelector + ' ' + activeCurrentSelector)
-        .removeClass(activeCurrentSelector.substring(1));
-    }
-
-    function processTOC () {
-      getTOCMaxHeight();
-      toggleTOCOverflowIndicators();
-    }
-
-    function getTOCMaxHeight () {
-      var height = $('.sidebar').height() -
-                   $tocSelector.position().top -
-                   $('.post-toc-indicator-bottom').height();
-
-      $tocSelector.css('height', height);
-
-      return height;
-    }
-
-    function toggleTOCOverflowIndicators () {
-      tocOverflowIndicator(
-        '.post-toc-indicator-top',
-        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-      );
-
-      tocOverflowIndicator(
-        '.post-toc-indicator-bottom',
-        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-      )
-    }
-
-    $(document).on('sidebar.motion.complete', function () {
-      processTOC();
-    });
-
-    $('body').scrollspy({ target: tocSelector });
-    $(window).on('resize', function () {
-      if ( $('.sidebar').hasClass('sidebar-active') ) {
-        processTOC();
-      }
-    });
-
-    onScroll($tocSelector);
-
-    function onScroll (element) {
-      element.on('mousewheel DOMMouseScroll', function (event) {
-          var oe = event.originalEvent;
-          var delta = oe.wheelDelta || -oe.detail;
-
-          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-          event.preventDefault();
-
-          toggleTOCOverflowIndicators();
-      });
-    }
-
-    function tocOverflowIndicator (indicator, action) {
-      var $indicator = $(indicator);
-      var opacity = action === 'show' ? 1 : 0;
-      $indicator.velocity ?
-        $indicator.velocity('stop').velocity({
-          opacity: opacity
-        }, { duration: 100 }) :
-        $indicator.stop().animate({
-          opacity: opacity
-        }, 100);
-    }
-
-  });
-</script>
-
-<script type="text/javascript" id="sidebar.nav">
-  $(document).ready(function () {
-    var html = $('html');
-    var TAB_ANIMATE_DURATION = 200;
-    var hasVelocity = $.isFunction(html.velocity);
-
-    $('.sidebar-nav li').on('click', function () {
-      var item = $(this);
-      var activeTabClassName = 'sidebar-nav-active';
-      var activePanelClassName = 'sidebar-panel-active';
-      if (item.hasClass(activeTabClassName)) {
-        return;
-      }
-
-      var currentTarget = $('.' + activePanelClassName);
-      var target = $('.' + item.data('target'));
-
-      hasVelocity ?
-        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-          target
-            .velocity('stop')
-            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-            .addClass(activePanelClassName);
-        }) :
-        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-          currentTarget.hide();
-          target
-            .stop()
-            .css({'opacity': 0, 'display': 'block'})
-            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-              currentTarget.removeClass(activePanelClassName);
-              target.addClass(activePanelClassName);
-            });
-        });
-
-      item.siblings().removeClass(activeTabClassName);
-      item.addClass(activeTabClassName);
-    });
-
-    $('.post-toc a').on('click', function (e) {
-      e.preventDefault();
-      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
-      var offset = $(targetSelector).offset().top;
-      hasVelocity ?
-        html.velocity('stop').velocity('scroll', {
-          offset: offset  + 'px',
-          mobileHA: false
-        }) :
-        $('html, body').stop().animate({
-          scrollTop: offset
-        }, 500);
-    });
-
-    // Expand sidebar on post detail page by default, when post has a toc.
-    NexT.motion.middleWares.sidebar = function () {
-      var $tocContent = $('.post-toc-content');
-
-      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
-        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-          NexT.utils.displaySidebar();
-        }
-      }
-    };
-  });
-</script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+<script type="text/javascript" src="/vendors/jquery-scrollintoview/jquery.scrollintoview.min.js?v=0.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=0.5.0"></script>
 
 
 
@@ -1001,6 +840,7 @@ F &amp;#123;1234 public:  Foo();  Foo(const Foo&amp;amp;);&amp;#125;
 
   
 
+  
 
 </body>
 </html>
