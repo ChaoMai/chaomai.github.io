@@ -1,0 +1,17 @@
+.footer {
+  margin-top: $footer-margin-top;
+
+  .copyright {
+    margin: $copyright-margin;
+    text-align: center;
+    font-family: $global-serif-font-family;
+
+    .copyright-year {
+      display: block;
+
+      .heart {
+        font-size: 14px;
+      }
+    }
+  }
+}

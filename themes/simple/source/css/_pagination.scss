@@ -1,0 +1,19 @@
+.pagination {
+  margin: $pagination-margin;
+  @include clearfix;
+
+  .prev,
+  .next {
+    font-weight: 600;
+    font-size: $pagination-font-size;
+    font-family: $global-serif-font-family;
+  }
+
+  .prev {
+    float: left;
+  }
+
+  .next {
+    float: right;
+  }
+}
