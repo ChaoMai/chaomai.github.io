@@ -1,6 +1,5 @@
 title: Happens-before
 date: 2016-03-06 21:51:54
-description: 取自preshing博客上的几篇文章，除了部分翻译外，还有自己的理解。
 categories:
     - programming
 tags:

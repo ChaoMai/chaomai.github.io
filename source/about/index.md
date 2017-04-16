@@ -2,7 +2,7 @@ title: About
 date: 2015-02-06 21:19:29
 ---
 
-{% blockquote Richard Feynman http://archives.caltech.edu/pictures/1.10-29.jpg on his blackboard at the time of death in February 1988 %}
+{% blockquote Richard Feynman http://archives.caltech.edu/pictures/1.10-29.jpg On his blackboard at the time of death in February 1988 %}
 
 What I cannot create, I do not understand.
 Know how to solve every problem that has been solved.

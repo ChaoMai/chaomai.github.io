@@ -1,7 +1,6 @@
 ---
 title: Python Generator and Coroutine 1
 date: 2017-01-16 15:29:30
-description: generator是Python的重要特性，它就像一个“惰性求值”的factory，还可以用来实现coroutine。
 categories:
     - programming
 tags:

@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: chaomai's blog
+title: chaomai
 subtitle:
 description: When I build it, I understand it
 author: Chao Mai
-language: zh
+language: en
 timezone:
 
 # URL
@@ -63,9 +63,8 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: simple
+theme: even
 since: 2014
-disqus_shortname: chaomaisblog
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
