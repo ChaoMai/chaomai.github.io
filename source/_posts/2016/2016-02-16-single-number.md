@@ -1,10 +1,9 @@
 title: Single Number
 date: 2016-02-16 19:59:44
 categories:
-    - programming
     - algorithms
 tags:
-    - bit manipulation
+    - 'bit manipulation'
 ---
 
 # Single Number I

@@ -2,12 +2,13 @@ title: "C++ Concurrency in Action (5) - The C++ memory model and operations on a
 date: 2015-07-18 18:41:54
 description: The C++ memory model and operations on atomic types的笔记。
 categories:
-    - programming
-tags:
     - concurrency
+tags:
+		- atomic
     - reading
     - cpp
     - cpp11
+    - 'c++ concurrency in action'
 ---
 
 # Memory model basics

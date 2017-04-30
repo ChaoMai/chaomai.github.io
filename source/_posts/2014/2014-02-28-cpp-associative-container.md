@@ -1,9 +1,9 @@
 title: C++关联容器
 date: 2014-02-28 18:56:17
 categories:
-  - programming
-tags:
   - cpp
+tags:
+  - 'c++ primer'
 ---
 
 关联容器支持普通容器操作，不支持，

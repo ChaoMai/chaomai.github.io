@@ -1,9 +1,9 @@
 title: Data Dependency and memory_order_consume
 date: 2016-03-16 19:08:06
 categories:
-    - programming
-tags:
     - concurrency
+tags:
+    - 'data dependency'
 ---
 
 # Data Dependency

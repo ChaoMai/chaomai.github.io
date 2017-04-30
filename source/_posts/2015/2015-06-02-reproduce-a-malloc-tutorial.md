@@ -2,11 +2,10 @@ title: "转 - 如何实现一个malloc"
 date: 2015-06-02 23:10:10
 description: 这篇是转自CodingLabs的文章，除了有原文的内容，我加入了自己的一些思考和理解。
 categories:
-    - programming
+    - 'operating system'
 tags:
     - c
     - malloc
-    - operating system
 ---
 
 <blockquote class="blockquote-center">
@@ -391,7 +390,7 @@ struct s_block {
 
 ```c
 t_block get_block(void *p) {
-    char *tmp;  
+    char *tmp;
     tmp = p;
     return (p = tmp -= BLOCK_SIZE);
 }

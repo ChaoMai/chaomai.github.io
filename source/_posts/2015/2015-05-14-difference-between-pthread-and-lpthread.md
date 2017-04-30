@@ -2,9 +2,10 @@ title: 编译时，-pthread and -lpthread的区别
 date: 2015-05-14 19:31:30
 description: gcc编译多线程代码时，参数不同导致结果的不同。
 categories:
-    - programming
+    - linux
 tags:
     - pthread
+    - thread
 ---
 
 -pthread告诉编译器，要链接到pthread库，同时配置线程的编译。

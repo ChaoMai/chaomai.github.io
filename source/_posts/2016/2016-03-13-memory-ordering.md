@@ -1,9 +1,9 @@
 title: Memory Ordering
 date: 2016-03-13 22:34:28
 categories:
-    - programming
-tags:
     - concurrency
+tags:
+    - 'memory ordering'
 ---
 
 Memory ordering描述了CPU访问系统内存，执行load和store的顺序。Memory ordering包括编译时编译器生成的和运行时CPU生成的。为了高效地执行指令，**只要不影响单线程程序的行为**，编译器和CPU常常会对指令进行memory reordering，使得访问内存的操作不会按照程序代码中指定的顺序执行。

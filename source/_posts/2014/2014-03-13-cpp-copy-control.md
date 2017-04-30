@@ -1,9 +1,9 @@
 title: C++拷贝控制
 date: 2014-03-13 20:41:20
 categories:
-  - programming
-tags:
   - cpp
+tags:
+  - 'c++ primer'
 ---
 
 # 拷贝、赋值和销毁

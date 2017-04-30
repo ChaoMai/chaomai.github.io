@@ -2,10 +2,9 @@ title: Notes of Non-blocking k-ary Search Trees
 date: 2015-11-30 15:09:25
 description: Brown在Toronto大学读PhD期间写过2篇关于k-ary的文章，他读PhD期间的导师是Ellen，而Ellen正是写了Non-blocking Binary Search Trees的那位。这篇文章里看到了好几个methods或者ideas是extended from Non-blocking Binary Search Trees。
 categories:
-    - programming
-    - data structures
-tags:
     - concurrency
+tags:
+    - 'k-ary search tree'
     - reading
 ---
 

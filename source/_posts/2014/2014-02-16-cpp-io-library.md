@@ -1,9 +1,9 @@
 title: C++IO库
 date: 2014-02-16 22:10:25
 categories:
-  - programming
-tags:
   - cpp
+tags:
+  - 'c++ primer'
 ---
 
 # `iostream`

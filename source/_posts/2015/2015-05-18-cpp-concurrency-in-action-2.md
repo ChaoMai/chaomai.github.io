@@ -2,12 +2,13 @@ title: "C++ Concurrency in Action (2) - Managing threads"
 date: 2015-05-18 19:35:23
 description: Managing threads的笔记。
 categories:
-    - programming
-tags:
     - concurrency
+tags:
+    - threads
     - reading
     - cpp
     - cpp11
+    - 'c++ concurrency in action'
 ---
 
 # Managing threads

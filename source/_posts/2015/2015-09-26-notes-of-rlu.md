@@ -2,10 +2,10 @@ title: Notes of Read-Log-Update A Lightweight Synchronization Mechanism for Conc
 date: 2015-09-26 13:34:55
 description: 今年SOSP的文章，提出了Read-Log-Update，使用了Clock-based logging mechanism和Object-level write-log per thread，解决了RCU不能有多个writer等缺陷。其中的RLU Deferring减少了synchronize调用的次数，提高了cache hit。
 categories:
-    - programming
-    - data structures
-tags:
     - concurrency
+tags:
+    - rlu
+    - rcu
     - reading
 ---
 

@@ -2,9 +2,9 @@ title: "译 - Understand `std::atomic::compare_exchange_weak()` in C++11"
 date: 2015-06-09 00:00:49
 description: 原文是stackoverflow上的一个关于compare_exchange_weak()问题和相应的答案，我做了简单的翻译和整理。
 categories:
-    - programming
-tags:
     - concurrency
+tags:
+    - atomic
     - reading
     - cpp
     - cpp11

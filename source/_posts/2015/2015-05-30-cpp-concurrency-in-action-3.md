@@ -2,12 +2,13 @@ title: "C++ Concurrency in Action (3) - Sharing data between threads"
 date: 2015-05-30 22:37:23
 description: Sharing data between threads的笔记。
 categories:
-    - programming
-tags:
     - concurrency
+tags:
+    - mutex
     - reading
     - cpp
     - cpp11
+    - 'c++ concurrency in action'
 ---
 
 # C++ Concurrency in Action 3

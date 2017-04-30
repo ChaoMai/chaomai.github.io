@@ -1,9 +1,9 @@
 title: Release Sequences
 date: 2016-03-17 19:10:31
 categories:
-    - programming
-tags:
     - concurrency
+tags:
+    - 'release sequence'
 ---
 
 # Release Sequences

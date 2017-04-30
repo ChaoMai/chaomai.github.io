@@ -4,7 +4,7 @@ description: 在ubuntu上进行update的时候，有的时候会不想升级某�
 categories:
     - linux
 tags:
-    - linux
+    - apt-get
     - ubuntu
 ---
 

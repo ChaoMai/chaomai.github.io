@@ -1,7 +1,7 @@
 title: 入手KBC Poker 2
 date: 2014-12-11 23:20:42
 categories:
-  - hardware
+  - life
 tags:
   - keyboard
 ---

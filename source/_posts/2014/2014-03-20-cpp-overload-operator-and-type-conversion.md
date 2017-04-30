@@ -1,9 +1,9 @@
 title: C++重载运算与类型转换
 date: 2014-03-20 20:01:13
 categories:
-  - programming
-tags:
   - cpp
+tags:
+  - 'c++ primer'
 ---
 
 # 运算符重载

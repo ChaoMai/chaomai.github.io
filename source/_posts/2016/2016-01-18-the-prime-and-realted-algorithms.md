@@ -1,7 +1,6 @@
 title: 素数相关问题及算法
 date: 2016-01-18 15:38:59
 categories:
-    - programming
     - algorithms
 tags:
     - prime

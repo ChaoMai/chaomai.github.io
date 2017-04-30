@@ -2,10 +2,10 @@ title: "译 - Locks, Mutexes, and Semaphores: Types of Synchronization Objects"
 date: 2015-05-23 22:12:13
 description: C++ Concurrency in Action作者的文章，介绍了一些关于并发的基础概念：锁、互斥量和信号量。
 categories:
-    - programming
-tags:
     - concurrency
-    - translation
+tags:
+    - synchronize
+    - reading
     - cpp
     - cpp11
 ---

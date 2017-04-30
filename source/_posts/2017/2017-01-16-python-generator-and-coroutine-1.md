@@ -2,7 +2,7 @@
 title: Python Generator and Coroutine 1
 date: 2017-01-16 15:29:30
 categories:
-    - programming
+    - concurrency
 tags:
     - concurrency
     - python

@@ -2,10 +2,8 @@ title: Miscellaneous Material about Concurrency
 date: 2015-10-12 21:43:54
 description: 简单记录了一些关于并发的资料（hash table，spinlock，rwlock和CPU对HTM的支持）。
 categories:
-    - programming
-    - data structures
-tags:
     - concurrency
+tags:
     - reading
 ---
 

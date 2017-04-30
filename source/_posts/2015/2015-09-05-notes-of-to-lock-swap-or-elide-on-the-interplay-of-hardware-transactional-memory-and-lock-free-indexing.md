@@ -2,10 +2,9 @@ title: 'Notes of To Lock, Swap, or Elide: On the Interplay of Hardware Transacti
 date: 2015-09-05 12:27:15
 description: 主要研究了HTM and lock-free indexing的相互影响。
 categories:
-    - programming
-    - data structures
-tags:
     - concurrency
+tags:
+    - 'hardware transactional memory'
     - reading
 ---
 

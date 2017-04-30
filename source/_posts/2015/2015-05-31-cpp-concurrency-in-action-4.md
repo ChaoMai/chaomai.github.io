@@ -2,12 +2,13 @@ title: "C++ Concurrency in Action (4) - Synchronizing concurrent operations"
 date: 2015-05-31 13:26:54
 description: Synchronizing concurrent operations的笔记。
 categories:
-    - programming
-tags:
     - concurrency
+tags:
+    - synchronize
     - reading
     - cpp
     - cpp11
+    - 'c++ concurrency in action'
 ---
 
 # C++ Concurrency in Action 4

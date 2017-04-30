@@ -1,9 +1,9 @@
 title: Happens-before
 date: 2016-03-06 21:51:54
 categories:
-    - programming
-tags:
     - concurrency
+tags:
+    - happens-before
 ---
 
 取自[preshing博客](http://preshing.com/)上的几篇文章（[1](http://preshing.com/20120913/acquire-and-release-semantics/)，[2](http://preshing.com/20130702/the-happens-before-relation/)，[3](http://preshing.com/20130823/the-synchronizes-with-relation/)）。除了部分翻译外，还有自己的理解。

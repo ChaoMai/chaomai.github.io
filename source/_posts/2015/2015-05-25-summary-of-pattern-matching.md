@@ -2,10 +2,9 @@ title: "Pattern matching相关算法小结"
 date: 2015-05-25 11:33:43
 description: Pattern matching的算法有很多，这里做一个简单的总结。
 categories:
-    - programming
     - algorithms
 tags:
-    - pattern matching
+    - 'pattern matching'
 ---
 
 # Pattern matching

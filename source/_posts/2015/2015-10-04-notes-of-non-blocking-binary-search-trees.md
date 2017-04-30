@@ -2,10 +2,9 @@ title: Notes of Non-blocking Binary Search Trees
 date: 2015-10-04 17:21:49
 description: 使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目，还有就是Excellent tutorial about helping mechanism!
 categories:
-    - programming
-    - data structures
-tags:
     - concurrency
+tags:
+    - 'binary search tree'
     - reading
 ---
 

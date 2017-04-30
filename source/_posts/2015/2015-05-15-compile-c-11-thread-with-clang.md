@@ -2,11 +2,10 @@ title: Clang++中C++11 thread的支持
 date: 2015-05-15 19:35:23
 description: 在Linux下编译C++11的多线程代码时，提示pthread_create为定义。最后发现clang++在Linux在使用的是posix来实现C++11的线程，编译的时候需要加上-pthread。
 categories:
-    - programming
+    - cpp
 tags:
     - clang
-    - cpp
-    - cpp11
+    - thread
 ---
 
 # 问题

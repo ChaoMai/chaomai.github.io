@@ -2,10 +2,9 @@ title: "Harris' Non-Blocking Linked-Lists"
 date: 2015-07-30 23:30:59
 description: Harris的这篇论文提出了一种新的non-blocking linked-list，不同于Valois使用auxiliary node，Harris在操作的时候进行了mark，解决了插入丢失的问题。论文中有详细的伪代码，清晰的描述了实现的细节。但要注意的是，实际实现必然涉及到内存回收，没有自动内存回收机制的语言会有点麻烦。
 categories:
-    - programming
-    - data structures
-tags:
     - concurrency
+tags:
+    - 'linked list'
     - reading
 ---
 

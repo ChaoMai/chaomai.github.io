@@ -1,9 +1,9 @@
 title: C++动态内存
 date: 2014-03-03 18:31:05
 categories:
-  - programming
-tags:
   - cpp
+tags:
+  - 'c++ primer'
 ---
 
 静态内存：存储局部static对象、类static数据成员和定义在函数之外的变量。

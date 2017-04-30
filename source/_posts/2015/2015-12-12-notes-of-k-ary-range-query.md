@@ -2,10 +2,9 @@ title: Notes of Range Queries in Non-blocking k-ary Search Trees
 date: 2015-12-12 14:20:46
 description: 这篇是k-ary的第二篇，为k-ary加入了range query，列举了range query的各种实现方法：STM，lock，Persistent data structures和snapshots，并说明各种方法的优劣，提出了range query的新方法。
 categories:
-    - programming
-    - data structures
-tags:
     - concurrency
+tags:
+    - 'k-ary search tree'
     - reading
 ---
 

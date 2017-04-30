@@ -1,9 +1,9 @@
 title: C++虚函数
 date: 2016-01-04 21:03:55
 categories:
-    - programming
+		- cpp
 tags:
-    - cpp
+    - virtual
 ---
 
 C++中有编译时多态和运行时多态，运行时多态是由虚函数实现的。虚函数是用过虚函数表（vftable，virtual function table）来实现的，这个表包含了这个类的虚函数地址，解决了继承、覆盖。当使用父类指针来操作一个子类对象的时候，通过子类对象的虚函数表指针（vfptr，virtual function table pointer）找到子类的vftable，进而找到应该调用的函数。

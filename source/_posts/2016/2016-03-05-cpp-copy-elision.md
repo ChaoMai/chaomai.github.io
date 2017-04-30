@@ -1,9 +1,9 @@
 title: C++ Copy Elision
 date: 2016-03-05 13:03:30
 categories:
-    - programming
-tags:
     - cpp
+tags:
+    - 'copy elision'
 ---
 
 在写代码是发现拷贝构造函数有时候没有调用，想起C++ Primer中提到过

@@ -2,9 +2,9 @@ title: "转 - 字符集和字符编码"
 date: 2015-05-27 22:20:14
 description: 原文是十分钟搞清字符集和字符编码，这里我简化了一些说明，稍微修改了原文的例子。
 categories:
-    - programming
+    - linux
 tags:
-    - encoding
+    - 'character encoding'
 ---
 
 <blockquote class="blockquote-center">

@@ -1,9 +1,9 @@
 title: C++泛型算法
 date: 2014-02-23 14:10:17
 categories:
-  - programming
-tags:
   - cpp
+tags:
+  - 'c++ primer'
 ---
 
 # 泛型算法

@@ -1,9 +1,9 @@
 title: C++Primer - 第1章 开始
 date: 2014-02-06 23:06:00
 categories:
-  - programming
-tags:
   - cpp
+tags:
+  - 'c++ primer'
 ---
 
 # 缓冲区（bufer）

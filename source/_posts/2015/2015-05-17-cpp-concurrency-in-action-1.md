@@ -2,12 +2,12 @@ title: "C++ Concurrency in Action (1) - Hello, world of concurrency in C++!"
 date: 2015-05-17 19:35:23
 description: Hello, world of concurrency in C++!的笔记。
 categories:
-    - programming
-tags:
     - concurrency
+tags:
     - reading
     - cpp
     - cpp11
+    - 'c++ concurrency in action'
 ---
 
 # 关于此系列文章

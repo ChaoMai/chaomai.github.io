@@ -2,9 +2,9 @@ title: 从汇编的角度分析C++引用
 date: 2015-03-10 17:35:29
 description: C++中，引用为对象起了另外一个名字，引用类型refers to另外一种类型。引用和指针是不同的，可以汇编的角度来看引用。
 categories:
-  - programming
-tags:
   - cpp
+tags:
+  - 'cpp reference'
 ---
 
 # 引用

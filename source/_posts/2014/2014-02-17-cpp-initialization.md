@@ -1,9 +1,9 @@
 title: C++ 初始化
 date: 2014-02-17 20:56:12
 categories:
-  - programming
-tags:
   - cpp
+tags:
+  - 'c++ primer'
 ---
 
 # 列表初始化（list initialization）

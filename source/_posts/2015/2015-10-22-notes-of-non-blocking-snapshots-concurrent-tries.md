@@ -2,10 +2,9 @@ title: Notes of Non-Blocking Snapshots Concurrent Tries
 date: 2015-10-22 22:15:12
 description: Hash trie的并发会存在操作丢失的情况，类似Non-blocking Binary Search Trees里的情况，这里引入了中间结点来解决。同时文章还提出了一种snapshot的方法，这种方法对于tree很有用。
 categories:
-    - programming
-    - data structures
-tags:
     - concurrency
+tags:
+		- 'concurrent tries'
     - snapshot
     - reading
 ---

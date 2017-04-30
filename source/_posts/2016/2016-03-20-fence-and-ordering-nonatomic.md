@@ -1,9 +1,9 @@
 title: Fence和非原子操作的ordering
 date: 2016-03-20 20:04:21
 categories:
-    - programming
-tags:
     - concurrency
+tags:
+    - fence
 ---
 
 # Fence

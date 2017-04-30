@@ -1,9 +1,9 @@
 title: C++顺序容器
 date: 2014-02-24 14:53:06
 categories:
-  - programming
-tags:
   - cpp
+tags:
+  - 'c++ primer'
 ---
 
 首先介绍顺序容器操作基本相同的部分，然后分别是每种容器要注意的地方。
