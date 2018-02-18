@@ -1,5 +1,5 @@
 ---
-title: Hive
+title: Hive笔记
 date: 2017-04-10 17:39:19
 categories:
     - hive

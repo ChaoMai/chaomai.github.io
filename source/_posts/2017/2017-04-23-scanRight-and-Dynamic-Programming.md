@@ -1,6 +1,6 @@
 ---
-title: scanRight和动态规划.md
-date: 2017-04-13 14:16:51
+title: scanRight和动态规划
+date: 2017-04-23 14:16:51
 categories:
     - "functional programming"
 tags:
