@@ -93,3 +93,23 @@ search:
   field: post
 
 disqus_shortname: chaomaisblog
+
+all_minifier: true
+
+html_minifier:
+  enable: false
+
+css_minifier:
+  enable: false
+
+js_minifier:
+  enable: false
+
+image_minifier:
+  enable: true
+  interlaced: false
+  multipass: false
+  optimizationLevel: 2
+  pngquant: false
+  progressive: false
+  silent: false
