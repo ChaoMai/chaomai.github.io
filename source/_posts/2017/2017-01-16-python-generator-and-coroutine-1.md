@@ -11,9 +11,7 @@ tags:
 
 # Generator（生成器）
 
-在Python中，说到generator，就不得不提iterator和iterable，下面这张图来自[Iterables vs. Iterators vs. Generators](http://nvie.com/posts/iterators-vs-generators/)，这里做个简单的说明。[^1]
-
-[^1]: 文章很好的解释了这三者的关系与区别。
+在Python中，说到generator，就不得不提iterator和iterable，下面这张图来自[Iterables vs. Iterators vs. Generators](http://nvie.com/posts/iterators-vs-generators/)，这里做个简单的说明（文章很好的解释了这三者的关系与区别）。
 
 ![](/images/2017/14839555031473.jpg)
 
@@ -39,9 +37,7 @@ class fib:
         return value
 ```
 
-下面着重要说的是generator[^2]，genarator是一种特殊的iterator，因此它是一个惰性求值的factory。继续上面的例子，generator能够避免编写`__iter__()`和`__next__()`，而以一种简洁优雅的方式写出上面的`fib` iterator。
-
-[^2]: [What is the function of the “yield” keyword?](http://stackoverflow.com/questions/231767/what-is-the-function-of-the-yield-keyword)
+下面着重要说的是[generator](http://stackoverflow.com/questions/231767/what-is-the-function-of-the-yield-keyword)，genarator是一种特殊的iterator，因此它是一个惰性求值的factory。继续上面的例子，generator能够避免编写`__iter__()`和`__next__()`，而以一种简洁优雅的方式写出上面的`fib` iterator。
 
 ```python
 def fib():
@@ -68,12 +64,8 @@ square_set = {x * x for x in numbers}
 lazy_square_list = (x * x for x in numbers)
 ```
 
-到目前为止，似乎generator相比起iterator，除了更简洁以外，没有什么特别的东西。PEP 342[^3]规定了一个genarator可以产生一个值，或者在产生一个值的同时还接收一个值[^4]。
-
-[^3]: [pep-0342](https://www.python.org/dev/peps/pep-0342/)：A new method for generator-iterators is proposed, called send(). It
-takes exactly one argument, which is the value that should be "sent in" to the generator.
-
-[^4]: [谈谈Python的生成器](http://www.bjhee.com/python-yield.html) 里有一个关于`send`不错的例子。
+到目前为止，似乎generator相比起iterator，除了更简洁以外，没有什么特别的东西。[pep-0342](https://www.python.org/dev/peps/pep-0342/)（*A new method for generator-iterators is proposed, called send(). It
+takes exactly one argument, which is the value that should be "sent in" to the generator*）.规定了一个genarator可以产生一个值，或者在产生一个值的同时还接收一个值。
 
 ```python
 def fib():
@@ -100,9 +92,7 @@ list(islice(f, 0, 10)) # [201, 302, 503, 805, 1308, 2113, 3421, 5534, 8955, 1448
 
 与Coroutines对应的概念是Subroutine（子程序）。一个普通的函数调用是这样的，从函数的第一行执行到`return`语句或exception，或者执行到函数的结尾，这样也叫做一个subroutine。但有时候又希望函数能够生成一系列的值，而不仅仅是返回一个值，此时函数不应该return（return control of execution），而是yield（transfer control temporarily and voluntarily），因为函数需要稍后继续执行。generator能够冻结函数的状态，继续执行的时候恢复。
 
-下面是用generator来实现的一个生产者-消费者模型[^5]，
-
-[^5]: 这个例子修改自[Improve Your Python: 'yield' and Generators Explained](https://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/)，这里着重展示了consumer的接收到的值就是producer产生的。
+下面是用generator来实现的一个生产者-消费者模型，
 
 ```python
 import random
@@ -139,4 +129,7 @@ for _ in range(10):
 # Consuming 0.06190270111408913, Total Consumed 3
 ```
 
+# References
 
+1. [谈谈Python的生成器](http://www.bjhee.com/python-yield.html) 里有一个关于`send`不错的例子
+2. [Improve Your Python: 'yield' and Generators Explained](https://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/)
