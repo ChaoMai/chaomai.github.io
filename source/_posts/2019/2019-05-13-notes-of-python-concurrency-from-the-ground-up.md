@@ -9,8 +9,6 @@ tags:
     - pycon
 ---
 
-# David Beazley - Python Concurrency From the Ground Up笔记
-
 Python Concurrency From the Ground Up，来自[捕蛇者说](https://pythonhunter.org/episodes/1)的推荐，是David Beazley在PyCon 2015上的talk。在这个talk中，他边讲边写、外加开点玩笑，可以说David在各种意义上，都是并发的专家，很值得一看。视频和代码如下：
 
 * [David Beazley - Python Concurrency From the Ground Up: LIVE! - PyCon 2015](https://www.youtube.com/watch?v=MCs5OvhV9S4)
@@ -61,7 +59,7 @@ def fib_server(address):
 1. `perf1.py`的结果（每次调用的时间）会随着`perf1.py`实例的增加而增加。同一时刻只能响应一个client，其他的等待，因此每次调用的时间大概是`单个client调用时间的均值 * perf1.py实例个数`。
 2. `perf2.py`的结果（ops）会受其他调用的影响，ops会下降，`n`越大，下降越多。David这里提到了，GIL的一个特性是会把优先级给到计算更加密集的任务上，而os的调度却不会受这个影响，运行时间短的任务优先级更高。
 
-python为何如此调度与其实现有关。对于os，Linux 2.6.23开始采用的是[Completely Fair Scheduler](https://www.kernel.org/doc/Documentation/scheduler/sched-design-CFS.txt)；FreeBSD和macOS采用的是[Multilevel feedback queue](https://en.wikipedia.org/wiki/Scheduling_(computing))的调度算法，这也就解释了上述为什么运行时间较短的任务优先级更高。因为总能在规定的时间片内运行完成，不会被调度到后面的队列。
+python的每个线程实际上都有os实际的线程与其对应，用`ps -o cmd,nlwp <pid>`可看，但为何如此调度与其实现有关。对于os，Linux 2.6.23开始采用的是[Completely Fair Scheduler](https://www.kernel.org/doc/Documentation/scheduler/sched-design-CFS.txt)；FreeBSD和macOS采用的是[Multilevel feedback queue](https://en.wikipedia.org/wiki/Scheduling_(computing))的调度算法，这也就解释了上述为什么运行时间较短的任务优先级更高。因为总能在规定的时间片内运行完成，不会被调度到后面的队列。
 
 # 版本3：多线程+进程池
 在版本2的基础上，
