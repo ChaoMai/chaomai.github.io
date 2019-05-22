@@ -1,5 +1,5 @@
 ---
-title: about
+title: about the site & me
 date: 2018-12-31 16:12:35
 type: about
 ---
@@ -13,7 +13,7 @@ I'm interested in C++, python, concurrent programming, distributed system and da
 A repository for the things I've learnt, built, and wasted time on.
 
 # Contact me
-loneymai@gmail.com
+[email](mailto:loneymai@gmail.com)
 
 # Motto
 > What I cannot create, I do not understand.
