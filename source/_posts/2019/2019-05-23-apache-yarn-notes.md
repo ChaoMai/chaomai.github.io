@@ -60,7 +60,27 @@ YARN应用可以在任意时刻提出资源的申请，
 YARN有3中调度器：FIFO调度器、容量调度器和公平调度器。
 
 ## 关于container
-container是cpu、内存、磁盘、网络的抽象，实际由一个java类表示。*不同*于docker中的container概念。
+vcore是一个host的cpu核心占用比例。
+
+container是，
+* cpu（vcore）、内存、磁盘、网络的抽象。
+* 在有task或ApplicationMaster运行的时候，表示一个已分配的资源。
+* *不同*于docker中的container概念。
+
+```java
+public abstract class ContainerLaunchContext {
+  // ...
+  /**
+   * Add the list of <em>commands</em> for launching the container. All
+   * pre-existing List entries are cleared before adding the new List
+   * @param commands the list of <em>commands</em> for launching the container
+   */
+  @Public
+  @Stable
+  public abstract void setCommands(List<String> commands);
+  // ...
+}
+```
 
 ## FIFO调度器（FIFO Scheduler）
 按提交的顺序运行应用，首先为第一个应用分配资源，如果可以满足，再依次为其他应用服务。
@@ -82,10 +102,47 @@ container是cpu、内存、磁盘、网络的抽象，实际由一个java类表�
 ### 队列放置
 公平调度器使用一个规则的系统来判断应用所属队列。
 
-### 抢占
-抢占，即允许调度器终止那些占用资源超过了fair share额度的容器。
+### 饥饿和抢占
+FairShare的计算会被用于判断饥饿以及是否进行抢占。在计算FairShare时，有两种：
+* Steady FairShare，按照配置文件中所有queue的weight，计算出的。
+* Instantaneous FairShare，，按照配置文件中所有queue的weight，仅对包含活动应用程序的queue计算出的。
+
+在配置`yarn.scheduler.fair.preemption`和`yarn.scheduler.fair.preemption.cluster-utilization-threshold`后，抢占会启用。
+
+**饥饿**有两种：
+* FairShare Starvation
+    判定条件为：
+    1. 未获得所要求的资源。
+    2. 应用程序资源使用低于Instantaneous FairShare。
+    3. 应用程序的资源使用低于fairSharePreemptionThreshold，并持续fairSharePreemptionTimeout。
+
+    要注意的是，在同一个队列里面，如果存在多个应用程序，它们会平均的分摊Instantaneous FairShare。因此可能存在队列整体不是饥饿状态，但是每个应用程序是。
+* MinShare Starvation
+    判定条件为：
+    1. 未获得所要求的资源。
+    2. 应用程序资源使用低于MinShare。
+    3. 应用程序的资源使用低于MinShare，并持续MinSharePreemptionTimeout。
+
+决定需要进行抢占的时候，可能在多个队列中都有可抢占的container，决定container是否可以被抢占，需要满足：
+* 所在队列是可抢占的。
+* 杀死container以后不会导致应用程序的资源低于Instantaneous FairShare。
+
+启用抢占**并不能**保证队列或应用程序能够获得所有的Instantaneous FairShare。只能最终保证脱离饥饿的状态，即获得fairSharePreemptionThreshold份额的资源。
+
+FairShare Starvation、MinShare Starvation以及抢占的关系如下：
+
+![](/images/2019/15598134204968.jpg)
+
+### Best Practice
+* 一般**不建议**配置MinShare Starvation或minimum resources。
+    增加复杂性的同时，并不能带来多少好处。
+* 如果配置minimum resources，所有minimum resources的加和不能超出总的资源数。
+
+## 延迟调度
+局部性是YARN调度时优先考虑的，但如果发现所请求的节点资源不够，那么任务可能就会被调度到其他节点上了。此时如果等待几秒，能够增加在所请求节点上分配到container的机会。
 
 # References
 1. [Apache Hadoop YARN](http://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html)
 2. [Untangling Apache Hadoop YARN](https://blog.cloudera.com/blog/2015/09/untangling-apache-hadoop-yarn-part-1/)
-3. Hadoop - The Definitive Guide
+3. [YARN FairScheduler Preemption Deep Dive](https://blog.cloudera.com/blog/2018/06/yarn-fairscheduler-preemption-deep-dive/)
+4. Hadoop - The Definitive Guide
