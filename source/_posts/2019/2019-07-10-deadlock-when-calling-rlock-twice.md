@@ -112,7 +112,6 @@ func main() {
     * 若`r == 0`，则无正在持有读锁的reader，可以直接完成读锁的加锁。
     * 若`r != 0`，writer需要等待获得了写锁，但尚未RULock的reader执行结束。如何判断是否需要等待呢，即readerWait不为0的时候。同时reader决定是否能唤醒writer，也需要等到readerWait为0的时候。
 
-
     ```go
     func (rw *RWMutex) Lock() {
     	rw.w.Lock()
