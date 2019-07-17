@@ -73,7 +73,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: even
+theme: next
 since: 2014
 
 # Deployment
@@ -93,4 +93,3 @@ search:
   field: post
 
 disqus_shortname: chaomaisblog
-
