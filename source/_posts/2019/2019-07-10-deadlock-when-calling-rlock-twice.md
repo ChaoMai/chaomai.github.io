@@ -2,7 +2,6 @@
 title: golang RWMutex RLock重入导致死锁
 date: 2019-07-10 16:52:29
 categories:
-    - golang
     - concurrency
 tags:
     - golang

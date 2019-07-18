@@ -2,9 +2,9 @@
 title: Go笔记
 date: 2019-03-17 14:22:40
 categories:
-    - go
+    - golang
 tags:
-    - go
+    - golang
 ---
 
 # 文档和资源
