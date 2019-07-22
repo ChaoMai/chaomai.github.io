@@ -17,8 +17,10 @@ A repository for the things I've learnt, built, and wasted time on.
 [email](mailto:loneymai@gmail.com)
 
 # Motto
-> What I cannot create, I do not understand.
->
-> Know how to solve every problem that has been solved.
+
+{% centerquote %}
+What I cannot create, I do not understand.
+Know how to solve every problem that has been solved.
+{% endcenterquote %}
 
 **Richard Feynman** - *[On his blackboard at the time of death in February 1988](/images/about/1.10-29.jpg)*
