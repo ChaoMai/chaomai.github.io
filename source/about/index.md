@@ -1,5 +1,5 @@
 ---
-title: about the site & me
+title: About The Site & Me
 date: 2018-12-31 16:12:35
 type: about
 disable_toc: true
