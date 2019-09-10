@@ -6,9 +6,9 @@ disable_toc: true
 ---
 
 # About me
-Hi, I'm chaomai, a normal Linux C++ programmer and trying to be better one.
+Hi, I'm chaomai, a Linux C++ programmer and trying to be better one.
 
-I'm interested in C++, python, concurrent programming, distributed system and data science. I'm curious about "how it works" and want to know the nature of things and connections between them. Swimming, photography and video game are my favorite activities in my spare time.
+I'm interested in C++, golang, python, concurrent programming, distributed system and data science. I'm curious about "how it works" and want to know the nature of things and connections between them. Swimming, photography and video game are my favorite activities in my spare time.
 
 # About this site
 A repository for the things I've learnt, built, and wasted time on.

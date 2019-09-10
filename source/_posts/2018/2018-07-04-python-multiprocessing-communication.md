@@ -2,10 +2,9 @@
 title: Python进程间通信总结
 date: 2018-07-04 22:09:50
 categories:
-    - concurrency
+    - python
 tags:
     - concurrency
-    - python
 ---
 
 # Python进程间通信总结
