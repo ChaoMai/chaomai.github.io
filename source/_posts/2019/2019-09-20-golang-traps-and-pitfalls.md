@@ -1,17 +1,16 @@
 ---
-title: golang RWMutex RLock重入导致死锁
-date: 2019-07-10 16:52:29
+title: go踩坑合集
+date: 2019-09-20 17:07:39
 categories:
-    - concurrency
+    - golang
 tags:
     - golang
-    - rwlock
 ---
 
+# RWMutex RLock重入导致死锁
 RWMutex，即读写锁，可以被多个的reader或一个writer获取使用。
 
 ## 死锁例子
-
 在使用RWMutex的时候，同一个reader是不应该连续调用`Rlock`多次的，这样做不但没有意义，还有可能导致死锁，具体代码如下：
 
 ```go
@@ -43,8 +42,7 @@ func main() {
 }
 ```
 
-## 分析
-
+## sync.RWMutex分析
 下面[RWMutex的实现](https://github.com/golang/go/blob/master/src/sync/rwmutex.go)，我们来看这段代码的具体执行。为了方便理解，把`if race.Enabled {...}`的相关代码都去除了。
 
 1. **goroutine 1**：`l.RLock()`
@@ -102,7 +100,6 @@ func main() {
 最后goroutine 1和goroutine 2都进入了等待状态。
 
 ## 总结
-
 1. readerCount的作用？
     持有读锁的reader数。置为负时，代表了writer正在或者已经获得了读锁，此时其他reader不能再获得写锁。
 2. readerWait的作用，以及在`Lock()`中，为何需要同时判断`r != 0`和`atomic.AddInt32(&rw.readerWait, r) != 0`？
@@ -122,3 +119,118 @@ func main() {
     	}
     }
     ```
+
+# sync.WaitGroup使用的问题
+## 例子
+在实现一个需求的时候，需要等待一定数目的go协程执行完毕，但这个数目事先并不好确定。想到了可以用sync.WaitGroup来完成，在使用时候发现，`Wait()`没有生效，并未等待协程结束，代码大致如下，
+
+```go
+func main() {
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	ch := make(chan struct{})
+
+	f := func(){
+		wg.Add(1)
+		defer wg.Done()
+		select {
+			case <- ch:
+				fmt.Println("hi")
+		}
+	}
+
+	go func() {
+		defer wg.Done()
+		go f()
+		go f()
+		go f()
+	}()
+	close(ch)
+	wg.Wait()
+}
+```
+
+执行后程序不会有任何的输出就退出了。
+
+## sync.WaitGroup源码分析
+> Typically this means the calls to Add should execute before the statement creating the goroutine or other event to be waited for.
+
+## 总结
+```go
+func main() {
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	ch := make(chan struct{})
+
+	f := func(){
+		defer wg.Done()
+		select {
+			case <- ch:
+				fmt.Println("hi")
+		}
+	}
+
+	go func() {
+		defer wg.Done()
+		wg.Add(1)
+		go f()
+		wg.Add(1)
+		go f()
+		wg.Add(1)
+		go f()
+	}()
+	close(ch)
+	wg.Wait()
+}
+```
+
+## References
+1. [Waiting on an indeterminate number of goroutines](https://stackoverflow.com/questions/18805416/waiting-on-an-indeterminate-number-of-goroutines)
+
+# goroutine
+```go
+func process(ctx context.Context, wg *sync.WaitGroup, retCh chan int) {
+	defer wg.Done()
+	for {
+		time.Sleep(time.Second*1)
+		// process
+		// send process result back
+		select {
+			case <-ctx.Done():
+				retCh <- 1
+				retCh <- 2
+				return
+			default:
+				retCh <- 1
+				retCh <- 2
+		}
+	}
+}
+
+func loop(ctx context.Context, wg *sync.WaitGroup, retCh chan int) {
+	defer wg.Done()
+	wg.Add(1)
+	go process(ctx, wg, retCh)
+	for {
+		select {
+			case <-ctx.Done():
+				return
+			case ret := <-retCh:
+				fmt.Println(ret)
+
+		}
+	}
+}
+
+func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	wg := &sync.WaitGroup{}
+	retCh := make(chan int, 1)
+	wg.Add(1)
+	go loop(ctx, wg, retCh)
+
+	time.Sleep(time.Second*5)
+	cancel()
+	wg.Wait()
+}
+```
