@@ -133,7 +133,7 @@ menu:
   #schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap
   #commonweal: /404/ || heartbeat
-  Wiki: /wiki/ || wikipedia-w
+  Wiki: https://github.com/chaomai/writing || wikipedia-w
 
 # Enable / Disable menu icons / item badges.
 menu_settings:
@@ -256,7 +256,7 @@ auto_excerpt:
 
 # Read more button
 # If true, the read more button would be displayed in excerpt section.
-read_more_btn: false
+read_more_btn: true
 
 # Post meta display settings
 post_meta:
@@ -466,7 +466,7 @@ font:
   # Font settings for posts (.post-body).
   posts:
     external: true
-    family: Noto Serif SC
+    family:
 
   # Font settings for <code> and code blocks.
   codes:
