@@ -105,7 +105,7 @@ public:
 
 定义一个`Base`类指针，`Base* bd = new Derived()`，`bd`的vfptr下如下：
 
-![](http://7vilyb.com1.z0.glb.clouddn.com/cpp_virtual_function_multi_derived_bd.png)
+![](/images/2016/cpp_virtual_function_multi_derived_bd.png)
 
 三个vfptr可分别由`(int*)*(int*)bd`、`(int*)*((int*)bd+1)`和`(int*)*((int*)bd+2)`得到，或者以数组的方式`(int*)(((int*)bd)[0])`、...。
 
