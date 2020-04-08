@@ -88,7 +88,7 @@ since: 2014
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/chaomai/chaomai.github.io.git
+  repo: git@github.com:chaomai/chaomai.github.io.git
   branch: master
 
 feed:
