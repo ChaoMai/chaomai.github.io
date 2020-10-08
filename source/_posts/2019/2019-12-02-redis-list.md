@@ -1,5 +1,5 @@
 ---
-title: list
+title: redis list
 date: 2019-12-02 00:00:00
 categories:
     - redis

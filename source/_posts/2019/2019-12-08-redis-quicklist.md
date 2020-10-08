@@ -1,5 +1,5 @@
 ---
-title: quicklist
+title: redis quicklist
 date: 2019-12-08 00:00:00
 categories:
     - redis
