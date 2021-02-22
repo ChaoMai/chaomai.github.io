@@ -14,14 +14,14 @@ I'm interested in C++, golang, concurrent programming, distributed system. I'm c
 A repository for the things I've learnt, built, and wasted time on.
 
 # Motto
-{% centerquote %}
+{% blockquote %}
 一个人的命运啊，当然要靠自我奋斗，也要考虑到历史的行程。
 **The Elder Man**
-{% endcenterquote %}
+{% endblockquote %}
 
-{% centerquote %}
+{% blockquote %}
 What I cannot create, I do not understand.
 Know how to solve every problem that has been solved.
 **Richard Feynman**
-{% endcenterquote %}
+{% endblockquote %}
 
