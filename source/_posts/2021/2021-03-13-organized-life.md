@@ -1,10 +1,11 @@
 ---
-title: 用org mode管理生活和工作
+title: 用 org mode 管理生活和工作
 date: 2021-03-13 22:40:00
 categories:
     - emacs
 tags:
     - gdt
+    - org-mode
 ---
 
 # 起因
@@ -38,36 +39,45 @@ notion 是个方便高效的工具，用起来很顺手，但是最近频繁的 
 3.  agenda view 过滤和查看 task。
 4.  通过 pandoc 实现丰富的导出功能，就算哪天不用 org mode，也不影响查阅内容。
 5.  添加图片确实不方便，但通过 org-download 也基本能实现拖拽添加。
-6.  能**华丽呼哨**的定制，~~感觉这个才是从 notion 换到 emacs 的动力~~。
+6.  能**华丽呼哨**的定制，~感觉这个才是从 notion 换到 emacs 的动力~。
 
 ![img](/images/2021/03/Snipaste_2021-03-13_21-36-25.png)
 
-# 管理框架
+# 我的 org-mode workflow
 
-参考了[别人的用法](http://www.cachestocaches.com/2020/3/my-organized-life/)，我是这样使用 org mode 的。系统使用 task 和 notes 来组织。将一个 project 分为小的 task，用 notes 来记录具体的结果、图片等临时资料。
+## task 状态
 
-## task
+参考别人的用法后，规划了如下几个 task 状态，含义如下：
 
-每个 task 包含：
+-   TODO：收集到 inbox 中，但是还没有决定是否要做
+-   NEXT：review TODO 的 task 以后，规划要做
+-   PROG：正在进行
+-   DONE：完成
+-   HOLD：由于某些原因 task 暂停了
+-   CANCELLED：取消不做了
 
--   状态：TODO、NEXT 等
--   时间信息：deadline、defer date
--   tag：用于过滤和标识 task，设置优先级
--   子 task
+状态的变更规则如下：
 
-提供视图来从各种维度过滤和展示 task：
+1.  TODO -> NEXT -> PROG -> DONE
+2.  PROG -> HOLD
+3.  PROG -> CANCELLED
 
--   周视图：便于 review
--   NEXT 视图
+除了上述状态，如果有的 task 有开始或截止时间，那么还可以加上 SCHEDULED 或者 DEADLINE。
 
-## review
+## daily highlight
 
-完成 task 并不是目的，只是达成长期目标的过程，需要有定期的 review，
+经过长久的实践，发现不管怎么规划 task，一旦事情堆的太多，看着整页的 NEXT 就会不想做。为此每天开始都先定一下当天**必须**要完成的事情，叫做 daily highlight，不限于工作的任务，休息日的时候也可以是看一本书之类的。daily highlight 不要过多，2～3 件即可。~上班的时候集中精力做完 daily highlight 以后就可以愉快的摸鱼了~。
 
-1.  确保 note 记录了所有的重点，清理收集的各种资料。
-2.  查看 NEXT 和 WAITING 的 task，进行必要的修改、清理和 follow up。
-3.  根据长期目标调整 task，并设置新的 task。
+目前使用 org mode 的时间还不长，上述的 workflow 可能还会随着时间不断更新。
+
+# 导入 notion 文件
+
+从 notion 导出的格式为 markdown，可以使用 pandoc 转为 org 格式。
+
+    pandoc -f markdown -t org markdown_file.md | sed -E "/^[[:space:]]+:/ d"
 
 # References
 
 1.  [A Guide to My Organizational Workflow: How to Streamline Your Life](http://www.cachestocaches.com/2020/3/my-organized-life/)
+2.  [An Org-Mode Workflow for Task Management](https://whhone.com/posts/org-mode-task-management/)
+3.  [Org-mode Workflow: A Preview](https://blog.jethro.dev/posts/org_mode_workflow_preview/)
