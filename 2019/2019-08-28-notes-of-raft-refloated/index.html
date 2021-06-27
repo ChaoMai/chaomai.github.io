@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/default_avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/default_avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;chaomai.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;right&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:true,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:true,&quot;pangu&quot;:true,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:false,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="介绍文章主要使用实验验证了raft是否如原论文所阐述的易于理解和实现。重新阐述了raft，使用OCaml实现了raft，开发了一个事件驱动的模拟器来进行测试，重现了raft原论文中的测试，并提出了几个优化。 性能对于raft的性能，raft原论文中提到了两点，  典型的情况下，leader复制entry的时间。 最坏情况下，leader失败后，选举出新leader的时间。 选举能否快速收敛？ 集群">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Raft Refloated Do We Have Consensus?笔记">
+<meta property="og:url" content="https://chaomai.github.io/2019/2019-08-28-notes-of-raft-refloated/index.html">
+<meta property="og:site_name" content="chaomai&#39;s blog">
+<meta property="og:description" content="介绍文章主要使用实验验证了raft是否如原论文所阐述的易于理解和实现。重新阐述了raft，使用OCaml实现了raft，开发了一个事件驱动的模拟器来进行测试，重现了raft原论文中的测试，并提出了几个优化。 性能对于raft的性能，raft原论文中提到了两点，  典型的情况下，leader复制entry的时间。 最坏情况下，leader失败后，选举出新leader的时间。 选举能否快速收敛？ 集群">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://chaomai.github.io/images/2019/15674125053563.jpg">
+<meta property="og:image" content="https://chaomai.github.io/images/2019/15674141041720.jpg">
+<meta property="article:published_time" content="2019-08-28T08:32:52.000Z">
+<meta property="article:modified_time" content="2021-06-27T14:57:29.281Z">
+<meta property="article:author" content="Chao Mai">
+<meta property="article:tag" content="replication">
+<meta property="article:tag" content="raft">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://chaomai.github.io/images/2019/15674125053563.jpg">
+
+
+<link rel="canonical" href="https://chaomai.github.io/2019/2019-08-28-notes-of-raft-refloated/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;chaomai.github.io&#x2F;2019&#x2F;2019-08-28-notes-of-raft-refloated&#x2F;&quot;,&quot;path&quot;:&quot;2019&#x2F;2019-08-28-notes-of-raft-refloated&#x2F;&quot;,&quot;title&quot;:&quot;Raft Refloated Do We Have Consensus?笔记&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Raft Refloated Do We Have Consensus?笔记 | chaomai's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-34179929-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{&quot;tracking_id&quot;:&quot;UA-34179929-2&quot;,&quot;only_pageview&quot;:false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="chaomai's blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">chaomai's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>Rss</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%A7%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">性能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%8Cleader%E5%A4%8D%E5%88%B6entry%E7%9A%84%E6%97%B6%E9%97%B4"><span class="nav-number">2.1.</span> <span class="nav-text">典型的情况下，leader复制entry的时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%9D%8F%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%8Cleader%E5%A4%B1%E8%B4%A5%E5%90%8E%EF%BC%8C%E9%80%89%E4%B8%BE%E5%87%BA%E6%96%B0leader%E7%9A%84%E6%97%B6%E9%97%B4"><span class="nav-number">2.2.</span> <span class="nav-text">最坏情况下，leader失败后，选举出新leader的时间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Different-Follower-and-Candidate-Timers"><span class="nav-number">3.1.</span> <span class="nav-text">Different Follower and Candidate Timers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Binary-Exponential-Backoff"><span class="nav-number">3.2.</span> <span class="nav-text">Binary Exponential Backoff</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Chao Mai</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chaomai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chaomai" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:loneymai@gmail.com" title="E-Mail → mailto:loneymai@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://steamcommunity.com/id/chaomai" title="Steam → https:&#x2F;&#x2F;steamcommunity.com&#x2F;id&#x2F;chaomai" rel="noopener" target="_blank"><i class="fab fa-steam fa-fw"></i>Steam</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://laike9m.com/" title="https:&#x2F;&#x2F;laike9m.com" rel="noopener" target="_blank">laike9m's blog</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://chaomai.github.io/2019/2019-08-28-notes-of-raft-refloated/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Chao Mai">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaomai's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Raft Refloated Do We Have Consensus?笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-28 16:32:52" itemprop="dateCreated datePublished" datetime="2019-08-28T16:32:52+08:00">2019-08-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-27 22:57:29" itemprop="dateModified" datetime="2021-06-27T22:57:29+08:00">2021-06-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/distritubed-system/" itemprop="url" rel="index"><span itemprop="name">distritubed system</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/2019-08-28-notes-of-raft-refloated/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/2019-08-28-notes-of-raft-refloated/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>文章主要使用实验验证了raft是否如原论文所阐述的易于理解和实现。重新阐述了raft，使用OCaml实现了raft，开发了一个事件驱动的模拟器来进行测试，重现了raft原论文中的测试，并提出了几个优化。</p>
+<h1 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h1><p>对于raft的性能，raft原论文中提到了两点，</p>
+<ol>
+<li>典型的情况下，leader复制entry的时间。</li>
+<li>最坏情况下，leader失败后，选举出新leader的时间。<ol>
+<li>选举能否快速收敛？</li>
+<li>集群能达到的最小下线时间是什么？</li>
+</ol>
+</li>
+</ol>
+<h2 id="典型的情况下，leader复制entry的时间"><a href="#典型的情况下，leader复制entry的时间" class="headerlink" title="典型的情况下，leader复制entry的时间"></a>典型的情况下，leader复制entry的时间</h2><p>需要耗费一个rtt来复制到多数派server，可以做batching和piplining优化。</p>
+<h2 id="最坏情况下，leader失败后，选举出新leader的时间"><a href="#最坏情况下，leader失败后，选举出新leader的时间" class="headerlink" title="最坏情况下，leader失败后，选举出新leader的时间"></a>最坏情况下，leader失败后，选举出新leader的时间</h2><p>关于这点，raft原论文中使用5个server的集群做了两个测试。为了模拟最坏情况，</p>
+<ul>
+<li>每次测试server都有不一样长度的log，使得有的candidate不能成为leader。</li>
+<li>为了制造易于出现split vote的环境，在每次终止leader前，都同步地广播heartbeat，目的是重置election timeout。</li>
+</ul>
+<p><img data-src="/images/2019/15674125053563.jpg" alt="-w302"></p>
+<p>两个测试表明了：</p>
+<ol>
+<li>election time中加入少量的随机，能够明显的减少选举新leader的时间，减少split vote的出现。</li>
+<li>集群的最小下线时间随着election time的减少而减少，但如果少于broadcast time，那么会集群产生不必要选举，降低可用性。</li>
+</ol>
+<h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><p>本文中提出了几个优化，</p>
+<ol>
+<li>Different Follower and Candidate Timers</li>
+<li>Binary Exponential Backoff</li>
+<li>Combined</li>
+</ol>
+<p><img data-src="/images/2019/15674141041720.jpg" alt="-w293"></p>
+<h2 id="Different-Follower-and-Candidate-Timers"><a href="#Different-Follower-and-Candidate-Timers" class="headerlink" title="Different Follower and Candidate Timers"></a>Different Follower and Candidate Timers</h2><p>raft原论文建议$\textit{candidate timeout} = \textit{follower timeout} ∼ U(T, 2T), T=150ms$，但在高竞争的情况下，例如：$U(150ms, 151ms)$，将两个时间设置在不同的范围，可以大大减少选举leader的时间。</p>
+<h2 id="Binary-Exponential-Backoff"><a href="#Binary-Exponential-Backoff" class="headerlink" title="Binary Exponential Backoff"></a>Binary Exponential Backoff</h2><p>类似tcp超时重传的指数回退。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/replication/" rel="tag"># replication</a>
+              <a href="/tags/raft/" rel="tag"># raft</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/2019-08-19-6.824-Spring-2018-Lecture-6/" rel="prev" title="6.824 2018 Lecture 6 Fault Tolerance Raft">
+                  <i class="fa fa-chevron-left"></i> 6.824 2018 Lecture 6 Fault Tolerance Raft
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/2019-09-09-python-multiprocessing-process/" rel="next" title="python multiprocessing.Process模块源码阅读">
+                  python multiprocessing.Process模块源码阅读 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chao Mai</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;,&quot;integrity&quot;:&quot;sha256-ncNI9OXOS5Ek4tzVYiOMmN&#x2F;KKCPZ6V0Cpv2P&#x2F;zHntiA&#x3D;&quot;}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{&quot;enable&quot;:true,&quot;shortname&quot;:&quot;chaomaisblog&quot;,&quot;count&quot;:true,&quot;i18n&quot;:{&quot;disqus&quot;:&quot;disqus&quot;}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/default_avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/default_avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;chaomai.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;right&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:true,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:true,&quot;pangu&quot;:true,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:false,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目，还有就是Excellent tutorial about helping mechanism!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notes of Non-blocking Binary Search Trees">
+<meta property="og:url" content="https://chaomai.github.io/2015/2015-10-04-notes-of-non-blocking-binary-search-trees/index.html">
+<meta property="og:site_name" content="chaomai&#39;s blog">
+<meta property="og:description" content="使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目，还有就是Excellent tutorial about helping mechanism!">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://chaomai.github.io/images/2015/non-block-bst_problems.png">
+<meta property="og:image" content="https://chaomai.github.io/images/2015/non-block-bst_insert.png">
+<meta property="og:image" content="https://chaomai.github.io/images/2015/non-block-bst_delete.png">
+<meta property="og:image" content="https://chaomai.github.io/images/2015/non-block-bst_delete2.png">
+<meta property="og:image" content="https://chaomai.github.io/images/2015/non-block-bst_state.PNG">
+<meta property="og:image" content="https://chaomai.github.io/images/2015/non-block-bst_dummy_keys.png">
+<meta property="article:published_time" content="2015-10-04T09:21:49.000Z">
+<meta property="article:modified_time" content="2021-06-27T14:57:29.264Z">
+<meta property="article:author" content="Chao Mai">
+<meta property="article:tag" content="reading">
+<meta property="article:tag" content="binary search tree">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://chaomai.github.io/images/2015/non-block-bst_problems.png">
+
+
+<link rel="canonical" href="https://chaomai.github.io/2015/2015-10-04-notes-of-non-blocking-binary-search-trees/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;chaomai.github.io&#x2F;2015&#x2F;2015-10-04-notes-of-non-blocking-binary-search-trees&#x2F;&quot;,&quot;path&quot;:&quot;2015&#x2F;2015-10-04-notes-of-non-blocking-binary-search-trees&#x2F;&quot;,&quot;title&quot;:&quot;Notes of Non-blocking Binary Search Trees&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Notes of Non-blocking Binary Search Trees | chaomai's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-34179929-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{&quot;tracking_id&quot;:&quot;UA-34179929-2&quot;,&quot;only_pageview&quot;:false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="chaomai's blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">chaomai's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>Rss</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#specification"><span class="nav-number">1.</span> <span class="nav-text">specification</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#features"><span class="nav-number">2.</span> <span class="nav-text">features</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#basic-idea"><span class="nav-number">3.</span> <span class="nav-text">basic idea</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#problems"><span class="nav-number">4.</span> <span class="nav-text">problems</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#solutions"><span class="nav-number">5.</span> <span class="nav-text">solutions</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#insert%E5%92%8Cdelete"><span class="nav-number">5.1.</span> <span class="nav-text">insert和delete</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#insert"><span class="nav-number">5.1.1.</span> <span class="nav-text">insert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete"><span class="nav-number">5.1.2.</span> <span class="nav-text">delete</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#some-details-in-implementation"><span class="nav-number">6.</span> <span class="nav-text">some details in implementation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#helping-mechanism"><span class="nav-number">6.1.</span> <span class="nav-text">helping mechanism</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#method"><span class="nav-number">6.1.1.</span> <span class="nav-text">method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#implementation"><span class="nav-number">6.1.2.</span> <span class="nav-text">implementation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dummy-keys"><span class="nav-number">6.2.</span> <span class="nav-text">dummy keys</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#summary"><span class="nav-number">7.</span> <span class="nav-text">summary</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#references"><span class="nav-number">8.</span> <span class="nav-text">references</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Chao Mai</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chaomai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chaomai" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:loneymai@gmail.com" title="E-Mail → mailto:loneymai@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://steamcommunity.com/id/chaomai" title="Steam → https:&#x2F;&#x2F;steamcommunity.com&#x2F;id&#x2F;chaomai" rel="noopener" target="_blank"><i class="fab fa-steam fa-fw"></i>Steam</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://laike9m.com/" title="https:&#x2F;&#x2F;laike9m.com" rel="noopener" target="_blank">laike9m's blog</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://chaomai.github.io/2015/2015-10-04-notes-of-non-blocking-binary-search-trees/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Chao Mai">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaomai's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Notes of Non-blocking Binary Search Trees
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2015-10-04 17:21:49" itemprop="dateCreated datePublished" datetime="2015-10-04T17:21:49+08:00">2015-10-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-27 22:57:29" itemprop="dateModified" datetime="2021-06-27T22:57:29+08:00">2021-06-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/concurrency/" itemprop="url" rel="index"><span itemprop="name">concurrency</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/2015-10-04-notes-of-non-blocking-binary-search-trees/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/2015-10-04-notes-of-non-blocking-binary-search-trees/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+            <div class="post-description">使用了mark标记结点的方式，解决了single word cas无法同时操作multi-word的问题，同时使用外部树减少了操作影响到的结点的数目，还有就是Excellent tutorial about helping mechanism!</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="specification"><a href="#specification" class="headerlink" title="specification"></a>specification</h1><ul>
+<li><p>no duplicate key</p>
+</li>
+<li><p>deleting non-existent key leads to return false</p>
+</li>
+<li><p>leaf-oriented BST</p>
+<blockquote>
+<ul>
+<li>all keys currently in the dictionary are <strong>stored in the leaves of the tree.</strong></li>
+<li>Internal nodes of the tree are used to direct a Find operation along the path to the correct leaf.</li>
+<li>The keys stored in internal nodes may or may<br>not be in the dictionary.</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h1 id="features"><a href="#features" class="headerlink" title="features"></a>features</h1><ul>
+<li><p>non-blocking</p>
+</li>
+<li><p>linearizable</p>
+<blockquote>
+<p>for every execution, one can assign a linearization point to each completed operation and some of the uncompleted operations <strong>so that the linearization point of each operation occurs after the operation starts and before it ends</strong>, and the results of these operations are the same <em>as if they had been performed sequentially, in the order of their linearization points.</em></p>
+</blockquote>
+</li>
+</ul>
+<h1 id="basic-idea"><a href="#basic-idea" class="headerlink" title="basic idea"></a>basic idea</h1><p>类似Harris’ Linked List里面的做法，这里是mark the parent of the leaf before<br>splicing that parent out of the tree。一旦被标记，那么其指向子结点的指针将不能被改变。</p>
+<h1 id="problems"><a href="#problems" class="headerlink" title="problems"></a>problems</h1><p><img data-src="/images/2015/non-block-bst_problems.png"></p>
+<p>上图中，两个线程分别delete C和E，两个concurrent operation同时看到了BST以后，接下来的操作是，<em>基于各自看到的的BST来进行的</em>，它们彼此并不知道对方进行了什么操作，最后导致E并没有被deleted，其中一个操作丢失了。</p>
+<p>解决这个需要对parent的child pointer进行mark，但是要mark的pointer是存在两个不同的word（left and right child pointer）里面的，不能够用一个cas来同时mark。</p>
+<h1 id="solutions"><a href="#solutions" class="headerlink" title="solutions"></a>solutions</h1><p>using a separate state <strong>ﬁeld of the node</strong> to mark or flag，而不是mark那个pointer。</p>
+<ul>
+<li>mark: node marked is unchangeable。</li>
+<li>flag: indicate that an update is trying to change a child pointer of the node.</li>
+</ul>
+<p>mark和flag类似于加锁。</p>
+<h2 id="insert和delete"><a href="#insert和delete" class="headerlink" title="insert和delete"></a>insert和delete</h2><h3 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h3><p><img data-src="/images/2015/non-block-bst_insert.png"></p>
+<p>Insert (C):</p>
+<ol>
+<li>ﬂag node D’s parent, node B,</li>
+<li>change the appropriate child pointer of node B,</li>
+<li>unﬂag node B.</li>
+</ol>
+<h3 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h3><p><img data-src="/images/2015/non-block-bst_delete.png"></p>
+<p>Delete (C):</p>
+<ol>
+<li>ﬂag C’s grandparent, node B,</li>
+<li>mark C’s parent, node D,</li>
+<li>change the appropriate child pointer of B,</li>
+<li>unﬂag node B.</li>
+</ol>
+<p>insert在完成第一步以后，在insert进行后续操作时，其他线程将不能够block insert。delete类似的，在完成第一二步以后也是。</p>
+<p><img data-src="/images/2015/non-block-bst_delete2.png"></p>
+<p>但是delete在完成第一步以后，第二步mark有可能失败，比如insert把将要删除的node换为新的三个node。in which case the ﬂag is no longer on the node whose child pointer must be changed to accomplish the deletion.</p>
+<p>如果mark失败，delete会remove flag，重新开始。</p>
+<p><img data-src="/images/2015/non-block-bst_state.PNG"></p>
+<h1 id="some-details-in-implementation"><a href="#some-details-in-implementation" class="headerlink" title="some details in implementation"></a>some details in implementation</h1><h2 id="helping-mechanism"><a href="#helping-mechanism" class="headerlink" title="helping mechanism"></a>helping mechanism</h2><h3 id="method"><a href="#method" class="headerlink" title="method"></a>method</h3><p>类似Barnes的方法，将线程拥有lock换成操作拥有lock（marked or flagged）。一个操作在处理tree的同时，还保存了它在holding lock的时候要进行的操作，其他线程遇到lock，就帮助它完成，使得lock最终release。</p>
+<p>为了避免helping mechanism带来的性能下降（多个线程会尝试进行同一个操作），这里用了保守的策略： a process P helps another process’s operation <strong>only if the other operation is preventing P’s own progress</strong>.</p>
+<h3 id="implementation"><a href="#implementation" class="headerlink" title="implementation"></a>implementation</h3><p>线程之间是无法自动感知对方的存在的，也就是说实现helping mechanism，需要a data structure that is shared between threads holds the operating information。</p>
+<h2 id="dummy-keys"><a href="#dummy-keys" class="headerlink" title="dummy keys"></a>dummy keys</h2><p>在delete时，需要flag grandparent和mark parent，如果BST的key少于4个，必然就会有一个leaf没有grandparent，那么在delete就需要考虑很多例外的情况（insert类似）。</p>
+<p>为了避免这些特殊情况，下面引入两个特殊值$\infty_1$和$\infty_2$，使得BST在没有key的时候，也存在3个node。这两个dummy keys是不允许删除的。</p>
+<p><img data-src="/images/2015/non-block-bst_dummy_keys.png"></p>
+<h1 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h1><ol>
+<li><strong>Excellent tutorial</strong> about helping mechanism!!!</li>
+<li>在树上面进行并发操作的时候，这篇论文中描述的问题其实大都是存在的，因此论文中的方法可以考虑用到其他树型结构上面。</li>
+</ol>
+<h1 id="references"><a href="#references" class="headerlink" title="references"></a>references</h1><ol>
+<li>Non-blocking Binary Search Trees, Faith Ellen, Panagiota Fatourou, Eric Ruppert, Franck van Breugel</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/reading/" rel="tag"># reading</a>
+              <a href="/tags/binary-search-tree/" rel="tag"># binary search tree</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2015/2015-09-26-notes-of-rlu/" rel="prev" title="Notes of Read-Log-Update A Lightweight Synchronization Mechanism for Concurrent Programming">
+                  <i class="fa fa-chevron-left"></i> Notes of Read-Log-Update A Lightweight Synchronization Mechanism for Concurrent Programming
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2015/2015-10-12-miscellaneous-material-about-concurrency/" rel="next" title="Miscellaneous Material about Concurrency">
+                  Miscellaneous Material about Concurrency <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chao Mai</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;,&quot;integrity&quot;:&quot;sha256-ncNI9OXOS5Ek4tzVYiOMmN&#x2F;KKCPZ6V0Cpv2P&#x2F;zHntiA&#x3D;&quot;}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{&quot;enable&quot;:true,&quot;shortname&quot;:&quot;chaomaisblog&quot;,&quot;count&quot;:true,&quot;i18n&quot;:{&quot;disqus&quot;:&quot;disqus&quot;}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

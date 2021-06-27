@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/default_avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/default_avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;chaomai.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;right&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:true,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:true,&quot;pangu&quot;:true,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:false,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="之前有记录过python Queue的使用，以及multiprocessing.Process模块。现在看看multiprocessing.Queue的具体工作方式（本文基于Python 3.7.4）。 multiprocessing.Queue定义在queues.py中，除此之外还定义了SimpleQueue和JoinableQueue，是FIFO队列。 类似multiprocessing.Pr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python multiprocessing.Queue模块源码阅读">
+<meta property="og:url" content="https://chaomai.github.io/2019/2019-09-10-python-multiprocessing-queue/index.html">
+<meta property="og:site_name" content="chaomai&#39;s blog">
+<meta property="og:description" content="之前有记录过python Queue的使用，以及multiprocessing.Process模块。现在看看multiprocessing.Queue的具体工作方式（本文基于Python 3.7.4）。 multiprocessing.Queue定义在queues.py中，除此之外还定义了SimpleQueue和JoinableQueue，是FIFO队列。 类似multiprocessing.Pr">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://chaomai.github.io/images/2019/python%20queues.jpg">
+<meta property="article:published_time" content="2019-09-10T04:35:20.000Z">
+<meta property="article:modified_time" content="2021-06-27T14:57:29.282Z">
+<meta property="article:author" content="Chao Mai">
+<meta property="article:tag" content="concurrency">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://chaomai.github.io/images/2019/python%20queues.jpg">
+
+
+<link rel="canonical" href="https://chaomai.github.io/2019/2019-09-10-python-multiprocessing-queue/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;chaomai.github.io&#x2F;2019&#x2F;2019-09-10-python-multiprocessing-queue&#x2F;&quot;,&quot;path&quot;:&quot;2019&#x2F;2019-09-10-python-multiprocessing-queue&#x2F;&quot;,&quot;title&quot;:&quot;python multiprocessing.Queue模块源码阅读&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>python multiprocessing.Queue模块源码阅读 | chaomai's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-34179929-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{&quot;tracking_id&quot;:&quot;UA-34179929-2&quot;,&quot;only_pageview&quot;:false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="chaomai's blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">chaomai's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>Rss</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SimpleQueue"><span class="nav-number">1.</span> <span class="nav-text">SimpleQueue</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Queue"><span class="nav-number">2.</span> <span class="nav-text">Queue</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#put"><span class="nav-number">2.2.</span> <span class="nav-text">put</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#feed%E7%BA%BF%E7%A8%8B"><span class="nav-number">2.3.</span> <span class="nav-text">feed线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#get"><span class="nav-number">2.4.</span> <span class="nav-text">get</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">2.5.</span> <span class="nav-text">序列化和反序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#close%E5%92%8Cjoin-thread"><span class="nav-number">2.6.</span> <span class="nav-text">close和join_thread</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deadlock"><span class="nav-number">2.7.</span> <span class="nav-text">deadlock</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JoinableQueue"><span class="nav-number">3.</span> <span class="nav-text">JoinableQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-1"><span class="nav-number">3.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#put-1"><span class="nav-number">3.2.</span> <span class="nav-text">put</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task-done%E5%92%8Cjoin"><span class="nav-number">3.3.</span> <span class="nav-text">task_done和join</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Chao Mai</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chaomai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chaomai" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:loneymai@gmail.com" title="E-Mail → mailto:loneymai@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://steamcommunity.com/id/chaomai" title="Steam → https:&#x2F;&#x2F;steamcommunity.com&#x2F;id&#x2F;chaomai" rel="noopener" target="_blank"><i class="fab fa-steam fa-fw"></i>Steam</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://laike9m.com/" title="https:&#x2F;&#x2F;laike9m.com" rel="noopener" target="_blank">laike9m's blog</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://chaomai.github.io/2019/2019-09-10-python-multiprocessing-queue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Chao Mai">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaomai's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python multiprocessing.Queue模块源码阅读
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-10 12:35:20" itemprop="dateCreated datePublished" datetime="2019-09-10T12:35:20+08:00">2019-09-10</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-27 22:57:29" itemprop="dateModified" datetime="2021-06-27T22:57:29+08:00">2021-06-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/2019-09-10-python-multiprocessing-queue/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/2019-09-10-python-multiprocessing-queue/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>之前有记录过python <a href="/2018/2018-07-04-python-multiprocessing-communication">Queue</a>的使用，以及<a href="/2019/2019-09-09-python-multiprocessing-process">multiprocessing.Process模块</a>。现在看看<code>multiprocessing.Queue</code>的具体工作方式（本文基于Python 3.7.4）。</p>
+<p><code>multiprocessing.Queue</code>定义在queues.py中，除此之外还定义了<code>SimpleQueue</code>和<code>JoinableQueue</code>，是FIFO队列。</p>
+<p>类似<code>multiprocessing.Process</code>，首先导入了<code>context</code>，判断当前系统类型，并相应地使用对应的实现。使用的<code>multiprocessing.Queue()</code>的时候，实际上是调用了<code>context</code>中的<code>Queue()</code>方法，设置了<code>ctx</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Queue</span>(<span class="params">self, maxsize=<span class="number">0</span></span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;Returns a queue object&#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">from</span> .queues <span class="keyword">import</span> Queue</span><br><span class="line">    <span class="keyword">return</span> Queue(maxsize, ctx=self.get_context())</span><br></pre></td></tr></table></figure>
+
+<h1 id="SimpleQueue"><a href="#SimpleQueue" class="headerlink" title="SimpleQueue"></a>SimpleQueue</h1><p><code>SimpleQueue</code>很简单，其实就是一个带锁的pipe，</p>
+<ul>
+<li>主进程和子进程分别使用各自的lock，实现写入pipe和读取pipe是并发安全的<br>  之所以<code>put()</code>和<code>get()</code>可以使用不同的lock，是因为pipe两端的读写已经是并发安全的了。</li>
+<li>用<code>multiprocessing.Pipe</code>来实现消息传递，支持多读多写</li>
+</ul>
+<blockquote>
+<p>关于<code>os.pipe</code>和<code>multiprocessing.Pipe</code></p>
+<ul>
+<li><code>os.pipe</code>：在Linux上底层访问的是传统的POSIX pipes，单向，使用encode/decode序列化</li>
+<li><code>multiprocessing.Pipe</code>：使用<code>multiprocessing.Connection</code>实现，在Linux上使用POSIX sockets完成数据发送，双向，使用pickle/unpickle序列化</li>
+</ul>
+</blockquote>
+<h1 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h1><p><code>Queue</code>可以看做在<code>SimpleQueue</code>的基础上，增加了生产者端的发送buffer、支持设置队列大小，以及<code>get()</code>和<code>put()</code>的无阻塞调用。</p>
+<p><img data-src="/images/2019/python%20queues.jpg" alt="python queues"></p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p><code>__init__()</code>初始化了这么几个比较重要的变量，</p>
+<ul>
+<li><code>_maxsize</code>：队列最大size</li>
+<li><code>_reader</code>，<code>_writer</code>：<code>multiprocessing.Connection</code>实例，负责数据的收发</li>
+<li><code>_rlock</code>：<code>multiprocessing.Lock</code>，进程间共享，保证<code>_reader.recv_bytes()</code>并发安全</li>
+<li><code>_wlock</code>：<code>multiprocessing.Lock</code>，进程间共享，保证<code>_writer.send_bytes()</code>并发安全</li>
+<li><code>_sem</code>：队列长度信号量，计数器初始化为<code>_maxsize</code></li>
+<li><code>_notempty</code>：条件变量，同步生产者放入<code>_buffer</code>和<code>_buffer</code>中数据的发送</li>
+<li><code>_buffer</code>：每个进程有自己独立的buffer，线程安全，size其实是由<code>_sem</code>来控制</li>
+<li><code>_thread</code>：生产者数据发送线程</li>
+</ul>
+<h2 id="put"><a href="#put" class="headerlink" title="put"></a>put</h2><p>首先<code>_sem.acquire()</code>，计数器-1，如果不为零，说明队列还可以写入。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> self._sem.acquire(block, timeout):</span><br><span class="line">    <span class="keyword">raise</span> Full</span><br></pre></td></tr></table></figure>
+
+<p>然后获得<code>_notempty</code>的锁，如果发送线程未创建，则创建。追加元素至buffer后，<code>_notempty.notify()</code>通知发送线程。生产者中数据的发送由单独的线程完成，主线程只负责将数据放入buffer。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> self._notempty: <span class="comment"># acquire保护_notempty和_thread的修改</span></span><br><span class="line">    <span class="keyword">if</span> self._thread <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        self._start_thread()</span><br><span class="line">    self._buffer.append(obj)</span><br><span class="line">    self._notempty.notify()</span><br></pre></td></tr></table></figure>
+
+<h2 id="feed线程"><a href="#feed线程" class="headerlink" title="feed线程"></a>feed线程</h2><p><code>_start_thread()</code>创建thread对象后，设置<code>daemon</code>属性为<code>True</code>，目的是随主线程的退出而退出，不必手动添加停止的逻辑。接着就启动线程。</p>
+<p>具体发送时，不断等待buffer中有元素；如果buffer中有元素，<code>popleft()</code>并发送，直到发送完。</p>
+<p>为何<code>_notempty</code>的锁在<code>popleft()</code>就释放了？</p>
+<ol>
+<li>buffer是<code>collections.deque</code>，本身就是并发安全的</li>
+<li><code>_notempty</code>锁的目的其实是为了保护<code>_notempty</code>的修改，和<code>put()</code>中的目的类似，但并不是为了保护buffer<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        nacquire()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> buffer:</span><br><span class="line">                nwait()</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            nrelease()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">                obj = bpopleft()</span><br><span class="line">                <span class="keyword">if</span> obj <span class="keyword">is</span> sentinel:</span><br><span class="line">                    debug(<span class="string">&#x27;feeder thread got sentinel -- exiting&#x27;</span>)</span><br><span class="line">                    close()</span><br><span class="line">                    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">                <span class="comment"># serialize the data before acquiring the lock</span></span><br><span class="line">                obj = _ForkingPickler.dumps(obj)</span><br><span class="line">                <span class="keyword">if</span> wacquire <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                    send_bytes(obj)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    wacquire()</span><br><span class="line">                    <span class="keyword">try</span>:</span><br><span class="line">                        send_bytes(obj)</span><br><span class="line">                    <span class="keyword">finally</span>:</span><br><span class="line">                        wrelease()</span><br><span class="line">        <span class="keyword">except</span> IndexError:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="comment"># ......</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="get"><a href="#get" class="headerlink" title="get"></a>get</h2><p><strong>对于<code>block=True</code>的情况</strong><br>类似<code>SimpleQueue</code>，一直等待<code>_reader.recv_bytes()</code>，直到收到数据。在<code>_reader.recv_bytes()</code>以后，<code>_sem.release()</code>，计数器+1，表示从队列消耗了一个元素。此时如果有进程调用<code>_sem.acquire()</code>并在等待，那么<code>_sem.release()</code>会唤醒其中一个等待的进程。</p>
+<p><strong>对于<code>block=False</code>的情况</strong><br>由于不能阻塞，因此不能一直等待<code>_reader.recv_bytes()</code>。</p>
+<ol>
+<li>如果在<code>timeout</code>内<code>_rlock</code>都没有获得锁，则返回<code>Empty</code></li>
+<li><code>_reader.poll()</code>（底层还是使用<code>select</code>来实现的）判断是否在<code>timeout</code>内<code>_reader</code>可读，如果不可读，则返回<code>Empty</code></li>
+<li>最后<code>_reader.recv_bytes()</code>，并<code>_sem.release()</code></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get</span>(<span class="params">self, block=<span class="literal">True</span>, timeout=<span class="literal">None</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> block <span class="keyword">and</span> timeout <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">with</span> self._rlock:</span><br><span class="line">            res = self._recv_bytes()</span><br><span class="line">        self._sem.release()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> block:</span><br><span class="line">            deadline = time.monotonic() + timeout</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self._rlock.acquire(block, timeout):</span><br><span class="line">            <span class="keyword">raise</span> Empty</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> block:</span><br><span class="line">                timeout = deadline - time.monotonic()</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> self._poll(timeout): <span class="comment"># 此时的timeout已经减去了等待_rlock.acquire的时间</span></span><br><span class="line">                    <span class="keyword">raise</span> Empty</span><br><span class="line">            <span class="keyword">elif</span> <span class="keyword">not</span> self._poll():</span><br><span class="line">                <span class="keyword">raise</span> Empty</span><br><span class="line">            res = self._recv_bytes()</span><br><span class="line">            self._sem.release()</span><br><span class="line">        <span class="keyword">finally</span>:</span><br><span class="line">            self._rlock.release()</span><br><span class="line">    <span class="comment"># unserialize the data after having released the lock</span></span><br><span class="line">    <span class="keyword">return</span> _ForkingPickler.loads(res)</span><br></pre></td></tr></table></figure>
+
+<h2 id="序列化和反序列化"><a href="#序列化和反序列化" class="headerlink" title="序列化和反序列化"></a>序列化和反序列化</h2><p>序列化和反序列化使用的是pickle来实现，那么如何判断消息的边界？<code>Connection</code>中定义了一个规则，在<code>header</code>存放长度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_send_bytes</span>(<span class="params">self, buf</span>):</span></span><br><span class="line">    n = <span class="built_in">len</span>(buf)</span><br><span class="line">    <span class="comment"># For wire compatibility with 3.2 and lower</span></span><br><span class="line">    header = struct.pack(<span class="string">&quot;!i&quot;</span>, n)</span><br><span class="line">    <span class="keyword">if</span> n &gt; <span class="number">16384</span>:</span><br><span class="line">        <span class="comment"># The payload is large so Nagle&#x27;s algorithm won&#x27;t be triggered</span></span><br><span class="line">        <span class="comment"># and we&#x27;d better avoid the cost of concatenation.</span></span><br><span class="line">        self._send(header)</span><br><span class="line">        self._send(buf)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># Issue #20540: concatenate before sending, to avoid delays due</span></span><br><span class="line">        <span class="comment"># to Nagle&#x27;s algorithm on a TCP socket.</span></span><br><span class="line">        <span class="comment"># Also note we want to avoid sending a 0-length buffer separately,</span></span><br><span class="line">        <span class="comment"># to avoid &quot;broken pipe&quot; errors if the other end closed the pipe.</span></span><br><span class="line">        self._send(header + buf)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_recv_bytes</span>(<span class="params">self, maxsize=<span class="literal">None</span></span>):</span></span><br><span class="line">    buf = self._recv(<span class="number">4</span>)</span><br><span class="line">    size, = struct.unpack(<span class="string">&quot;!i&quot;</span>, buf.getvalue())</span><br><span class="line">    <span class="keyword">if</span> maxsize <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> size &gt; maxsize:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">return</span> self._recv(size)</span><br></pre></td></tr></table></figure>
+
+<h2 id="close和join-thread"><a href="#close和join-thread" class="headerlink" title="close和join_thread"></a>close和join_thread</h2><p>由于生产者启动了一个线程来负责发送，元素首先append到buffer，然后发送。在进程结束时，如何确保元素发送完毕的问题？</p>
+<p>在启动feed线程的时候，创建了两个<code>Finalize</code>对象，<code>_finalize_close</code>和<code>_finalize_join</code>，前者的优先级较高，并set了<code>_close</code>和<code>_jointhread</code>。当进程退出的时候，会自动地先后调用这两个函数（基于<code>atexit</code>实现），</p>
+<ol>
+<li><code>_finalize_close</code>：会append元素<code>_sentinel = object()</code>到buffer，feed线程如果看到<code>_sentinel</code>，会调用<code>close()</code>并停止服务</li>
+<li><code>_finalize_join</code>：join feed线程</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> self._joincancelled:</span><br><span class="line">    self._jointhread = Finalize(</span><br><span class="line">        self._thread, Queue._finalize_join,</span><br><span class="line">        [weakref.ref(self._thread)],</span><br><span class="line">        exitpriority=-<span class="number">5</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="comment"># Send sentinel to the thread queue object when garbage collected</span></span><br><span class="line">self._close = Finalize(</span><br><span class="line">    self, Queue._finalize_close,</span><br><span class="line">    [self._buffer, self._notempty],</span><br><span class="line">    exitpriority=<span class="number">10</span></span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<p>模块同样也提供了<code>close()</code>和<code>join_thread()</code>方法，调用的其实就是<code>_close</code>和<code>_jointhread</code>。如果先手动调用，然后<code>aexit</code>调用，那不会回有问题？首次调用后，都会从<code>util</code>模块的<code>_finalizer_registry</code>中移除，因此不会存在重复调用<code>_finalize_close</code>和<code>_finalize_join</code>的问题。</p>
+<h2 id="deadlock"><a href="#deadlock" class="headerlink" title="deadlock"></a>deadlock</h2><p>这几个stackoverflow（<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/31665328/python-3-multiprocessing-queue-deadlock-when-calling-join-before-the-queue-is-em">1</a>，<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/31708646/process-join-and-queue-dont-work-with-large-numbers">2</a>，<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/26738648/script-using-multiprocessing-module-does-not-terminate">3</a>）的问题很类似，在官方的文档中也有提及（<a target="_blank" rel="noopener" href="https://docs.python.org/2.7/library/multiprocessing.html#pipes-and-queues">python 2</a>，<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/multiprocessing.html#all-start-methods">python 3</a>），总结下来就是，<em>join一个调用put的进程，且这个进程尚未把buffer中所有的元素写入pipe时</em>，可能会导致死锁。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">work</span>(<span class="params">q</span>):</span></span><br><span class="line">    q.put(<span class="string">&#x27;1&#x27;</span>*<span class="number">10000000</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    print(os.getpid())</span><br><span class="line">    q = multiprocessing.Queue()</span><br><span class="line"></span><br><span class="line">    p = multiprocessing.Process(target=work, args=(q,))</span><br><span class="line"></span><br><span class="line">    p.start()</span><br><span class="line">    p.join()</span><br><span class="line"></span><br><span class="line">    print(q.get())</span><br></pre></td></tr></table></figure>
+
+<p>原因是，<code>Queue</code>使用了os的pipe来进行数据的传输，而pipe的大小是有限的。如果数据过大，<code>_writer.send_bytes()</code>在写入数据到pipe的时候会阻塞。如果此时join这个子进程，那进程本身已经卡住了，join永远等不到进程结束。</p>
+<h1 id="JoinableQueue"><a href="#JoinableQueue" class="headerlink" title="JoinableQueue"></a>JoinableQueue</h1><p><code>JoinableQueue</code>基于<code>Queue</code>实现，覆盖了<code>put()</code>，并新增了，</p>
+<ul>
+<li><code>task_done()</code>：表示先前放入队列中的元素被取走了，由消费者调用</li>
+<li><code>join()</code>：阻塞直到队列中所有元素都被取走</li>
+</ul>
+<h2 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h2><p><code>__init__()</code>调用了<code>Queue</code>的初始化函数，并额外初始化了，</p>
+<ul>
+<li><code>_unfinished_tasks</code>：信号量，表示队列中当前未取走的元素</li>
+<li><code>_cond</code>：条件变量，同步<code>join()</code>和<code>task_done()</code></li>
+</ul>
+<h2 id="put-1"><a href="#put-1" class="headerlink" title="put"></a>put</h2><p>和<code>Queue</code>的<code>put()</code>基本一致。多出来的一点是，每次<code>put()</code>都会对<code>_unfinished_tasks</code>的计数器+1。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">put</span>(<span class="params">self, obj, block=<span class="literal">True</span>, timeout=<span class="literal">None</span></span>):</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">    <span class="keyword">with</span> self._notempty, self._cond:</span><br><span class="line">        <span class="keyword">if</span> self._thread <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            self._start_thread()</span><br><span class="line">        self._buffer.append(obj)</span><br><span class="line">        self._unfinished_tasks.release()</span><br><span class="line">        self._notempty.notify()</span><br></pre></td></tr></table></figure>
+
+<h2 id="task-done和join"><a href="#task-done和join" class="headerlink" title="task_done和join"></a>task_done和join</h2><p><code>task_done()</code>对<code>_unfinished_tasks</code>的计数器进行-1，如果计数器为0，则通知等待在<code>join()</code>的进程。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">task_done</span>(<span class="params">self</span>):</span></span><br><span class="line">    <span class="keyword">with</span> self._cond:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self._unfinished_tasks.acquire(<span class="literal">False</span>):</span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">&#x27;task_done() called too many times&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> self._unfinished_tasks._semlock._is_zero():</span><br><span class="line">            self._cond.notify_all()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">join</span>(<span class="params">self</span>):</span></span><br><span class="line">    <span class="keyword">with</span> self._cond:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self._unfinished_tasks._semlock._is_zero():</span><br><span class="line">            self._cond.wait()</span><br></pre></td></tr></table></figure>
+
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/15720120/python-os-pipe-vs-multiprocessing-pipe">Python os.pipe vs multiprocessing.Pipe</a></li>
+<li><a target="_blank" rel="noopener" href="https://laike9m.com/blog/daemon-is-not-daemon-but-what-is-it,97/">Daemon is not daemon, but what is it?</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.dreamfever.me/2019/04/21/python-zhong-de-multiprocess-queue/">Python 中的 multiprocess.Queue</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/31665328/python-3-multiprocessing-queue-deadlock-when-calling-join-before-the-queue-is-em">Python 3 Multiprocessing queue deadlock when calling join before the queue is empty</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/31708646/process-join-and-queue-dont-work-with-large-numbers">Process.join() and queue don’t work with large numbers</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/26738648/script-using-multiprocessing-module-does-not-terminate">Script using multiprocessing module does not terminate</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/multiprocessing.html#all-start-methods">https://docs.python.org/3/library/multiprocessing.html#all-start-methods</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/42350933/joining-multiprocessing-queue-takes-a-long-time">Joining multiprocessing queue takes a long time</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/concurrency/" rel="tag"># concurrency</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/2019-09-09-python-multiprocessing-process/" rel="prev" title="python multiprocessing.Process模块源码阅读">
+                  <i class="fa fa-chevron-left"></i> python multiprocessing.Process模块源码阅读
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/2019-09-20-golang-traps-and-pitfalls/" rel="next" title="go踩坑合集">
+                  go踩坑合集 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chao Mai</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;,&quot;integrity&quot;:&quot;sha256-ncNI9OXOS5Ek4tzVYiOMmN&#x2F;KKCPZ6V0Cpv2P&#x2F;zHntiA&#x3D;&quot;}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{&quot;enable&quot;:true,&quot;shortname&quot;:&quot;chaomaisblog&quot;,&quot;count&quot;:true,&quot;i18n&quot;:{&quot;disqus&quot;:&quot;disqus&quot;}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

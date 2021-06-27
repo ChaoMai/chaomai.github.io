@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/default_avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/default_avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;chaomai.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;right&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:true,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:true,&quot;pangu&quot;:true,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:false,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Docker笔记操作系统虚拟化Operating-system-level virtualization, 又叫做容器化（containerization），指的是操作系统提供了这样一个功能，内核允许存在多个隔离的用户空间实例，每个实例叫做一个容器（container）。 Docker是一个容器化平台。    container vm         容器是应用层上的抽象，容器之间共享操作系统内核">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker笔记">
+<meta property="og:url" content="https://chaomai.github.io/2018/2018-06-15-notes-of-docker/index.html">
+<meta property="og:site_name" content="chaomai&#39;s blog">
+<meta property="og:description" content="Docker笔记操作系统虚拟化Operating-system-level virtualization, 又叫做容器化（containerization），指的是操作系统提供了这样一个功能，内核允许存在多个隔离的用户空间实例，每个实例叫做一个容器（container）。 Docker是一个容器化平台。    container vm         容器是应用层上的抽象，容器之间共享操作系统内核">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://chaomai.github.io/images/2018/15226880999438.png">
+<meta property="og:image" content="https://chaomai.github.io/images/2018/15226881122546.png">
+<meta property="og:image" content="https://chaomai.github.io/images/2018/15227153999553.jpg">
+<meta property="og:image" content="https://chaomai.github.io/images/2018/15261916795186.jpg">
+<meta property="og:image" content="https://chaomai.github.io/images/2018/15261917479037.jpg">
+<meta property="og:image" content="https://chaomai.github.io/images/2018/15261917609686.jpg">
+<meta property="article:published_time" content="2018-06-15T14:09:50.000Z">
+<meta property="article:modified_time" content="2021-06-27T14:57:29.275Z">
+<meta property="article:author" content="Chao Mai">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://chaomai.github.io/images/2018/15226880999438.png">
+
+
+<link rel="canonical" href="https://chaomai.github.io/2018/2018-06-15-notes-of-docker/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;chaomai.github.io&#x2F;2018&#x2F;2018-06-15-notes-of-docker&#x2F;&quot;,&quot;path&quot;:&quot;2018&#x2F;2018-06-15-notes-of-docker&#x2F;&quot;,&quot;title&quot;:&quot;Docker笔记&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Docker笔记 | chaomai's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-34179929-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{&quot;tracking_id&quot;:&quot;UA-34179929-2&quot;,&quot;only_pageview&quot;:false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="chaomai's blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">chaomai's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>Rss</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">Docker笔记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%99%9A%E6%8B%9F%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">操作系统虚拟化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">3.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%EF%BC%88Image%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">镜像（Image）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#scratch%E9%95%9C%E5%83%8F"><span class="nav-number">3.1.1.</span> <span class="nav-text">scratch镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E6%82%AC%E9%95%9C%E5%83%8F%EF%BC%88Dangling-image%EF%BC%89"><span class="nav-number">3.1.2.</span> <span class="nav-text">空悬镜像（Dangling image）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-build-context"><span class="nav-number">3.1.3.</span> <span class="nav-text">Docker build context</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Untagged%E5%92%8CDelete"><span class="nav-number">3.1.4.</span> <span class="nav-text">Untagged和Delete</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8%EF%BC%88Container%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">容器（Container）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%93%E5%BA%93%EF%BC%88Registry%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">仓库（Registry）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">数据管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">网络管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bridge"><span class="nav-number">5.1.</span> <span class="nav-text">bridge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#overlay"><span class="nav-number">5.2.</span> <span class="nav-text">overlay</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#host"><span class="nav-number">5.3.</span> <span class="nav-text">host</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#macvlan"><span class="nav-number">5.4.</span> <span class="nav-text">macvlan</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#none"><span class="nav-number">5.5.</span> <span class="nav-text">none</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker%E4%B8%8A%E9%83%A8%E7%BD%B2Hadoop"><span class="nav-number">6.</span> <span class="nav-text">Docker上部署Hadoop</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">7.</span> <span class="nav-text">References</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Chao Mai</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chaomai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chaomai" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:loneymai@gmail.com" title="E-Mail → mailto:loneymai@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://steamcommunity.com/id/chaomai" title="Steam → https:&#x2F;&#x2F;steamcommunity.com&#x2F;id&#x2F;chaomai" rel="noopener" target="_blank"><i class="fab fa-steam fa-fw"></i>Steam</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://laike9m.com/" title="https:&#x2F;&#x2F;laike9m.com" rel="noopener" target="_blank">laike9m's blog</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://chaomai.github.io/2018/2018-06-15-notes-of-docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Chao Mai">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaomai's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-06-15 22:09:50" itemprop="dateCreated datePublished" datetime="2018-06-15T22:09:50+08:00">2018-06-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-27 22:57:29" itemprop="dateModified" datetime="2021-06-27T22:57:29+08:00">2021-06-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/2018-06-15-notes-of-docker/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/2018-06-15-notes-of-docker/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Docker笔记"><a href="#Docker笔记" class="headerlink" title="Docker笔记"></a>Docker笔记</h1><h1 id="操作系统虚拟化"><a href="#操作系统虚拟化" class="headerlink" title="操作系统虚拟化"></a>操作系统虚拟化</h1><p>Operating-system-level virtualization, 又叫做容器化（containerization），指的是操作系统提供了这样一个功能，内核允许存在多个隔离的用户空间实例，每个实例叫做一个容器（container）。</p>
+<p>Docker是一个容器化平台。</p>
+<table>
+<thead>
+<tr>
+<th>container</th>
+<th>vm</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img data-src="/images/2018/15226880999438.png" alt="15226880999438"></td>
+<td><img data-src="/images/2018/15226881122546.png" alt="15226881122546"></td>
+</tr>
+</tbody></table>
+<ul>
+<li>容器是应用层上的抽象，容器之间共享操作系统内核。</li>
+<li>vm是硬件抽象，每个vm不仅仅包含要允许的程序，还包括了一个完整的os。</li>
+</ul>
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="镜像（Image）"><a href="#镜像（Image）" class="headerlink" title="镜像（Image）"></a>镜像（Image）</h2><p>镜像是由一系列的只读层构成的，每层代表了对已有镜像的修改。相当于一个root文件系统。由一个sha256作为镜像ID<strong>唯一标识</strong>，一个镜像可以有<strong>多个标签</strong>。</p>
+<p>对已有镜像中文件的修改，都是以Copy-on-Write的方式进行，例如：删除文件，在新的一层中进行标记删除，原有层的文件不变。</p>
+<h3 id="scratch镜像"><a href="#scratch镜像" class="headerlink" title="scratch镜像"></a>scratch镜像</h3><p>scratch镜像代表一个空白的镜像，这是一个虚拟的镜像，不实际存在，意味着基于这个构建的新镜像不使用任何已有的基础镜像。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM scratch</span><br><span class="line">ADD ubuntu-xenial-core-cloudimg-amd64-root.tar.gz &#x2F;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="空悬镜像（Dangling-image）"><a href="#空悬镜像（Dangling-image）" class="headerlink" title="空悬镜像（Dangling image）"></a>空悬镜像（Dangling image）</h3><p>空悬镜像是没有tag，没有被其他镜像依赖的镜像。当创建一个新的镜像时，使用了一个已有的tag，那么老的镜像就会变为空悬镜像。可被删除。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker image ls -f dangling=<span class="literal">true</span></span><br><span class="line">docker image prune</span><br></pre></td></tr></table></figure>
+
+<h3 id="Docker-build-context"><a href="#Docker-build-context" class="headerlink" title="Docker build context"></a>Docker build context</h3><p>Docker是c/s架构的，实际的构建动作发生在server。当<code>ADD</code>文件到镜像中时，server需要知道这个文件，具体的方式都是通过打包构建时的上下文，并发送给server。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build [OPTIONS] PATH | URL | -</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>PATH</code>，即上下文；</li>
+<li>若<code>URL</code>是一个压缩包，那么其内容会被当做上下文。</li>
+</ul>
+<h3 id="Untagged和Delete"><a href="#Untagged和Delete" class="headerlink" title="Untagged和Delete"></a>Untagged和Delete</h3><p>镜像的多层结构使得层与层之间存在依赖，在进行删除操作时，需要考虑这些的依赖关系。当某层没有被依赖时，才可以被删除。</p>
+<p>删除一个镜像时，实际上是删除镜像的标签（Untagged），当一个镜像的所有标签都被删除了，才会触发删除这个镜像（Delete）。</p>
+<p>如果有容器存在，同样不可以删除这个镜像，因为这个镜像被一个可读写层依赖。</p>
+<h2 id="容器（Container）"><a href="#容器（Container）" class="headerlink" title="容器（Container）"></a>容器（Container）</h2><p>容器是镜像运行的实体，本质上是一个进程，拥有自己的独立的命名空间。在存储上与镜像的区别在于多了最上面的一个读写层，这个层是容器的运行态环境，生命周期与容器一致，<strong>不建议</strong>在这一层写入数据。</p>
+<p><img data-src="/images/2018/15227153999553.jpg" alt="15227153999553"></p>
+<h2 id="仓库（Registry）"><a href="#仓库（Registry）" class="headerlink" title="仓库（Registry）"></a>仓库（Registry）</h2><p>Docker仓库（Docker Registry）是存储和分发镜像的服务，包括多个Repository；每个Repository包含多个标签，通过<code>&lt;仓库名&gt;:&lt;标签&gt;</code>的方式来指定一个镜像。</p>
+<h1 id="数据管理"><a href="#数据管理" class="headerlink" title="数据管理"></a>数据管理</h1><ul>
+<li><p>数据卷（Volumes）</p>
+<p>  数据卷独立于镜像和容器，可在多个容器之间共享，容器终止后，数据卷也会一直存在。</p>
+</li>
+<li><p>挂载主机目录（Bind mounts）</p>
+</li>
+</ul>
+<h1 id="网络管理"><a href="#网络管理" class="headerlink" title="网络管理"></a>网络管理</h1><p>Docker的网络是通过可插拔的驱动来提供的。除了可以使用Docker已有的驱动，还能安装第三方网络驱动。</p>
+<h2 id="bridge"><a href="#bridge" class="headerlink" title="bridge"></a>bridge</h2><p><img data-src="/images/2018/15261916795186.jpg" alt="15261916795186"></p>
+<p>bridge网络是在链路层用于在不同网段之间转发流量的。bridge可以是一个硬件或软件设备。</p>
+<p>bridge驱动创建了主机内部的私有网络，在这个网络中的容器可以相互通信，可以通过端口映射来实现外部的访问。docker通过规则在禁止不同bridge网络之间的通信。</p>
+<p>docker的bridge是local scope的，这意味着一个bridge网络只能提供单机上的容器互联。docker提供了默认的bridge，用户也可以添加自定义的bridge。</p>
+<p>user-defined bridge和default bridge略有不同，user-defined bridge提供了如下功能：</p>
+<ul>
+<li>连接到user-defined bridge的所有容器，都会自动的相互暴露所有端口。</li>
+<li>提供了容器之间的自动DNS解析，可以直接通过host name来进行访问其他容器。</li>
+<li>创建了可配置的bridge（默认的bridge也可以配置，但是这个操作是在docker之外进行的，需要重启docker）。</li>
+</ul>
+<p>默认的bridge特别的一点是，可以通过<code>--link</code>来在容器之间共享环境变量，但<code>--link</code>已被遗弃，user-defined bridge可以通过共享文件或目录、compose file来实现共享环境变量。</p>
+<h2 id="overlay"><a href="#overlay" class="headerlink" title="overlay"></a>overlay</h2><p><img data-src="/images/2018/15261917479037.jpg" alt="15261917479037"></p>
+<h2 id="host"><a href="#host" class="headerlink" title="host"></a>host</h2><p>使用host网络时，容器的网络栈没有与主机的隔离（存储、进程namespace、用户namespace都有隔离），如果在容器绑定到了80端口，那么容器的程序在主机的80端口可用。这也就意味着，绑定前要求主机的80端口未被占用。</p>
+<p>host网络仅在linux上可用，<em>猜测</em>mac和windows上不可用是由于使用了虚拟化。</p>
+<h2 id="macvlan"><a href="#macvlan" class="headerlink" title="macvlan"></a>macvlan</h2><p><img data-src="/images/2018/15261917609686.jpg" alt="15261917609686"></p>
+<h2 id="none"><a href="#none" class="headerlink" title="none"></a>none</h2><h1 id="Docker上部署Hadoop"><a href="#Docker上部署Hadoop" class="headerlink" title="Docker上部署Hadoop"></a>Docker上部署Hadoop</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://flat2010.github.io/2017/08/12/Docker%E4%B8%8A%E9%83%A8%E7%BD%B2Hadoop%E7%AD%89%E5%AE%8C%E5%85%A8%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4/">Docker上部署Hadoop等完全分布式集群</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.docker.com/2016/12/understanding-docker-networking-drivers-use-cases/">UNDERSTANDING DOCKER NETWORKING DRIVERS AND THEIR USE CASES</a></li>
+<li><a target="_blank" rel="noopener" href="https://yeasy.gitbooks.io/docker_practice/">Docker —— 从入门到实践</a></li>
+</ol>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://docs.docker.com/">Docker Documentation</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/2017-05-12-about-functional-programming/" rel="prev" title="函数式编程相关">
+                  <i class="fa fa-chevron-left"></i> 函数式编程相关
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/2018-07-04-python-multiprocessing-communication/" rel="next" title="Python进程间通信总结">
+                  Python进程间通信总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chao Mai</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;,&quot;integrity&quot;:&quot;sha256-ncNI9OXOS5Ek4tzVYiOMmN&#x2F;KKCPZ6V0Cpv2P&#x2F;zHntiA&#x3D;&quot;}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{&quot;enable&quot;:true,&quot;shortname&quot;:&quot;chaomaisblog&quot;,&quot;count&quot;:true,&quot;i18n&quot;:{&quot;disqus&quot;:&quot;disqus&quot;}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

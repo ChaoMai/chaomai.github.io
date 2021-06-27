@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/default_avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/default_avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;chaomai.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Mist&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;right&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:true,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:true,&quot;pangu&quot;:true,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:false,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Python Concurrency From the Ground Up，来自捕蛇者说的推荐，是David Beazley在PyCon 2015上的talk。在这个talk中，他边讲边写、外加开点玩笑，可以说David在各种意义上，都是并发的专家，很值得一看。视频和代码如下：  David Beazley - Python Concurrency From the Ground Up: LIVE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="David Beazley - Python Concurrency From the Ground Up笔记">
+<meta property="og:url" content="https://chaomai.github.io/2019/2019-05-13-notes-of-python-concurrency-from-the-ground-up/index.html">
+<meta property="og:site_name" content="chaomai&#39;s blog">
+<meta property="og:description" content="Python Concurrency From the Ground Up，来自捕蛇者说的推荐，是David Beazley在PyCon 2015上的talk。在这个talk中，他边讲边写、外加开点玩笑，可以说David在各种意义上，都是并发的专家，很值得一看。视频和代码如下：  David Beazley - Python Concurrency From the Ground Up: LIVE">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-05-12T16:17:47.000Z">
+<meta property="article:modified_time" content="2021-06-27T14:57:29.277Z">
+<meta property="article:author" content="Chao Mai">
+<meta property="article:tag" content="concurrency">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="pycon">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://chaomai.github.io/2019/2019-05-13-notes-of-python-concurrency-from-the-ground-up/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;chaomai.github.io&#x2F;2019&#x2F;2019-05-13-notes-of-python-concurrency-from-the-ground-up&#x2F;&quot;,&quot;path&quot;:&quot;2019&#x2F;2019-05-13-notes-of-python-concurrency-from-the-ground-up&#x2F;&quot;,&quot;title&quot;:&quot;David Beazley - Python Concurrency From the Ground Up笔记&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>David Beazley - Python Concurrency From the Ground Up笔记 | chaomai's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-34179929-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{&quot;tracking_id&quot;:&quot;UA-34179929-2&quot;,&quot;only_pageview&quot;:false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="chaomai's blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">chaomai's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+        <li class="menu-item menu-item-rss"><a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>Rss</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%88%E6%9C%AC1%EF%BC%9A%E7%AE%80%E5%8D%95%E5%8D%95%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">版本1：简单单线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%88%E6%9C%AC2%EF%BC%9A%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">版本2：多线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%88%E6%9C%AC3%EF%BC%9A%E5%A4%9A%E7%BA%BF%E7%A8%8B-%E8%BF%9B%E7%A8%8B%E6%B1%A0"><span class="nav-number">3.</span> <span class="nav-text">版本3：多线程+进程池</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%88%E6%9C%AC4%EF%BC%9A%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E5%92%8C%E5%8D%8F%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">版本4：事件循环和协程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%88%E6%9C%AC5%EF%BC%9A%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E5%92%8C%E5%8D%8F%E7%A8%8B-%E5%A4%9A%E8%BF%9B%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">版本5：事件循环和协程+多进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%88%E6%9C%AC6%EF%BC%9A%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E5%92%8C%E5%8D%8F%E7%A8%8B-%E5%A4%9A%E8%BF%9B%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text">版本6：事件循环和协程+多进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Chao Mai</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">85</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/chaomai" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;chaomai" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:loneymai@gmail.com" title="E-Mail → mailto:loneymai@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://steamcommunity.com/id/chaomai" title="Steam → https:&#x2F;&#x2F;steamcommunity.com&#x2F;id&#x2F;chaomai" rel="noopener" target="_blank"><i class="fab fa-steam fa-fw"></i>Steam</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://laike9m.com/" title="https:&#x2F;&#x2F;laike9m.com" rel="noopener" target="_blank">laike9m's blog</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://chaomai.github.io/2019/2019-05-13-notes-of-python-concurrency-from-the-ground-up/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Chao Mai">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="chaomai's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          David Beazley - Python Concurrency From the Ground Up笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-05-13 00:17:47" itemprop="dateCreated datePublished" datetime="2019-05-13T00:17:47+08:00">2019-05-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-27 22:57:29" itemprop="dateModified" datetime="2021-06-27T22:57:29+08:00">2021-06-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/concurrency/" itemprop="url" rel="index"><span itemprop="name">concurrency</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/2019-05-13-notes-of-python-concurrency-from-the-ground-up/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/2019-05-13-notes-of-python-concurrency-from-the-ground-up/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Python Concurrency From the Ground Up，来自<a target="_blank" rel="noopener" href="https://pythonhunter.org/episodes/1">捕蛇者说</a>的推荐，是David Beazley在PyCon 2015上的talk。在这个talk中，他边讲边写、外加开点玩笑，可以说David在各种意义上，都是并发的专家，很值得一看。视频和代码如下：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=MCs5OvhV9S4">David Beazley - Python Concurrency From the Ground Up: LIVE! - PyCon 2015</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/dabeaz/concurrencylive">dabeaz/concurrencylive</a></li>
+</ul>
+<p>本文记录了这个talk的主要内容，并加上了我自己的理解。</p>
+<p>这个talk从零实现了一个能支持多客户端并发访问的server，server计算了菲波那切数列第n项的值，为了展示blocking调用，用的是普通的递归实现<code>fib(n) = fib(n-1) + fib(n-2)</code>。同时还写了两个简单的client来测试server性能：<code>perf1.py</code>无限循环<code>fib(30)</code>，并输出每次调用的时间；<code>perf2.py</code>无限循环<code>fib(1)</code>，测试ops，这个调用是立即返回的。</p>
+<h1 id="版本1：简单单线程"><a href="#版本1：简单单线程" class="headerlink" title="版本1：简单单线程"></a>版本1：简单单线程</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib_server</span>(<span class="params">address</span>):</span></span><br><span class="line">    sock = socket(AF_INET, SOCK_STREAM)</span><br><span class="line">    sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, <span class="number">1</span>)</span><br><span class="line">    sock.bind(address)</span><br><span class="line">    sock.listen(<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        client, addr = sock.accept()</span><br><span class="line">        print(<span class="string">&quot;Connection&quot;</span>, addr)</span><br><span class="line">        fib_handler(client)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib_handler</span>(<span class="params">client</span>):</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        req = client.recv(<span class="number">100</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> req:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        n = <span class="built_in">int</span>(req)</span><br><span class="line">        result = fib(n)</span><br><span class="line">        resp = <span class="built_in">str</span>(result).encode(<span class="string">&#x27;ascii&#x27;</span>) + <span class="string">b&#x27;\n&#x27;</span></span><br><span class="line">        client.send(resp)</span><br><span class="line">    print(<span class="string">&quot;Closed&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这个实现的问题是，server无法同时响应多个client。当某个client连接上后，<code>fib_handler(client)</code>会执行到这个client断开为止。</p>
+<h1 id="版本2：多线程"><a href="#版本2：多线程" class="headerlink" title="版本2：多线程"></a>版本2：多线程</h1><p>在版本1的基础上，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib_server</span>(<span class="params">address</span>):</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">        print(<span class="string">&quot;Connection&quot;</span>, addr)</span><br><span class="line">        Thread(target=fib_handler, args=(client,), daemon=<span class="literal">True</span>).start()</span><br></pre></td></tr></table></figure>
+
+<p>此时server可以响应多个client。但是由于GIL的存在，python是无法利用多个cpu核心的，因此，</p>
+<ol>
+<li><code>perf1.py</code>的结果（每次调用的时间）会随着<code>perf1.py</code>实例的增加而增加。同一时刻只能响应一个client，其他的等待，因此每次调用的时间大概是<code>单个client调用时间的均值 * perf1.py实例个数</code>。</li>
+<li><code>perf2.py</code>的结果（ops）会受其他调用的影响，ops会下降，<code>n</code>越大，下降越多。David这里提到了，GIL的一个特性是会把优先级给到计算更加密集的任务上，而os的调度却不会受这个影响，运行时间短的任务优先级更高。</li>
+</ol>
+<p>python的每个线程实际上都有os实际的线程与其对应，用<code>ps -o cmd,nlwp &lt;pid&gt;</code>可看，但为何如此调度与其实现有关。对于os，Linux 2.6.23开始采用的是<a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/scheduler/sched-design-CFS.txt">Completely Fair Scheduler</a>；FreeBSD和macOS采用的是<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Scheduling_(computing)">Multilevel feedback queue</a>的调度算法，这也就解释了上述为什么运行时间较短的任务优先级更高。因为总能在规定的时间片内运行完成，不会被调度到后面的队列。</p>
+<h1 id="版本3：多线程-进程池"><a href="#版本3：多线程-进程池" class="headerlink" title="版本3：多线程+进程池"></a>版本3：多线程+进程池</h1><p>在版本2的基础上，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ProcessPoolExecutor <span class="keyword">as</span> Pool</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib_handler</span>(<span class="params">client</span>):</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">        future = pool.submit(fib, n)</span><br><span class="line">        result = future.result()</span><br></pre></td></tr></table></figure>
+
+<p>由于需要与子进程通信，需要序列化和反序列化数据，引入了额外的开销，因此<code>perf2.py</code>的ops会下降；但与此同时，server端处理计算任务是在单独的进程中，相当于计算任务的调度是由os来完成了，结合<a href="#%E7%89%88%E6%9C%AC2%EF%BC%9A%E5%A4%9A%E7%BA%BF%E7%A8%8B">版本2：多线程</a>中对os调度的解释，基本不受其他计算更加密集的任务影响。</p>
+<h1 id="版本4：事件循环和协程"><a href="#版本4：事件循环和协程" class="headerlink" title="版本4：事件循环和协程"></a>版本4：事件循环和协程</h1><p>回看前三个版本的server，使用线程，本质上是为了解决blocking。而blocking主要发生在等待io的时候，可以考虑只有当io ready的时候才去处理socket。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">tasks = deque()</span><br><span class="line">recv_wait = &#123; &#125;   <span class="comment"># Mapping sockets -&gt; tasks (generators)</span></span><br><span class="line">send_wait = &#123; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span>():</span></span><br><span class="line">    <span class="keyword">while</span> <span class="built_in">any</span>([tasks, recv_wait, send_wait]):</span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> tasks:</span><br><span class="line">            <span class="comment"># No active tasks to run</span></span><br><span class="line">            <span class="comment"># wait for I/O</span></span><br><span class="line">            can_recv, can_send, _ = select(recv_wait, send_wait, [])</span><br><span class="line">            <span class="keyword">for</span> s <span class="keyword">in</span> can_recv:</span><br><span class="line">                tasks.append(recv_wait.pop(s))</span><br><span class="line">            <span class="keyword">for</span> s <span class="keyword">in</span> can_send:</span><br><span class="line">                tasks.append(send_wait.pop(s))</span><br><span class="line"></span><br><span class="line">        task = tasks.popleft()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            why, what = <span class="built_in">next</span>(task)   <span class="comment"># Run to the yield</span></span><br><span class="line">            <span class="keyword">if</span> why == <span class="string">&#x27;recv&#x27;</span>:</span><br><span class="line">                <span class="comment"># Must go wait somewhere</span></span><br><span class="line">                recv_wait[what] = task</span><br><span class="line">            <span class="keyword">elif</span> why == <span class="string">&#x27;send&#x27;</span>:</span><br><span class="line">                send_wait[what] = task</span><br><span class="line"></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">raise</span> RuntimeError(<span class="string">&quot;ARG!&quot;</span>)</span><br><span class="line">        <span class="keyword">except</span> StopIteration:</span><br><span class="line">            print(<span class="string">&quot;task done&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AsyncSocket</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, sock</span>):</span></span><br><span class="line">        self.sock = sock</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">recv</span>(<span class="params">self, maxsize</span>):</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="string">&#x27;recv&#x27;</span>, self.sock</span><br><span class="line">        <span class="keyword">return</span> self.sock.recv(maxsize)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">send</span>(<span class="params">self, data</span>):</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="string">&#x27;send&#x27;</span>, self.sock</span><br><span class="line">        <span class="keyword">return</span> self.sock.send(data)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">accept</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="string">&#x27;recv&#x27;</span>, self.sock</span><br><span class="line">        client, addr = self.sock.accept()</span><br><span class="line">        <span class="keyword">return</span> AsyncSocket(client), addr</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span>(<span class="params">self, name</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">getattr</span>(self.sock, name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib_server</span>(<span class="params">address</span>):</span></span><br><span class="line">    sock = AsyncSocket(socket(AF_INET, SOCK_STREAM))</span><br><span class="line">    sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, <span class="number">1</span>)</span><br><span class="line">    sock.bind(address)</span><br><span class="line">    sock.listen(<span class="number">5</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        client, addr = <span class="keyword">yield</span> <span class="keyword">from</span> sock.accept()  <span class="comment"># blocking</span></span><br><span class="line">        print(<span class="string">&quot;Connection&quot;</span>, addr)</span><br><span class="line">        tasks.append(fib_handler(client))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib_handler</span>(<span class="params">client</span>):</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        req = <span class="keyword">yield</span> <span class="keyword">from</span> client.recv(<span class="number">100</span>)   <span class="comment"># blocking</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> req:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        n = <span class="built_in">int</span>(req)</span><br><span class="line">        result = fib(n)</span><br><span class="line">        resp = <span class="built_in">str</span>(result).encode(<span class="string">&#x27;ascii&#x27;</span>) + <span class="string">b&#x27;\n&#x27;</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">from</span> client.send(resp)    <span class="comment"># blocking</span></span><br><span class="line">    print(<span class="string">&quot;Closed&quot;</span>)</span><br><span class="line"></span><br><span class="line">tasks.append(fib_server((<span class="string">&#x27;&#x27;</span>,<span class="number">25000</span>)))</span><br><span class="line">run()</span><br></pre></td></tr></table></figure>
+
+<p>这个版本的核心在<code>def run()</code>，利用<code>yield</code>实现了协程。当遇到io时，<code>yield</code>跳出当前执行，<code>select</code>判断io ready后，才去读写socket。要注意的是，这个版本虽然没有使用多线程，但server是可以服务多个client的，因为在某个client的socket没有ready的时候，server可以做其他的事情。不过由于是单线程，对于所有client提交的计算任务，server只能逐一执行。协程并不能帮助解决多线程中GIL的问题，因为并没有利用到多个cpu核心，<a href="#%E7%89%88%E6%9C%AC2%EF%BC%9A%E5%A4%9A%E7%BA%BF%E7%A8%8B">版本2：多线程</a>的两个性能问题，这里都存在。</p>
+<p>我觉得这里的<code>yield</code>和事件循环是用的很出彩，换做是我，我首先考虑到的是<code>select</code>出ready的socket，然后进行读写。弊端在于需要把业务逻辑套在一个大循环里面，每次都先调用<code>select</code>，在不同的socket ready的时候，使用相应的业务逻辑进行处理。</p>
+<h1 id="版本5：事件循环和协程-多进程"><a href="#版本5：事件循环和协程-多进程" class="headerlink" title="版本5：事件循环和协程+多进程"></a>版本5：事件循环和协程+多进程</h1><p>在版本4的基础上，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib_handler</span>(<span class="params">client</span>):</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">        future = pool.submit(fib, n)</span><br><span class="line">        result = future.result()    <span class="comment">#  Blocks</span></span><br></pre></td></tr></table></figure>
+
+<p>考虑到上一个版本无法利用多个cpu核心进行计算，那么如果像<a href="#%E7%89%88%E6%9C%AC3%EF%BC%9A%E5%A4%9A%E7%BA%BF%E7%A8%8B+%E8%BF%9B%E7%A8%8B%E6%B1%A0">版本3：多线程+进程池</a>一样把<code>fib</code>放入<code>pool</code>中，是否能解决问题呢？放入以后，会发现当某个协程执行到’future.result()’的时候就会阻塞，直到<code>pool</code>中的任务计算完毕，相当于server主线程会逐一等待每个计算任务。<a href="#%E7%89%88%E6%9C%AC2%EF%BC%9A%E5%A4%9A%E7%BA%BF%E7%A8%8B">版本2：多线程</a>的两个问题，仍然存在。</p>
+<h1 id="版本6：事件循环和协程-多进程"><a href="#版本6：事件循环和协程-多进程" class="headerlink" title="版本6：事件循环和协程+多进程"></a>版本6：事件循环和协程+多进程</h1><p>在版本5的基础上，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">future_wait = &#123; &#125;</span><br><span class="line"></span><br><span class="line">future_notify, future_event = socketpair()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">future_done</span>(<span class="params">future</span>):</span></span><br><span class="line">    tasks.append(future_wait.pop(future))</span><br><span class="line">    future_notify.send(<span class="string">b&#x27;x&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">future_monitor</span>():</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">yield</span> <span class="string">&#x27;recv&#x27;</span>, future_event</span><br><span class="line">        future_event.recv(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line">tasks.append(future_monitor())</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span>():</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">        task = tasks.popleft()</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            why, what = <span class="built_in">next</span>(task)   <span class="comment"># Run to the yield</span></span><br><span class="line">            <span class="keyword">if</span> why == <span class="string">&#x27;recv&#x27;</span>:</span><br><span class="line">                <span class="comment"># Must go wait somewhere</span></span><br><span class="line">                recv_wait[what] = task</span><br><span class="line">            <span class="keyword">elif</span> why == <span class="string">&#x27;send&#x27;</span>:</span><br><span class="line">                send_wait[what] = task</span><br><span class="line">            <span class="keyword">elif</span> why == <span class="string">&#x27;future&#x27;</span>:</span><br><span class="line">                future_wait[what] = task</span><br><span class="line">                what.add_done_callback(future_done)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib_handler</span>(<span class="params">client</span>):</span></span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">        future = pool.submit(fib, n)</span><br><span class="line">        <span class="keyword">yield</span> <span class="string">&#x27;future&#x27;</span>, future</span><br><span class="line">        result = future.result()    <span class="comment">#  Blocks</span></span><br></pre></td></tr></table></figure>
+
+<p>最后这个实现首先将<code>result = fib(n)</code>，放入了<code>pool</code>并得到一个<code>future</code>，<code>yeild</code>之后为这个future添加计算完成后的回调<code>future_done</code>。这个<code>pool</code>可以是线程池（无法利用多个cpu），也可以是进程池。比较hacking的地方是用<code>socketpair</code>把计算ready转变了socket ready。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>除去实现中用到的一些技巧，这个talk把GIL和blocking的影响、要用什么样的方式来绕开这些问题，以及事件循环和协程讲的很明白。</p>
+<p>P.S. 小插曲，现场写的时候，David把</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">can_recv, can_send, _ = select(recv_wait, send_wait, [])</span><br></pre></td></tr></table></figure>
+
+<p>写成了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">can_recv, can_send, [] = select(recv_wait, send_wait, [])</span><br></pre></td></tr></table></figure>
+
+<p>最后有个提问者表示，<em>the empty listing was just some incredible next-level thing that I was just not capable of</em>。</p>
+<p>至于为什么unpack到空list，原因如下，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先unpack到一个变量的list是可以的</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a, b, [x, y] = <span class="number">1</span>, <span class="number">2</span>, [<span class="number">10</span>, <span class="number">20</span>]  <span class="comment"># a=1, b=2, x=10, y=20</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果对一个空list进行unpack，由于没有东西可以unpack，所以可以解到另一个空的list里面</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a, b, [] = <span class="number">1</span>, <span class="number">2</span>, []   <span class="comment"># a=1, b=2</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/concurrency/" rel="tag"># concurrency</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/pycon/" rel="tag"># pycon</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/2019-05-12-night-sky-in-kunming-and-baotou/" rel="prev" title="云南昆明和内蒙包头的星空">
+                  <i class="fa fa-chevron-left"></i> 云南昆明和内蒙包头的星空
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/2019-05-23-apache-yarn-notes/" rel="next" title="Apache Hadoop YARN笔记">
+                  Apache Hadoop YARN笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2014 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chao Mai</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;,&quot;integrity&quot;:&quot;sha256-ncNI9OXOS5Ek4tzVYiOMmN&#x2F;KKCPZ6V0Cpv2P&#x2F;zHntiA&#x3D;&quot;}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{&quot;enable&quot;:true,&quot;shortname&quot;:&quot;chaomaisblog&quot;,&quot;count&quot;:true,&quot;i18n&quot;:{&quot;disqus&quot;:&quot;disqus&quot;}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
